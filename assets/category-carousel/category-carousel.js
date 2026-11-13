@@ -92,20 +92,22 @@
     return d;
   }
 
-  // বাংলা: দূরত্ব অনুযায়ী কার্ডের transform ও opacity
+  // বাংলা: কার্ডগুলোকে সরল লাইনে নয়, বৃত্তাকার 3D আর্কে সাজায়
   function cardPose(d, cardWidth) {
     var abs = Math.abs(d);
-    if (abs === 0) return { transform: 'translate3d(0,0,0) rotateY(0deg) scale(1)', opacity: 1, z: 3, visible: true };
-    var sign = d < 0 ? -1 : 1;
-    if (abs === 1) {
-      return {
-        transform: 'translate3d(' + (sign * cardWidth * 0.95).toFixed(1) + 'px,0,-80px) rotateY(' + (-sign * 28) + 'deg) scale(.88)',
-        opacity: 0.72, z: 2, visible: true
-      };
-    }
+    var angle = d * 40;
+    var radians = angle * Math.PI / 180;
+    var radius = cardWidth * 1.25;
+    var x = Math.sin(radians) * radius;
+    var z = (Math.cos(radians) - 1) * radius;
+    var rotate = -angle;
+    var scale = abs === 0 ? 1 : (abs === 1 ? 0.84 : 0.68);
+    var opacity = abs === 0 ? 1 : (abs === 1 ? 0.88 : (abs === 2 ? 0.22 : 0));
     return {
-      transform: 'translate3d(' + (sign * cardWidth * 1.3).toFixed(1) + 'px,0,-160px) rotateY(' + (-sign * 40) + 'deg) scale(.75)',
-      opacity: 0, z: 1, visible: false
+      transform: 'translate3d(' + x.toFixed(1) + 'px,0,' + z.toFixed(1) + 'px) rotateY(' + rotate + 'deg) scale(' + scale + ')',
+      opacity: opacity,
+      z: abs === 0 ? 3 : (abs === 1 ? 2 : 1),
+      visible: abs <= 2
     };
   }
 
