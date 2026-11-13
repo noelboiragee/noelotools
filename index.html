@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- বাংলা: NoeloTools-এর মূল হোমপেজের মেটাডেটা ও স্টাইল। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="130+ free browser-based online tools for PDF, money, images, developers, writing, health and everyday tasks. No sign-up. Nothing uploaded.">
+  <meta name="theme-color" content="#ffffff">
+  <title>NoeloTools — Free Online Tools for Everything</title>
+  <link rel="canonical" href="https://noelotools.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <script type="module" src="/assets/js/main.js"></script>
+  <style>
+    /* বাংলা: হোমপেজের নির্দিষ্ট অংশের বিন্যাস। */
+    .hero { padding: clamp(4rem, 9vw, 7rem) 0 4rem; text-align: center; background: radial-gradient(ellipse at 50% 0%, var(--primary-soft), transparent 68%); }
+    .hero-copy { max-width: 760px; margin: 0 auto; }
+    .hero h1 { max-width: 760px; margin: 0 auto 1rem; letter-spacing: -0.055em; }
+    .hero p { max-width: 650px; margin: 0 auto; color: var(--text-muted); }
+    .hero-search-wrap { max-width: 680px; margin: 2rem auto 1rem; }
+    .hero-search-wrap .search-field { width: 100%; min-height: 62px; }
+    .hero-note { font-size: .875rem; color: var(--text-muted); }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1.5rem; }
+    .section-heading p { margin: .35rem 0 0; color: var(--text-muted); }
+    .featured-section { padding: 3rem 0 4rem; overflow: hidden; }
+    .featured-carousel { perspective: 1100px; min-height: 260px; display: grid; place-items: center; }
+    .carousel-track { display: flex; justify-content: center; align-items: center; gap: 1rem; width: 100%; }
+    .carousel-card { flex: 0 1 29%; min-height: 210px; padding: 1.5rem; border: 1px solid var(--border); border-radius: 20px; background: var(--bg); box-shadow: 0 16px 42px rgb(31 41 55 / .08); text-decoration: none; color: var(--text); transition: transform 180ms ease; }
+    .carousel-card:nth-child(1) { transform: rotateY(18deg) scale(.88); opacity: .78; }
+    .carousel-card:nth-child(2) { transform: translateY(-8px) scale(1.04); border-color: var(--primary); box-shadow: 0 20px 55px rgb(124 58 237 / .16); z-index: 1; }
+    .carousel-card:nth-child(3) { transform: rotateY(-18deg) scale(.88); opacity: .78; }
+    .carousel-card:hover { transform: translateY(-8px) scale(1.04); opacity: 1; }
+    .carousel-card-kicker { color: var(--primary); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .carousel-card h3 { margin: 1rem 0 .5rem; font-size: 1.35rem; }
+    .carousel-card p { color: var(--text-muted); font-size: .92rem; }
+    .carousel-controls { display: flex; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
+    .carousel-dot { width: 8px; height: 8px; border: 0; border-radius: 99px; background: var(--border); }
+    .carousel-dot[aria-current="true"] { width: 24px; background: var(--primary); }
+    .tools-section, .categories-section { padding: 3.5rem 0; }
+    .tool-card { display: block; min-height: 190px; text-decoration: none; color: var(--text); }
+    .tool-card[hidden] { display: none; }
+    .tool-card-icon, .category-card-icon { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: var(--primary-soft); color: var(--primary); font-weight: 800; }
+    .tool-card-title, .category-card-title { display: block; margin: 1rem 0 .4rem; font-weight: 700; }
+    .tool-card-description, .category-card-description { display: block; color: var(--text-muted); font-size: .9rem; line-height: 1.5; }
+    .category-card { display: block; padding: 1.25rem; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); text-decoration: none; color: var(--text); transition: transform 180ms ease, border-color 180ms ease; }
+    .category-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+    .trust-strip { padding: 1.25rem; border: 1px solid var(--border); border-radius: 18px; background: var(--bg-alt); display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; color: var(--text-muted); font-size: .9rem; }
+    .cookie-banner { position: fixed; z-index: 200; left: 1rem; right: 1rem; bottom: 1rem; max-width: 760px; margin: auto; padding: 1.25rem; border: 1px solid var(--border); border-radius: 18px; background: var(--bg); color: var(--text); box-shadow: 0 16px 48px rgb(0 0 0 / .18); }
+    .cookie-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+    .cookie-banner p { color: var(--text-muted); margin: .5rem 0 0; }
+    .cookie-settings { margin-top: .9rem; padding-top: .9rem; border-top: 1px solid var(--border); }
+    @media (max-width: 760px) {
+      .carousel-track { gap: .25rem; }
+      .carousel-card { flex-basis: 42%; min-height: 190px; padding: 1rem; }
+      .carousel-card:nth-child(1), .carousel-card:nth-child(3) { transform: scale(.82); margin: 0 -1.2rem; }
+      .carousel-card:nth-child(2) { transform: scale(1); }
+      .section-heading { align-items: start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .carousel-card:nth-child(1), .carousel-card:nth-child(3) { display: none; }
+      .carousel-card { flex-basis: 90%; }
+    }
+    [data-cookie-banner][hidden], [data-cookie-settings][hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <!-- বাংলা: স্ক্রিন রিডার ব্যবহারকারীদের জন্য মূল কনটেন্টে যাওয়ার লিংক। -->
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- বাংলা: স্টিকি হেডার, প্রধান নেভিগেশন ও থিম নিয়ন্ত্রণ। -->
+  <header class="site-header" data-site-header>
+    <div class="container header-inner">
+      <a class="site-brand" href="/" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" data-primary-nav aria-label="Main navigation">
+        <a href="#tools" aria-current="page">All tools</a>
+        <a href="#categories">Categories</a>
+        <a href="/blog/">Blog</a>
+        <a href="/pages/about/">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="button button-ghost" type="button" data-theme-toggle aria-pressed="false">
+          <span data-theme-label>Dark mode</span>
+        </button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- বাংলা: প্রধান পরিচিতি, সার্চ ও ওয়েবসাইটের মূল বার্তা। -->
+    <section class="hero">
+      <div class="container hero-copy">
+        <p class="eyebrow">One simple place. 130+ useful tools.</p>
+        <h1>Free online tools for <span class="text-primary">everything.</span></h1>
+        <p>130+ free tools that run in your browser. No sign-up. Nothing uploaded. GDPR-friendly by design.</p>
+        <div class="hero-search-wrap">
+          <label class="sr-only" for="home-tool-search">Search all tools</label>
+          <input class="search-field" id="home-tool-search" type="search" placeholder="What do you need to do?" autocomplete="off" data-tool-search>
+        </div>
+        <p class="hero-note"><span data-search-count>10</span> tools listed · Free forever · Privacy-first</p>
+        <div style="margin-top:1.5rem">
+          <a class="button button-primary" href="#tools">Explore all tools</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- বাংলা: 3D পার্সপেক্টিভ স্টাইলে নির্বাচিত ক্যাটাগরি প্রিভিউ। -->
+    <section class="featured-section" aria-labelledby="featured-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2 id="featured-title">Tools for your everyday work</h2>
+            <p>Useful utilities, without the clutter.</p>
+          </div>
+        </div>
+        <div class="featured-carousel" aria-label="Featured tool categories">
+          <div class="carousel-track">
+            <a class="carousel-card" href="#categories">
+              <span class="carousel-card-kicker">Create</span>
+              <h3>PDF & Files</h3>
+              <p>Merge, compress and manage documents.</p>
+            </a>
+            <a class="carousel-card" href="#tools">
+              <span class="carousel-card-kicker">Calculate</span>
+              <h3>Money & Tax</h3>
+              <p>Make everyday financial calculations easier.</p>
+            </a>
+            <a class="carousel-card" href="#categories">
+              <span class="carousel-card-kicker">Simplify</span>
+              <h3>Writing & More</h3>
+              <p>Quick tools for text and daily tasks.</p>
+            </a>
+          </div>
+        </div>
+        <div class="carousel-controls" aria-hidden="true">
+          <span class="carousel-dot"></span><span class="carousel-dot" aria-current="true"></span><span class="carousel-dot"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- বাংলা: ক্যাটাগরি অনুযায়ী টুল খোঁজার প্রবেশপথ। -->
+    <section class="categories-section" id="categories">
+      <div class="container">
+        <div class="section-heading">
+          <div><h2>Browse by category</h2><p>Find the right tool for the task.</p></div>
+        </div>
+        <div class="category-grid">
+          <a class="category-card" href="#tools"><span class="category-card-icon">PDF</span><span class="category-card-title">PDF Tools</span><span class="category-card-description">Documents and file utilities</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">€</span><span class="category-card-title">Money & Tax</span><span class="category-card-description">Calculators for money and tax</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">✦</span><span class="category-card-title">Media</span><span class="category-card-description">Image, audio and video tools</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">{ }</span><span class="category-card-title">Developer</span><span class="category-card-description">Utilities for developers</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">Aa</span><span class="category-card-title">Writing</span><span class="category-card-description">Text and content helpers</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">♡</span><span class="category-card-title">Health</span><span class="category-card-description">Everyday health calculators</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">∑</span><span class="category-card-title">Math</span><span class="category-card-description">Math and conversion tools</span></a>
+          <a class="category-card" href="#tools"><span class="category-card-icon">⌁</span><span class="category-card-title">Everyday</span><span class="category-card-description">Small tools for daily life</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- বাংলা: বর্তমানে ক্যাটালগে থাকা প্রথম দশটি টুলের কার্ড। -->
+    <section class="tools-section" id="tools">
+      <div class="container">
+        <div class="section-heading">
+          <div><h2>Popular tools</h2><p>Start with one of these free utilities.</p></div>
+          <span class="text-muted"><span data-search-count>10</span> available in catalogue</span>
+        </div>
+        <div class="tool-grid">
+          <a class="tool-card" href="/tools/merge-pdf/" data-tool-card data-name="Merge PDF" data-category="PDF" data-description="combine multiple PDF files">
+            <span class="tool-card-icon">PDF+</span><span class="tool-card-title">Merge PDF</span><span class="tool-card-description">Combine multiple PDF files into one document.</span>
+          </a>
+          <a class="tool-card" href="/tools/compress-pdf/" data-tool-card data-name="Compress PDF" data-category="PDF" data-description="reduce PDF file size">
+            <span class="tool-card-icon">PDF↓</span><span class="tool-card-title">Compress PDF</span><span class="tool-card-description">Reduce PDF file size while keeping documents readable.</span>
+          </a>
+          <a class="tool-card" href="/tools/loan-calculator/" data-tool-card data-name="Loan Calculator" data-category="Money Tax" data-description="monthly loan payments interest repayment">
+            <span class="tool-card-icon">€</span><span class="tool-card-title">Loan Calculator</span><span class="tool-card-description">Estimate monthly payments, interest and total repayment.</span>
+          </a>
+          <a class="tool-card" href="/tools/vat-calculator/" data-tool-card data-name="VAT Calculator" data-category="Money Tax" data-description="add remove VAT tax">
+            <span class="tool-card-icon">%</span><span class="tool-card-title">VAT Calculator</span><span class="tool-card-description">Add or remove VAT and calculate the tax amount.</span>
+          </a>
+          <a class="tool-card" href="/tools/net-salary-germany/" data-tool-card data-name="Net Salary Germany" data-category="Money Tax" data-description="Germany gross net salary">
+            <span class="tool-card-icon">€</span><span class="tool-card-title">Net Salary Germany</span><span class="tool-card-description">Estimate take-home pay in Germany from gross salary.</span>
+          </a>
+          <a class="tool-card" href="/tools/currency-converter/" data-tool-card data-name="Currency Converter" data-category="Money Tax" data-description="exchange rate convert currency">
+            <span class="tool-card-icon">↔</span><span class="tool-card-title">Currency Converter</span><span class="tool-card-description">Convert amounts between supported currencies.</span>
+          </a>
+          <a class="tool-card" href="/tools/bmi-calculator/" data-tool-card data-name="BMI Calculator" data-category="Health" data-description="body mass index height weight">
+            <span class="tool-card-icon">♡</span><span class="tool-card-title">BMI Calculator</span><span class="tool-card-description">Calculate body mass index using height and weight.</span>
+          </a>
+          <a class="tool-card" href="/tools/word-counter/" data-tool-card data-name="Word Counter" data-category="Writing" data-description="count words characters sentences">
+            <span class="tool-card-icon">Aa</span><span class="tool-card-title">Word Counter</span><span class="tool-card-description">Count words, characters, sentences and paragraphs.</span>
+          </a>
+          <a class="tool-card" href="/tools/qr-generator/" data-tool-card data-name="QR Code Generator" data-category="Everyday" data-description="create QR code text URL">
+            <span class="tool-card-icon">▦</span><span class="tool-card-title">QR Code Generator</span><span class="tool-card-description">Create a QR code from text or a web address.</span>
+          </a>
+          <a class="tool-card" href="/tools/password-generator/" data-tool-card data-name="Password Generator" data-category="Developer" data-description="strong random password">
+            <span class="tool-card-icon">⌑</span><span class="tool-card-title">Password Generator</span><span class="tool-card-description">Generate a strong random password in your browser.</span>
+          </a>
+        </div>
+        <p class="search-empty" data-search-empty hidden>No tools found. Try another search.</p>
+      </div>
+    </section>
+
+    <!-- বাংলা: গোপনীয়তা ও সহজ ব্যবহারের মূল সুবিধাগুলো। -->
+    <section class="container" style="padding-bottom:4rem">
+      <div class="trust-strip">
+        <span>✓ No sign-up required</span><span>✓ Browser-based tools</span><span>✓ No file uploads</span><span>✓ Privacy-first design</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- বাংলা: প্রয়োজনীয় লিংক ও নীতিমালার ফুটার। -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="site-brand" href="/"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
+          <p class="footer-description">Free online tools for everything. All in one place.</p>
+        </div>
+        <div class="footer-column"><h3>Explore</h3><ul class="footer-links"><li><a href="#tools">All tools</a></li><li><a href="#categories">Categories</a></li><li><a href="/blog/">Blog</a></li></ul></div>
+        <div class="footer-column"><h3>Company</h3><ul class="footer-links"><li><a href="/pages/about/">About</a></li><li><a href="/pages/contact/">Contact</a></li></ul></div>
+        <div class="footer-column"><h3>Legal</h3><ul class="footer-links"><li><a href="/pages/privacy-policy/">Privacy policy</a></li><li><a href="/pages/cookie-policy/">Cookie policy</a></li><li><a href="/pages/terms/">Terms of use</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com</span><span>Made for a simpler web.</span></div>
+    </div>
+  </footer>
+
+  <!-- বাংলা: কুকি সম্মতি না পাওয়া পর্যন্ত ঐচ্ছিক ট্র্যাকিং বন্ধ থাকবে। -->
+  <section class="cookie-banner" data-cookie-banner role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
+    <h2 id="cookie-title">Your privacy matters</h2>
+    <p id="cookie-description">We use necessary storage to make this site work. Optional analytics and advertising are only enabled with your permission.</p>
+    <div class="cookie-actions">
+      <button class="button button-primary" type="button" data-cookie-accept>Accept all</button>
+      <button class="button button-secondary" type="button" data-cookie-reject>Reject optional</button>
+      <button class="button button-ghost" type="button" data-cookie-customise>Customise</button>
+    </div>
+    <div class="cookie-settings" data-cookie-settings hidden>
+      <label><input type="checkbox" checked disabled> Necessary (always active)</label><br>
+      <label><input type="checkbox" name="cookie-analytics"> Analytics</label><br>
+      <label><input type="checkbox" name="cookie-advertising"> Advertising</label><br>
+      <button class="button button-primary" type="button" data-cookie-save style="margin-top:.75rem">Save preferences</button>
+    </div>
+  </section>
+</body>
+</html>
