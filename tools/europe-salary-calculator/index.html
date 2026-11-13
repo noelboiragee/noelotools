@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Estimate take-home salary across selected European countries. Country-specific tax models are being released in verified stages.">
+  <title>Europe Salary Calculator - NoeloTools</title>
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <!-- নেভিগেশন হেডার -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="/" aria-label="NoeloTools home"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
+      <nav class="primary-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/#categories">Categories</a><a href="/blog/">Blog</a></nav>
+      <div class="header-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button></div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/#categories">Money &amp; Tax</a><span>/</span><span aria-current="page">Europe Salary Calculator</span></nav>
+    <section class="tool-intro">
+      <p class="eyebrow">MONEY &amp; TAX · EUROPE</p>
+      <h1>Europe Salary Calculator</h1>
+      <p>Estimate take-home pay with country-specific tax and social contribution rules.</p>
+    </section>
+
+    <section class="calculator-card" aria-labelledby="calculator-title">
+      <h2 id="calculator-title">Choose your country</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label for="country">Country</label>
+          <select id="country">
+            <option value="DE">Germany · EUR</option>
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="FR">France · EUR</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="PL">Poland · PLN</option>
+            <option value="PT">Portugal · EUR</option>
+            <option value="AT">Austria · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="CH">Switzerland · CHF</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="gross-salary">Gross salary per month</label>
+          <div class="amount-input"><span id="currency-symbol">€</span><input id="gross-salary" type="number" min="0" max="1000000" step="50" value="4000" inputmode="decimal"></div>
+        </div>
+      </div>
+
+      <div class="country-status" id="country-status" role="status" aria-live="polite">
+        <strong>Germany model available</strong>
+        <span>2026 simplified estimate. Select the additional details below.</span>
+      </div>
+
+      <div id="germany-options">
+        <div class="field-grid additional-fields">
+          <div class="field">
+            <label for="health-extra">Health insurer additional rate (%)</label>
+            <input id="health-extra" type="number" min="0" max="10" step="0.01" value="2.9" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="child-status">Care insurance status</label>
+            <select id="child-status">
+              <option value="parent">Parent / no childless surcharge</option>
+              <option value="childless">Childless, age 23 or over</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="state">Federal state</label>
+            <select id="state">
+              <option value="other">All states except Saxony</option>
+              <option value="saxony">Saxony</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="church-tax">Church tax</label>
+            <select id="church-tax">
+              <option value="0">None</option>
+              <option value="8">8% (Bavaria / Baden-Württemberg)</option>
+              <option value="9">9% (most other states)</option>
+            </select>
+          </div>
+        </div>
+        <div class="results" aria-live="polite" aria-atomic="true">
+          <div class="result-item result-total"><span>Estimated net per month</span><strong id="net-result">€—</strong></div>
+          <div class="result-item"><span>Income tax per month</span><strong id="tax-result">€—</strong></div>
+          <div class="result-item"><span>Employee social contributions</span><strong id="social-result">€—</strong></div>
+        </div>
+        <div class="breakdown">
+          <h3>Monthly contribution breakdown</h3>
+          <div><span>Pension insurance</span><strong id="pension-result">€—</strong></div>
+          <div><span>Unemployment insurance</span><strong id="unemployment-result">€—</strong></div>
+          <div><span>Health insurance</span><strong id="health-result">€—</strong></div>
+          <div><span>Long-term care insurance</span><strong id="care-result">€—</strong></div>
+          <div><span>Church tax</span><strong id="church-result">€—</strong></div>
+        </div>
+        <p class="input-error" id="error-message" role="alert" hidden>Enter a valid gross salary and health rate.</p>
+        <p class="model-link">For the Germany-specific calculator, see <a href="/tools/net-salary-germany/">Net Salary Germany</a>.</p>
+      </div>
+
+      <div class="coming-soon" id="coming-soon" hidden>
+        <span class="status-label">Country model in progress</span>
+        <h3 id="coming-title">Country calculator is being prepared</h3>
+        <p>We are validating this country's income-tax bands, employee social contributions, allowances and payroll assumptions before showing an estimate. The calculator will be enabled after the model is checked against reliable country-specific sources.</p>
+        <p>Your entered salary stays in this browser and is not submitted.</p>
+      </div>
+      <button class="button button-secondary reset-button" id="reset-button" type="button">Reset salary</button>
+    </section>
+
+    <section class="tool-info">
+      <h2>Countries planned for this calculator</h2>
+      <div class="country-list">
+        <span class="available">Germany <b>Available</b></span>
+        <span>United Kingdom</span><span>France</span><span>Netherlands</span><span>Belgium</span><span>Spain</span><span>Italy</span><span>Poland</span><span>Portugal</span><span>Austria</span><span>Ireland</span><span>Switzerland</span>
+      </div>
+      <h2>Important information</h2>
+      <p>Net salary depends on more than the country: tax year, tax class or filing status, region, age, children, health insurance, pension scheme and other deductions can all affect the result.</p>
+      <p class="disclaimer">The available Germany model is a simplified 2026 estimate, not an official payroll calculation. Other country models are not yet enabled. Do not use this tool as tax, payroll or legal advice.</p>
+      <p class="source-links">Cross-country methodology reference: <a href="https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html" target="_blank" rel="noopener noreferrer">OECD Taxing Wages 2026</a>. Country-specific rules will be documented individually as each model is released.</p>
+    </section>
+  </main>
+
+  <!-- পাদদেশ -->
+  <footer class="site-footer"><div class="footer-bottom"><span>© <span id="current-year">2026</span> NoeloTools</span><a href="/pages/privacy-policy/">Privacy</a><a href="/pages/contact/">Contact</a></div></footer>
+</body>
+</html>
