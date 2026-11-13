@@ -20,6 +20,9 @@
 .cc-track { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; } /* বাংলা: track নিজে ক্লিক আটকায় না, শুধু কার্ড ক্লিক পায় */
 
 .cc-card {
+  /* বাংলা: কার্ডের পেছনের দিক লুকিয়ে 3D চাকার সামনের কার্ডগুলো দেখায় */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   --accent: hsl(var(--h) 72% 48%);
   position: absolute;
   top: 0; left: 50%;
@@ -27,53 +30,19 @@
   margin-left: calc(min(64vw, 300px) / -2);
   min-height: 19rem;
   box-sizing: border-box;
-  transform-style: preserve-3d;
-  transition: transform .55s cubic-bezier(.22,.8,.3,1), opacity .4s ease;
-  will-change: transform, opacity;
-}
-.cc-surface {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  pointer-events: none;
-}
-.cc-surface-strip {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  height: 100%;
-  box-sizing: border-box;
-  border-top: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-bottom: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--accent) 9%, var(--surface, transparent)),
-    color-mix(in srgb, var(--accent) 16%, var(--surface, transparent)),
-    color-mix(in srgb, var(--accent) 9%, var(--surface, transparent)));
-  filter: brightness(var(--strip-light, 1));
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.cc-surface-strip:first-child {
-  border-left: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-radius: 24px 0 0 24px;
-}
-.cc-surface-strip:last-child {
-  border-right: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-radius: 0 24px 24px 0;
-}
-.cc-content {
-  position: relative;
-  z-index: 2;
-  min-height: 19rem;
-  box-sizing: border-box;
   padding: 1.25rem 1.25rem 1rem;
   display: flex;
   flex-direction: column;
   border-radius: 24px;
-  transform: translateZ(17px);
-  pointer-events: auto;
+  border: 1.5px solid rgba(128,128,128,.4);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background: rgba(128,128,128,.08);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface, transparent));
+  backdrop-filter: blur(4px);
+  transition: transform .55s cubic-bezier(.22,.8,.3,1), opacity .4s ease;
+  will-change: transform, opacity;
 }
-.cc-card.is-active .cc-content {
+.cc-card.is-active {
   box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
