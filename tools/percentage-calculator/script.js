@@ -1,0 +1,6 @@
+// বাংলা: Percentage Calculator টুলের সব প্রসেসিং ব্যবহারকারীর ব্রাউজারেই সম্পন্ন হয়।
+const $=(selector)=>document.querySelector(selector);
+function showResult(node,message){node.textContent=message;node.dataset.kind="success";node.hidden=false;}
+function showError(node,message){node.textContent=message;node.dataset.kind="error";node.hidden=false;}
+function fmt(n){return new Intl.NumberFormat("en-GB",{maximumFractionDigits:8}).format(n);}
+const mode=document.querySelector("#mode"),x=document.querySelector("#x"),y=document.querySelector("#y"),out=document.querySelector("#result");document.querySelector("#calculate").addEventListener("click",()=>{const a=Number(x.value),b=Number(y.value);if(x.value.trim()===""||y.value.trim()===""||!Number.isFinite(a)||!Number.isFinite(b)){showError(out,"Enter two valid numbers.");return;}let result;if(mode.value==="of")result=a/100*b;else if(mode.value==="is"){if(b===0){showError(out,"The second number cannot be zero for this calculation.");return;}result=a/b*100;}else{if(a===0){showError(out,"The starting number cannot be zero when calculating percentage change.");return;}result=(b-a)/Math.abs(a)*100;}showResult(out,mode.value==="is"?fmt(result)+"%":fmt(result)+(mode.value==="change"?"%":""));});document.querySelector("#reset").addEventListener("click",()=>{x.value="";y.value="";mode.value="of";out.hidden=true;});
