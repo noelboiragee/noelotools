@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- এই ফাইলটি প্রাপ্তবয়স্কদের BMI ক্যালকুলেটরের পৃষ্ঠা নির্ধারণ করে। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calculate adult Body Mass Index (BMI) using metric measurements. Includes a clear explanation of BMI limitations.">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Adult BMI Calculator (18+) | NoeloTools</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="/">← NoeloTools</a>
+    <header class="page-heading">
+      <p class="eyebrow">HEALTH &amp; WELLNESS</p>
+      <h1>Adult BMI Calculator</h1>
+      <p class="intro">Estimate Body Mass Index using your height and weight. This calculator is intended for adults aged 18 and over.</p>
+    </header>
+
+    <section class="notice" aria-label="Age guidance">
+      <strong>Important: Adults 18+ only</strong>
+      <p>BMI is interpreted differently for children and teenagers. Do not use this adult calculator for anyone under 18; a healthcare professional can assess growth using age- and sex-specific charts.</p>
+    </section>
+
+    <section class="calculator-card" aria-labelledby="calculator-title">
+      <h2 id="calculator-title">Enter measurements</h2>
+      <form id="bmi-form" novalidate>
+        <div class="field-grid">
+          <label class="field" for="height">
+            <span>Height</span>
+            <div class="input-wrap">
+              <input id="height" name="height" type="number" min="100" max="250" step="0.1" placeholder="e.g. 175" inputmode="decimal" required>
+              <span class="unit">cm</span>
+            </div>
+          </label>
+          <label class="field" for="weight">
+            <span>Weight</span>
+            <div class="input-wrap">
+              <input id="weight" name="weight" type="number" min="20" max="400" step="0.1" placeholder="e.g. 70" inputmode="decimal" required>
+              <span class="unit">kg</span>
+            </div>
+          </label>
+        </div>
+        <p class="form-error" id="form-error" role="alert" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Calculate BMI</button>
+        <button class="secondary-button" id="reset-button" type="reset">Clear</button>
+      </form>
+      <section class="result-panel" id="result-panel" aria-live="polite" hidden>
+        <p class="result-label">Your calculated BMI</p>
+        <p class="result-number" id="bmi-value">—</p>
+        <p class="result-category" id="bmi-category"></p>
+        <p class="result-note">This is a screening estimate, not a diagnosis or a complete measure of health.</p>
+      </section>
+    </section>
+
+    <section class="info-card">
+      <h2>Adult BMI reference ranges</h2>
+      <p>These commonly used adult screening ranges are general reference points, not a judgement about a person’s health.</p>
+      <ul class="range-list">
+        <li><span>Below 18.5</span><span>Underweight range</span></li>
+        <li><span>18.5–24.9</span><span>Healthy-weight range</span></li>
+        <li><span>25.0–29.9</span><span>Overweight range</span></li>
+        <li><span>30.0 and above</span><span>Obesity range</span></li>
+      </ul>
+    </section>
+
+    <section class="disclaimer">
+      <h2>What BMI cannot tell you</h2>
+      <p>BMI does not directly measure body fat or distinguish fat from muscle. It does not account fully for age, pregnancy, ethnicity, body composition, or where fat is carried. A clinician should interpret BMI alongside other health information.</p>
+    </section>
+    <footer class="page-footer">Free online tools · NoeloTools</footer>
+  </main>
+</body>
+</html>
