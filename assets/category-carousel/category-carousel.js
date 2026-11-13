@@ -229,7 +229,8 @@
           if (i !== active) { e.preventDefault(); e.stopPropagation(); go(i); }
         }, true);
 
-        buildCurvedSurface(card, card.offsetWidth || 280, 0);\n        track.appendChild(card);
+        buildCurvedSurface(card, card.offsetWidth || 280, 0);
+        track.appendChild(card);
         cards.push(card);
 
         var dot = el('button', 'cc-dot');
