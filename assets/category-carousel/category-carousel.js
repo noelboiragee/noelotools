@@ -127,9 +127,9 @@
     var segmentWidth = width / segments + 1;
     for (var s = 0; s < segments; s++) {
       var t = ((s + 0.5) / segments) - 0.5;
-      var angle = t * 2 * maxAngle;
-      var x = radius * Math.sin(angle);
-      var z = radius * (Math.cos(angle) - 1) * direction;
+      var angle = direction === 0 ? 0 : t * 2 * maxAngle;
+      var x = direction === 0 ? t * width : radius * Math.sin(angle);
+      var z = direction === 0 ? 0 : radius * (Math.cos(angle) - 1) * direction;
       var strip = document.createElement('span');
       strip.className = 'cc-surface-strip';
       strip.style.width = segmentWidth.toFixed(2) + 'px';
