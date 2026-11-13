@@ -6,8 +6,12 @@
     "category": "pdf",
     "url": "/tools/merge-pdf/",
     "icon": "file-plus-2",
-    "keywords": ["combine pdf", "join pdf", "pdf merger"],
-    "status": "planned",
+    "keywords": [
+      "combine pdf",
+      "join pdf",
+      "pdf merger"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -17,8 +21,11 @@
     "category": "pdf",
     "url": "/tools/compress-pdf/",
     "icon": "file-archive",
-    "keywords": ["reduce pdf size", "pdf compressor"],
-    "status": "planned",
+    "keywords": [
+      "reduce pdf size",
+      "pdf compressor"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -28,8 +35,12 @@
     "category": "money-tax",
     "url": "/tools/loan-calculator/",
     "icon": "calculator",
-    "keywords": ["monthly payment", "loan interest", "emi"],
-    "status": "planned",
+    "keywords": [
+      "monthly payment",
+      "loan interest",
+      "emi"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -39,8 +50,13 @@
     "category": "money-tax",
     "url": "/tools/vat-calculator/",
     "icon": "receipt",
-    "keywords": ["value added tax", "tax calculator", "net price", "gross price"],
-    "status": "planned",
+    "keywords": [
+      "value added tax",
+      "tax calculator",
+      "net price",
+      "gross price"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -50,8 +66,27 @@
     "category": "money-tax",
     "url": "/tools/net-salary-germany/",
     "icon": "wallet",
-    "keywords": ["germany salary", "gross to net", "take home pay"],
-    "status": "planned",
+    "keywords": [
+      "germany salary",
+      "gross to net",
+      "take home pay"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "europe-salary-calculator",
+    "name": "Europe Salary Calculator",
+    "description": "Explore gross-to-net salary estimates across selected European countries. Country models are being added progressively.",
+    "category": "money-tax",
+    "url": "/tools/europe-salary-calculator/",
+    "icon": "globe",
+    "keywords": [
+      "europe salary",
+      "gross to net europe",
+      "salary calculator"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -61,19 +96,27 @@
     "category": "money-tax",
     "url": "/tools/currency-converter/",
     "icon": "arrow-left-right",
-    "keywords": ["exchange rate", "forex", "convert currency"],
-    "status": "planned",
+    "keywords": [
+      "exchange rate",
+      "forex",
+      "convert currency"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
     "id": "bmi-calculator",
-    "name": "BMI Calculator",
-    "description": "Calculate body mass index using height and weight.",
+    "name": "Adult BMI Calculator (18+)",
+    "description": "Adult BMI screening calculator. Not intended for people under 18.",
     "category": "health",
     "url": "/tools/bmi-calculator/",
     "icon": "heart-pulse",
-    "keywords": ["body mass index", "bmi"],
-    "status": "planned",
+    "keywords": [
+      "adult bmi",
+      "body mass index",
+      "bmi calculator"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -83,8 +126,12 @@
     "category": "writing",
     "url": "/tools/word-counter/",
     "icon": "text",
-    "keywords": ["character counter", "sentence counter", "text statistics"],
-    "status": "planned",
+    "keywords": [
+      "character counter",
+      "sentence counter",
+      "text statistics"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -92,10 +139,14 @@
     "name": "QR Code Generator",
     "description": "Create a QR code from text or a web address.",
     "category": "everyday",
-    "url": "/tools/qr-generator/",
+    "url": "/tools/qr-code-generator/",
     "icon": "qr-code",
-    "keywords": ["qr code", "create qr", "qr maker"],
-    "status": "planned",
+    "keywords": [
+      "qr code",
+      "create qr",
+      "qr maker"
+    ],
+    "status": "available",
     "browserOnly": true
   },
   {
@@ -105,8 +156,11 @@
     "category": "developer",
     "url": "/tools/password-generator/",
     "icon": "key-round",
-    "keywords": ["random password", "secure password"],
-    "status": "planned",
+    "keywords": [
+      "random password",
+      "secure password"
+    ],
+    "status": "available",
     "browserOnly": true
   }
 ]
