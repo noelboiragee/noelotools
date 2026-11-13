@@ -31,7 +31,7 @@ export function initToolSearch() {
         card.textContent
       ].join(" "));
 
-      const category = normalizeText(card.dataset.category).replace(/\\s+/g, "-");
+      const category = normalizeText(card.dataset.category).replace(/\s+/g, "-");
       const matchesCategory = !activeCategory || category === activeCategory;
       const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery);
       const matches = matchesCategory && matchesQuery;
