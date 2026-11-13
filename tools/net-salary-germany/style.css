@@ -1,0 +1,39 @@
+/* এই ফাইলে জার্মান নেট স্যালারি ক্যালকুলেটরের নিজস্ব স্টাইল রাখা হয়েছে। */
+.tool-page{width:min(100% - 32px,920px);margin:0 auto;padding:32px 0 72px}
+.breadcrumbs{display:flex;flex-wrap:wrap;gap:9px;color:var(--text-muted);font-size:.875rem;margin-bottom:32px}
+.breadcrumbs a{color:var(--text-muted);text-decoration:none}
+.breadcrumbs a:hover{color:var(--primary)}
+.tool-intro{text-align:center;margin:0 auto 32px;max-width:700px}
+.tool-intro h1{font-size:clamp(2rem,5vw,3rem);margin:8px 0 12px;color:var(--text)}
+.tool-intro>p:last-child{color:var(--text-muted);line-height:1.6}
+.calculator-card,.tool-info{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:clamp(20px,4vw,32px);box-shadow:0 8px 28px rgba(31,41,55,.06)}
+.calculator-card h2,.tool-info h2{font-size:1.35rem;margin:0 0 24px;color:var(--text)}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-weight:600;font-size:.92rem;color:var(--text)}
+.field small{color:var(--text-muted);font-size:.8rem}
+.field input,.field select{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg-alt);color:var(--text);font:inherit}
+.field input:focus,.field select:focus{outline:2px solid var(--primary);outline-offset:2px}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:28px 0 20px}
+.result-item{display:flex;flex-direction:column;gap:10px;padding:18px 14px;border:1px solid var(--border);border-radius:12px;background:var(--bg-alt);min-width:0}
+.result-item span{font-size:.88rem;color:var(--text-muted)}
+.result-item strong{font-size:clamp(1.05rem,2.5vw,1.4rem);overflow-wrap:anywhere;color:var(--text);font-variant-numeric:tabular-nums}
+.result-total{border-color:var(--primary);background:var(--primary-soft)}
+.result-total strong{color:var(--primary-dark)}
+.breakdown{border:1px solid var(--border);border-radius:12px;padding:18px}
+.breakdown h3{font-size:1rem;margin:0 0 12px;color:var(--text)}
+.breakdown>div{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.92rem}
+.breakdown>div:last-child{border-bottom:0}
+.breakdown span{color:var(--text-muted)}
+.breakdown strong{color:var(--text);font-variant-numeric:tabular-nums}
+.reset-button{margin-top:18px}
+.input-error{color:#dc2626;font-size:.9rem;margin:12px 0 0}
+.tool-info{margin-top:24px}
+.tool-info p{color:var(--text-muted);line-height:1.7}
+.disclaimer{padding:14px 16px;background:var(--bg-alt);border-left:3px solid var(--primary);border-radius:8px;font-size:.9rem}
+.source-links{font-size:.86rem}
+.source-links a{color:var(--primary);overflow-wrap:anywhere}
+.footer-bottom{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;padding:24px 16px}
+.footer-bottom a{color:inherit;text-decoration:none}
+@media(max-width:640px){.field-grid,.results{grid-template-columns:1fr}.tool-page{padding-top:24px}.breadcrumbs{margin-bottom:24px}}
+@media(prefers-reduced-motion:no-preference){.calculator-card{transition:box-shadow .18s ease}.calculator-card:focus-within{box-shadow:0 10px 32px rgba(124,58,237,.1)}}
