@@ -94,7 +94,7 @@
     return result;
   }
 
-  // বাংলা: গোলাকার সূচিতে সক্রিয় কার্ড থেকে দূরত্ব (−n/2 .. n/2)
+  // বাংলা: সক্রিয় কার্ডের তুলনায় নিকটতম বাম/ডান অবস্থান নির্ণয় করে
   function circularOffset(i, active, n) {
     var d = (i - active) % n;
     if (d > n / 2) d -= n;
@@ -102,21 +102,58 @@
     return d;
   }
 
-  // বাংলা: সব ক্যাটাগরি কার্ডকে একই 3D সিলিন্ডার/চাকার চারপাশে বসায়
-  function cardPose(d, cardWidth, total) {
-    var count = Math.max(total || 1, 1);
-    var angle = d * (360 / count);
-    // বাংলা: কেন্দ্র থেকে কার্ডের দূরত্ব; সব কার্ড একই বৃত্তে থাকে
-    var radius = cardWidth * 0.9;
-    var radians = angle * Math.PI / 180;
-    var depth = Math.cos(radians);
-    var scale = Math.abs(d) === 0 ? 1 : 0.92;
+  // বাংলা: প্রতিটি কার্ডের মুখ ১৬টি সরু 3D প্যানেলে ভাগ করে বাঁকানো হয়
+  function buildCurvedSurface(card) {
+    var surface = document.createElement('div');
+    surface.className = 'cc-surface';
+    surface.setAttribute('aria-hidden', 'true');
+    var segments = 16;
+    for (var s = 0; s < segments; s++) {
+      var strip = document.createElement('span');
+      strip.className = 'cc-surface-strip';
+      strip.style.width = (100 / segments + 0.8) + '%';
+      strip.style.left = '50%';
+      strip.style.marginLeft = (-50 / segments - 0.4) + '%';
+      strip.style.setProperty('--segment', s);
+      if (s === 0) strip.classList.add('is-first');
+      if (s === segments - 1) strip.classList.add('is-last');
+      surface.appendChild(strip);
+    }
+    card.appendChild(surface);
+    card._ccSurface = surface;
+  }
+
+  // বাংলা: মাঝের কার্ড সমতল, পাশের দুটি বিপরীত দিকে বাঁকানো
+  function setCardCurve(card, offset, width) {
+    var surface = card._ccSurface;
+    if (!surface) return;
+    var strips = surface.children;
+    var segments = strips.length;
+    var direction = offset < 0 ? -1 : (offset > 0 ? 1 : 0);
+    var maxAngle = 18 * Math.PI / 180;
+    var radius = width / (2 * Math.sin(maxAngle));
+    for (var s = 0; s < segments; s++) {
+      var t = ((s + 0.5) / segments) - 0.5;
+      var angle = direction === 0 ? 0 : t * 2 * maxAngle;
+      var x = direction === 0 ? t * width : radius * Math.sin(angle);
+      var z = direction === 0 ? 0 : radius * (Math.cos(angle) - 1) * direction;
+      strips[s].style.transform =
+        'translateX(' + x.toFixed(2) + 'px) translateZ(' + z.toFixed(2) + 'px) rotateY(' +
+        (angle * 180 / Math.PI).toFixed(2) + 'deg)';
+    }
+    surface.setAttribute('data-curve', direction === 0 ? 'flat' : (direction < 0 ? 'left' : 'right'));
+  }
+
+  // বাংলা: চাকা নয়—কার্ডগুলো সামনে, বামে ও ডানে আলাদা অবস্থানে থাকে
+  function cardPose(d, cardWidth) {
+    var visible = Math.abs(d) <= 1;
+    var offset = d * cardWidth * 1.08;
     return {
-      // বাংলা: rotateY + translateZ মিলে প্রকৃত 3D circular wheel তৈরি করে
-      transform: 'rotateY(' + angle.toFixed(2) + 'deg) translateZ(' + radius.toFixed(1) + 'px) scale(' + scale + ')',
-      opacity: 1,
-      z: Math.round(100 + depth * 50),
-      visible: true
+      transform: 'translateX(' + offset.toFixed(1) + 'px) scale(' + (d === 0 ? 1 : 0.94) + ')',
+      opacity: visible ? (d === 0 ? 1 : 0.94) : 0,
+      z: d === 0 ? 100 : 40,
+      visible: visible,
+      direction: d === 0 ? 0 : (d < 0 ? -1 : 1)
     };
   }
 
@@ -171,6 +208,7 @@
       groups.forEach(function (g, i) {
         var card = el('article', 'cc-card');
         card.style.setProperty('--h', g.meta.hue);
+        buildCurvedSurface(card);
         card.setAttribute('data-category', g.key);
         card.setAttribute('aria-label', g.meta.label + ', ' + g.count + (g.count === 1 ? ' tool' : ' tools'));
 
@@ -222,7 +260,9 @@
       var n = cards.length;
       var w = cards[0].offsetWidth || 280;
       cards.forEach(function (card, i) {
-        var pose = cardPose(circularOffset(i, active, n), w, n);
+        var offset = circularOffset(i, active, n);
+        var pose = cardPose(offset, w);
+        setCardCurve(card, offset, w);
         card.style.transform = pose.transform;
         card.style.opacity = pose.opacity;
         card.style.zIndex = pose.z;
