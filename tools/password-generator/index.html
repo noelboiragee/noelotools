@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- এই ফাইলটি Password Generator-এর মূল পৃষ্ঠা তৈরি করে। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Generate a random password in your browser. Choose length and character types, then copy it.">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Password Generator | NoeloTools</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="/">← NoeloTools</a>
+    <header class="page-heading">
+      <p class="eyebrow">SECURITY TOOLS</p>
+      <h1>Password Generator</h1>
+      <p class="intro">Create a random password with the character types and length you choose. Generation happens in your browser.</p>
+    </header>
+    <section class="generator-card">
+      <form id="password-form">
+        <div class="length-heading">
+          <label for="password-length">Password length</label>
+          <output id="length-value" for="password-length">20</output>
+        </div>
+        <input id="password-length" type="range" min="8" max="64" value="20">
+        <div class="range-labels"><span>8 characters</span><span>64 characters</span></div>
+        <fieldset class="options">
+          <legend>Include character types</legend>
+          <label class="option"><input id="include-uppercase" type="checkbox" checked> <span>Uppercase letters (A–Z)</span></label>
+          <label class="option"><input id="include-lowercase" type="checkbox" checked> <span>Lowercase letters (a–z)</span></label>
+          <label class="option"><input id="include-numbers" type="checkbox" checked> <span>Numbers (0–9)</span></label>
+          <label class="option"><input id="include-symbols" type="checkbox" checked> <span>Symbols (!@#$…)</span></label>
+        </fieldset>
+        <p class="form-error" id="form-error" role="alert" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Generate Password</button>
+      </form>
+      <div class="output-section">
+        <label for="password-output">Generated password</label>
+        <div class="password-output-wrap">
+          <input id="password-output" type="text" readonly autocomplete="off" spellcheck="false" placeholder="Your password will appear here">
+          <button id="copy-button" class="copy-button" type="button" disabled>Copy</button>
+        </div>
+        <p id="copy-status" class="copy-status" role="status" aria-live="polite">Generate a password to begin.</p>
+      </div>
+    </section>
+    <section class="info-card">
+      <h2>Password safety tips</h2>
+      <ul>
+        <li>Use a different password for each account.</li>
+        <li>Store passwords in a reputable password manager.</li>
+        <li>Enable multi-factor authentication when available.</li>
+        <li>Never share your password or enter it on an untrusted website.</li>
+      </ul>
+      <p>This tool does not save or transmit generated passwords. Copying a password places it on your device's clipboard, so avoid using shared devices.</p>
+    </section>
+    <footer class="page-footer">Free online tools · NoeloTools</footer>
+  </main>
+</body>
+</html>
