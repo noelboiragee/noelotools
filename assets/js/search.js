@@ -14,8 +14,10 @@ export function initToolSearch() {
   const toolCards = Array.from(document.querySelectorAll("[data-tool-card]"));
   const emptyStates = document.querySelectorAll("[data-search-empty]");
   const countTargets = document.querySelectorAll("[data-search-count]");
+  const categoryFilters = document.querySelectorAll("[data-category-filter]");
+  let activeCategory = "";
 
-  if (!searchInputs.length || !toolCards.length) return;
+  if (!toolCards.length) return;
 
   const filterTools = (query) => {
     const normalizedQuery = normalizeText(query);
@@ -29,7 +31,10 @@ export function initToolSearch() {
         card.textContent
       ].join(" "));
 
-      const matches = !normalizedQuery || searchableText.includes(normalizedQuery);
+      const category = normalizeText(card.dataset.category).replace(/\\s+/g, "-");
+      const matchesCategory = !activeCategory || category === activeCategory;
+      const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery);
+      const matches = matchesCategory && matchesQuery;
       card.hidden = !matches;
       if (matches) visibleCount += 1;
     });
@@ -42,6 +47,13 @@ export function initToolSearch() {
       target.textContent = String(visibleCount);
     });
   };
+
+  categoryFilters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      activeCategory = filter.dataset.categoryFilter || "";
+      filterTools(document.querySelector("[data-tool-search]")?.value || "");
+    });
+  });
 
   searchInputs.forEach((input) => {
     input.addEventListener("input", () => {
