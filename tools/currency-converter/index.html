@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Convert currencies with the latest available exchange-rate data. Free online currency converter by NoeloTools.">
+  <title>Currency Converter - NoeloTools</title>
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <!-- নেভিগেশন হেডার -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="/" aria-label="NoeloTools home"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
+      <nav class="primary-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/#categories">Categories</a><a href="/blog/">Blog</a></nav>
+      <div class="header-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button></div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/#categories">Money &amp; Tax</a><span>/</span><span aria-current="page">Currency Converter</span></nav>
+    <section class="tool-intro">
+      <p class="eyebrow">MONEY &amp; EVERYDAY</p>
+      <h1>Currency Converter</h1>
+      <p>Convert between popular world currencies using the latest available reference rates.</p>
+    </section>
+
+    <section class="converter-card" aria-labelledby="converter-title">
+      <div class="card-heading">
+        <h2 id="converter-title">Convert currencies</h2>
+        <span class="live-indicator"><span></span> Rate data</span>
+      </div>
+      <div class="amount-field">
+        <label for="amount">Amount</label>
+        <input id="amount" type="number" min="0" step="any" value="100" inputmode="decimal">
+      </div>
+      <div class="currency-row">
+        <div class="currency-field">
+          <label for="from-currency">From</label>
+          <select id="from-currency">
+            <option value="EUR" selected>EUR — Euro</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="GBP">GBP — British Pound</option>
+            <option value="BDT">BDT — Bangladeshi Taka</option>
+            <option value="INR">INR — Indian Rupee</option>
+            <option value="CAD">CAD — Canadian Dollar</option>
+            <option value="AUD">AUD — Australian Dollar</option>
+            <option value="CHF">CHF — Swiss Franc</option>
+            <option value="JPY">JPY — Japanese Yen</option>
+            <option value="CNY">CNY — Chinese Yuan</option>
+            <option value="SGD">SGD — Singapore Dollar</option>
+            <option value="AED">AED — UAE Dirham</option>
+            <option value="SAR">SAR — Saudi Riyal</option>
+            <option value="NZD">NZD — New Zealand Dollar</option>
+            <option value="SEK">SEK — Swedish Krona</option>
+            <option value="NOK">NOK — Norwegian Krone</option>
+            <option value="DKK">DKK — Danish Krone</option>
+            <option value="PLN">PLN — Polish Złoty</option>
+            <option value="CZK">CZK — Czech Koruna</option>
+            <option value="HUF">HUF — Hungarian Forint</option>
+            <option value="TRY">TRY — Turkish Lira</option>
+            <option value="ZAR">ZAR — South African Rand</option>
+          </select>
+        </div>
+        <button class="swap-button" id="swap-button" type="button" aria-label="Swap currencies" title="Swap currencies">⇄</button>
+        <div class="currency-field">
+          <label for="to-currency">To</label>
+          <select id="to-currency">
+            <option value="EUR">EUR — Euro</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="GBP">GBP — British Pound</option>
+            <option value="BDT" selected>BDT — Bangladeshi Taka</option>
+            <option value="INR">INR — Indian Rupee</option>
+            <option value="CAD">CAD — Canadian Dollar</option>
+            <option value="AUD">AUD — Australian Dollar</option>
+            <option value="CHF">CHF — Swiss Franc</option>
+            <option value="JPY">JPY — Japanese Yen</option>
+            <option value="CNY">CNY — Chinese Yuan</option>
+            <option value="SGD">SGD — Singapore Dollar</option>
+            <option value="AED">AED — UAE Dirham</option>
+            <option value="SAR">SAR — Saudi Riyal</option>
+            <option value="NZD">NZD — New Zealand Dollar</option>
+            <option value="SEK">SEK — Swedish Krona</option>
+            <option value="NOK">NOK — Norwegian Krone</option>
+            <option value="DKK">DKK — Danish Krone</option>
+            <option value="PLN">PLN — Polish Złoty</option>
+            <option value="CZK">CZK — Czech Koruna</option>
+            <option value="HUF">HUF — Hungarian Forint</option>
+            <option value="TRY">TRY — Turkish Lira</option>
+            <option value="ZAR">ZAR — South African Rand</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="conversion-result" aria-live="polite" aria-atomic="true">
+        <span id="result-label">100 EUR equals</span>
+        <strong id="converted-amount">—</strong>
+        <span class="rate-line" id="rate-line">Loading exchange rates…</span>
+      </div>
+      <p class="error-message" id="error-message" role="alert" hidden></p>
+      <button class="button button-primary convert-button" id="convert-button" type="button">Convert</button>
+      <div class="rate-meta"><span id="rate-updated">Exchange rates are being loaded.</span><button id="refresh-button" type="button">Refresh rates</button></div>
+    </section>
+
+    <section class="tool-info">
+      <h2>About exchange rates</h2>
+      <p>Rates are retrieved from a third-party exchange-rate service and may be updated periodically rather than continuously. The displayed conversion is indicative and may differ from bank, card-network, cash-exchange or money-transfer provider rates and fees.</p>
+      <p class="disclaimer">Do not use this estimate as a guaranteed transaction quote. Confirm the final rate and fees with your bank or payment provider before exchanging money.</p>
+      <p class="source-links">Exchange-rate data provided by <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>. This tool sends currency codes to the provider to retrieve public rate data; the amount entered is calculated locally in your browser.</p>
+    </section>
+  </main>
+
+  <!-- পাদদেশ -->
+  <footer class="site-footer"><div class="footer-bottom"><span>© <span id="current-year">2026</span> NoeloTools</span><a href="/pages/privacy-policy/">Privacy</a><a href="/pages/contact/">Contact</a></div></footer>
+</body>
+</html>
