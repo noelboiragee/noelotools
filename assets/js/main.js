@@ -2,6 +2,7 @@
 import { initThemeToggle } from "./theme-toggle.js";
 import { initToolSearch } from "./search.js";
 import { initCookieConsent } from "./cookie-consent.js";
+import { initToolCatalog } from "./tool-catalog.js";
 
 function initMobileNavigation() {
   const menuButton = document.querySelector("[data-menu-toggle]");
@@ -45,7 +46,7 @@ function safelyInit(name, initializer) {
 
 document.addEventListener("DOMContentLoaded", () => {
   safelyInit("theme toggle", initThemeToggle);
-  safelyInit("tool search", initToolSearch);
+  initToolCatalog().finally(() => safelyInit("tool search", initToolSearch));
   safelyInit("cookie consent", initCookieConsent);
   safelyInit("mobile navigation", initMobileNavigation);
   safelyInit("sticky header", initStickyHeader);
