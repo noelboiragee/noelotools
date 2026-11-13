@@ -1,0 +1,24 @@
+<!-- বাংলা: এই অংশটি হোমপেজে "Browse by category" সেকশনের ঠিক আগে বসবে।
+     পুরনো ক্যাটাগরি গ্রিড মুছবেন না: JS না চললে বা কার্ড ২টার কম হলে ওটাই দেখা যাবে। -->
+<section class="cc" id="category-carousel" hidden
+         aria-labelledby="cc-heading"
+         data-tools-src="/noelotools/assets/data/tools.json"
+         data-base="/noelotools/"
+         data-min-tools="1">
+  <div class="cc-head">
+    <h2 id="cc-heading">Explore by collection</h2>
+    <p>Swipe, use the arrows, or tap a card.</p>
+  </div>
+
+  <div class="cc-stage" data-cc-stage tabindex="0"
+       role="group" aria-roledescription="carousel" aria-label="Tool collections">
+    <div class="cc-track" data-cc-track></div>
+  </div>
+
+  <div class="cc-controls">
+    <button type="button" class="cc-arrow" data-cc-prev aria-label="Previous collection">&#8592;</button>
+    <div class="cc-dots" data-cc-dots></div>
+    <button type="button" class="cc-arrow" data-cc-next aria-label="Next collection">&#8594;</button>
+  </div>
+  <span class="cc-sr" data-cc-live aria-live="polite"></span>
+</section>
