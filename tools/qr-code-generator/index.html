@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- এই ফাইলটি QR Code Generator-এর মূল পৃষ্ঠা তৈরি করে। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create and download QR codes for text or links. QR codes are generated in your browser.">
+  <meta name="theme-color" content="#7c3aed">
+  <title>QR Code Generator | NoeloTools</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="/">← NoeloTools</a>
+    <header class="page-heading">
+      <p class="eyebrow">EVERYDAY TOOLS</p>
+      <h1>QR Code Generator</h1>
+      <p class="intro">Turn a link or a short message into a QR code. Generate it here and save the image to your device.</p>
+    </header>
+
+    <section class="generator-card">
+      <form id="qr-form">
+        <label class="field-label" for="qr-content">Text or website URL</label>
+        <textarea id="qr-content" rows="4" maxlength="1800" placeholder="https://example.com or type a message…" required></textarea>
+        <div class="form-meta"><span>Use a complete link starting with https:// for a website.</span><span id="char-count">0 / 1800</span></div>
+        <div class="settings-row">
+          <label class="field-label" for="qr-size">Image size</label>
+          <select id="qr-size">
+            <option value="160">160 × 160</option>
+            <option value="220" selected>220 × 220</option>
+            <option value="300">300 × 300</option>
+            <option value="400">400 × 400</option>
+          </select>
+        </div>
+        <p class="form-error" id="form-error" role="alert" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Generate QR Code</button>
+      </form>
+    </section>
+
+    <section class="result-card" id="result-card" aria-live="polite">
+      <div class="result-heading">
+        <h2>Your QR code</h2>
+        <p id="result-message">Your generated QR code will appear here.</p>
+      </div>
+      <div class="qr-output" id="qr-output">
+        <div class="qr-placeholder" id="qr-placeholder">QR</div>
+      </div>
+      <button class="download-button" id="download-button" type="button" disabled>Download PNG</button>
+      <p class="privacy-note">Your text is processed in your browser. It is not sent to a QR-generation service.</p>
+    </section>
+
+    <section class="info-card">
+      <h2>Before sharing</h2>
+      <p>Scan the QR code with your phone to check that it opens the correct link or displays the intended text. A QR code does not make a website safe; only open links from sources you trust.</p>
+    </section>
+    <footer class="page-footer">Free online tools · NoeloTools</footer>
+  </main>
+</body>
+</html>
