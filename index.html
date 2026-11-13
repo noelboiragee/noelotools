@@ -67,6 +67,151 @@
       .carousel-card { flex-basis: 90%; }
     }
     [data-cookie-banner][hidden], [data-cookie-settings][hidden] { display: none; }
+
+    /* বাংলা: নতুন 3D Orbit Carousel */
+    .orbit-section {
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+      color: #fff;
+      background: radial-gradient(ellipse at center, #20205b, #10132e 40%, #050817 75%);
+    }
+    .orbit-section::before {
+      content: "";
+      position: absolute;
+      width: 650px;
+      height: 650px;
+      border-radius: 50%;
+      background: #5734ff;
+      filter: blur(150px);
+      opacity: .16;
+      pointer-events: none;
+    }
+    .orbit-scene {
+      width: 100%;
+      height: 500px;
+      position: relative;
+      perspective: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .orbit-ring {
+      width: 180px;
+      height: 180px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -90px 0 0 -90px;
+      transform-style: preserve-3d;
+      touch-action: pan-y;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .orbit-ring:active { cursor: grabbing; }
+    .orbit-light {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 580px;
+      height: 230px;
+      margin: -115px 0 0 -290px;
+      border: 2px solid rgba(135,80,255,.55);
+      border-radius: 50%;
+      transform: rotateX(65deg);
+      box-shadow: 0 0 15px #914cff, inset 0 0 15px #914cff;
+      pointer-events: none;
+    }
+    .orbit-light.second {
+      width: 650px;
+      height: 280px;
+      margin: -140px 0 0 -325px;
+      border-color: rgba(0,220,255,.4);
+      box-shadow: 0 0 15px #00d9ff, inset 0 0 15px #00d9ff;
+    }
+    .orbit-card {
+      position: absolute;
+      width: 120px;
+      height: 180px;
+      left: 50%;
+      top: 50%;
+      margin: -90px 0 0 -60px;
+      transform: rotateY(calc(var(--i) * 45deg)) translateZ(300px);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #151a35;
+      border: 2px solid var(--glow);
+      box-shadow: 0 0 15px var(--glow);
+      backface-visibility: hidden;
+      -webkit-user-drag: none;
+    }
+    .orbit-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .orbit-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 35%, rgba(0,0,0,.9));
+      pointer-events: none;
+    }
+    .orbit-card .card-title {
+      position: absolute;
+      z-index: 2;
+      bottom: 12px;
+      left: 8px;
+      right: 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      pointer-events: none;
+    }
+    .crystal {
+      position: absolute;
+      width: 125px;
+      height: 125px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: crystalFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px #a64cff);
+      pointer-events: none;
+    }
+    .crystal svg { width: 100%; height: 100%; }
+    @keyframes crystalFloat {
+      0%, 100% { transform: translateY(-8px) rotate(0deg); }
+      50% { transform: translateY(8px) rotate(8deg); }
+    }
+    @media (max-width: 600px) {
+      .orbit-scene { height: 420px; perspective: 850px; }
+      .orbit-card {
+        width: 95px;
+        height: 145px;
+        margin: -72.5px 0 0 -47.5px;
+        transform: rotateY(calc(var(--i) * 45deg)) translateZ(195px);
+      }
+      .orbit-light { width: 370px; height: 160px; margin: -80px 0 0 -185px; }
+      .orbit-light.second { width: 420px; height: 190px; margin: -95px 0 0 -210px; }
+      .crystal { width: 95px; height: 95px; }
+      .orbit-card .card-title { font-size: 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .crystal { animation: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -113,36 +258,54 @@
       </div>
     </section>
 
-    <!-- বাংলা: 3D পার্সপেক্টিভ স্টাইলে নির্বাচিত ক্যাটাগরি প্রিভিউ। -->
-    <section class="featured-section" aria-labelledby="featured-title">
-      <div class="container">
-        <div class="section-heading">
-          <div>
-            <h2 id="featured-title">Tools for your everyday work</h2>
-            <p>Useful utilities, without the clutter.</p>
+    <!-- বাংলা: 3D Orbit Carousel — আটটি ঘূর্ণায়মান কার্ড ও কেন্দ্রীয় ক্রিস্টাল। -->
+    <section class="orbit-section" aria-labelledby="orbit-title">
+      <h2 class="sr-only" id="orbit-title">Explore featured topics</h2>
+      <div class="orbit-scene">
+        <div class="orbit-light" aria-hidden="true"></div>
+        <div class="orbit-light second" aria-hidden="true"></div>
+        <div class="orbit-ring" id="orbitRing" aria-label="Drag horizontally to rotate the featured cards">
+          <div class="orbit-card" style="--i:0;--glow:#bd65ff">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400" alt="Nature landscape" loading="lazy" draggable="false">
+            <div class="card-title">Nature</div>
+          </div>
+          <div class="orbit-card" style="--i:1;--glow:#00eaff">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400" alt="Technology" loading="lazy" draggable="false">
+            <div class="card-title">Technology</div>
+          </div>
+          <div class="orbit-card" style="--i:2;--glow:#bd65ff">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400" alt="Innovation" loading="lazy" draggable="false">
+            <div class="card-title">Innovation</div>
+          </div>
+          <div class="orbit-card" style="--i:3;--glow:#00eaff">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400" alt="Digital workspace" loading="lazy" draggable="false">
+            <div class="card-title">Digital World</div>
+          </div>
+          <div class="orbit-card" style="--i:4;--glow:#bd65ff">
+            <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400" alt="Adventure landscape" loading="lazy" draggable="false">
+            <div class="card-title">Adventure</div>
+          </div>
+          <div class="orbit-card" style="--i:5;--glow:#00eaff">
+            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Modern workspace" loading="lazy" draggable="false">
+            <div class="card-title">Workspace</div>
+          </div>
+          <div class="orbit-card" style="--i:6;--glow:#bd65ff">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Creative electronics" loading="lazy" draggable="false">
+            <div class="card-title">Creative</div>
+          </div>
+          <div class="orbit-card" style="--i:7;--glow:#00eaff">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Electronic components" loading="lazy" draggable="false">
+            <div class="card-title">Electronics</div>
           </div>
         </div>
-        <div class="featured-carousel" aria-label="Featured tool categories">
-          <div class="carousel-track">
-            <a class="carousel-card" href="#categories">
-              <span class="carousel-card-kicker">Create</span>
-              <h3>PDF & Files</h3>
-              <p>Merge, compress and manage documents.</p>
-            </a>
-            <a class="carousel-card" href="#tools">
-              <span class="carousel-card-kicker">Calculate</span>
-              <h3>Money & Tax</h3>
-              <p>Make everyday financial calculations easier.</p>
-            </a>
-            <a class="carousel-card" href="#categories">
-              <span class="carousel-card-kicker">Simplify</span>
-              <h3>Writing & More</h3>
-              <p>Quick tools for text and daily tasks.</p>
-            </a>
-          </div>
-        </div>
-        <div class="carousel-controls" aria-hidden="true">
-          <span class="carousel-dot"></span><span class="carousel-dot" aria-current="true"></span><span class="carousel-dot"></span>
+        <div class="crystal" aria-hidden="true">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5">
+            <path d="M60 5 L105 60 L60 115 L15 60 Z" stroke="#bd65ff"/>
+            <path d="M60 5 L60 115 M15 60 L105 60" stroke="#00eaff"/>
+            <path d="M60 5 L85 60 L60 115 L35 60 Z" stroke="#bd65ff"/>
+            <path d="M15 60 L60 35 L105 60 L60 85 Z" stroke="#00eaff"/>
+            <path d="M60 5 L60 35 L85 60 L60 85 L35 60 L60 35" stroke="white"/>
+          </svg>
         </div>
       </div>
     </section>
@@ -228,5 +391,52 @@
       <button class="button button-primary" type="button" data-cookie-save style="margin-top:.75rem">Save preferences</button>
     </div>
   </section>
+
+  <!-- বাংলা: 3D Orbit Carousel-এর স্বয়ংক্রিয় ঘূর্ণন ও pointer drag নিয়ন্ত্রণ। -->
+  <script>
+    (() => {
+      const ring = document.getElementById("orbitRing");
+      if (!ring) return;
+
+      let rotation = 0;
+      let isDragging = false;
+      let lastX = 0;
+      let animationFrame = 0;
+
+      function animate() {
+        if (!isDragging) rotation += 0.35;
+        ring.style.transform = `rotateY(${rotation}deg)`;
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      ring.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        isDragging = true;
+        lastX = event.clientX;
+        ring.setPointerCapture(event.pointerId);
+      });
+
+      ring.addEventListener("pointermove", (event) => {
+        if (!isDragging) return;
+        rotation += (event.clientX - lastX) * 0.6;
+        lastX = event.clientX;
+      });
+
+      function stopDrag() {
+        isDragging = false;
+      }
+
+      ring.addEventListener("pointerup", stopDrag);
+      ring.addEventListener("pointercancel", stopDrag);
+      ring.addEventListener("lostpointercapture", stopDrag);
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        ring.style.animation = "none";
+      }
+      animate();
+      window.addEventListener("pagehide", () => cancelAnimationFrame(animationFrame), { once: true });
+    })();
+  </script>
+
 </body>
 </html>
