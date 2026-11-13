@@ -30,6 +30,7 @@ function getInitialTheme() {
 }
 
 export function initThemeToggle() {
+  if (typeof document === "undefined" || !document.documentElement) return;
   applyTheme(getInitialTheme());
 
   document.querySelectorAll("[data-theme-toggle]").forEach((toggle) => {
