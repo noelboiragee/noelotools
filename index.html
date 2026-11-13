@@ -49,6 +49,7 @@
     .tool-card-description, .category-card-description { display: block; color: var(--text-muted); font-size: .9rem; line-height: 1.5; }
     .category-card { display: block; padding: 1.25rem; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); text-decoration: none; color: var(--text); transition: transform 180ms ease, border-color 180ms ease; }
     .category-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+    .category-card[aria-disabled="true"] { opacity: .58; cursor: not-allowed; }
     .trust-strip { padding: 1.25rem; border: 1px solid var(--border); border-radius: 18px; background: var(--bg-alt); display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; color: var(--text-muted); font-size: .9rem; }
     .cookie-banner { position: fixed; z-index: 200; left: 1rem; right: 1rem; bottom: 1rem; max-width: 760px; margin: auto; padding: 1.25rem; border: 1px solid var(--border); border-radius: 18px; background: var(--bg); color: var(--text); box-shadow: 0 16px 48px rgb(0 0 0 / .18); }
     .cookie-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
