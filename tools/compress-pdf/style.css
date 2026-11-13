@@ -1,0 +1,395 @@
+/* এই ফাইলে পিডিএফ কমপ্রেস পেজের নিজস্ব স্টাইল রাখা হয়েছে। */
+.compress-page {
+  padding-top: 28px;
+  padding-bottom: 72px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 34px;
+}
+
+.breadcrumbs a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--primary);
+}
+
+.tool-intro {
+  max-width: 760px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.tool-intro h1 {
+  margin: 8px 0 12px;
+  color: var(--text);
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  line-height: 1.12;
+}
+
+.tool-intro > p:last-child {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.compress-workspace {
+  max-width: 850px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.upload-panel,
+.mode-panel,
+.action-panel,
+.result-panel,
+.tool-info {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 0 8px 28px rgb(31 41 55 / 5%);
+}
+
+.upload-dropzone {
+  min-height: 205px;
+  padding: 28px;
+  border: 2px dashed color-mix(in srgb, var(--primary) 40%, var(--border));
+  border-radius: 13px;
+  background: var(--bg-alt);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  color: var(--text-muted);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone:focus-within,
+.upload-dropzone.is-dragging {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.upload-dropzone strong {
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.upload-file-types {
+  font-size: 0.78rem;
+}
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 15px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 0;
+}
+
+.file-symbol {
+  flex: 0 0 auto;
+  padding: 9px 7px;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.file-details {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.file-details strong {
+  overflow-wrap: anywhere;
+  color: var(--text);
+}
+
+.file-details small {
+  color: var(--text-muted);
+}
+
+.text-button {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.mode-panel h2,
+.tool-info h2 {
+  margin: 0 0 15px;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+.mode-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.mode-option + .mode-option {
+  margin-top: 12px;
+}
+
+.mode-option:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.mode-option input {
+  width: 18px;
+  height: 18px;
+  margin: 3px 0 0;
+  accent-color: var(--primary);
+  flex: 0 0 auto;
+}
+
+.mode-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mode-copy strong {
+  color: var(--text);
+}
+
+.mode-copy > span:not(.mode-tag) {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.mode-tag {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.mode-tag-warning {
+  background: color-mix(in srgb, #d97706 12%, transparent);
+  color: #b45309;
+}
+
+.action-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.action-panel .button {
+  width: 100%;
+  cursor: pointer;
+}
+
+.action-panel .button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.status-message {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+#progress-bar {
+  width: 100%;
+  height: 9px;
+  accent-color: var(--primary);
+}
+
+.result-panel {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+}
+
+.result-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 18px;
+}
+
+.result-check {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.result-heading h2 {
+  margin: 0 0 4px;
+  color: var(--text);
+  font-size: 1.15rem;
+}
+
+.result-heading p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.size-comparison {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.size-comparison > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 13px;
+  border-radius: 10px;
+  background: var(--bg-alt);
+}
+
+.size-comparison span {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.size-comparison strong {
+  color: var(--text);
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.privacy-note {
+  max-width: 850px;
+  margin: 16px auto 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.tool-info {
+  max-width: 850px;
+  margin: 28px auto 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.tool-info ul {
+  padding-left: 22px;
+}
+
+.tool-info li + li {
+  margin-top: 8px;
+}
+
+.tool-info strong {
+  color: var(--text);
+}
+
+.tool-info p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.site-footer .footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+
+.site-footer .footer-bottom nav {
+  display: flex;
+  gap: 16px;
+}
+
+.site-footer .footer-bottom a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .compress-page {
+    padding-top: 20px;
+  }
+
+  .upload-panel,
+  .mode-panel,
+  .action-panel,
+  .result-panel,
+  .tool-info {
+    padding: 16px;
+  }
+
+  .upload-dropzone {
+    min-height: 180px;
+    padding: 20px;
+  }
+
+  .size-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer .footer-bottom nav {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .upload-dropzone {
+    transition: none;
+  }
+}
