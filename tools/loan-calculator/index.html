@@ -1,0 +1,159 @@
+<!doctype html>
+<!-- এই ফাইলে লোন ক্যালকুলেটর টুলের মূল HTML কাঠামো রাখা হয়েছে। -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calculate monthly loan payments, total interest and repayment schedule with this free online loan calculator.">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Loan Calculator – Monthly EMI & Interest | NoeloTools</title>
+  <link rel="canonical" href="https://noelotools.com/tools/loan-calculator/">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="site-brand" href="../../index.html" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a href="../../index.html#tools">All tools</a>
+        <a href="../../index.html#categories">Categories</a>
+        <a href="../../pages/about.html">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container loan-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span aria-hidden="true">/</span>
+      <a href="../../index.html#tools">Tools</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Loan Calculator</span>
+    </nav>
+
+    <section class="tool-intro">
+      <p class="eyebrow">MONEY TOOL</p>
+      <h1>Loan Calculator</h1>
+      <p>Estimate your monthly loan payment, total interest and repayment schedule.</p>
+    </section>
+
+    <section class="loan-workspace" aria-label="Loan calculator">
+      <form id="loan-form" class="loan-form">
+        <div class="form-heading">
+          <h2>Loan details</h2>
+          <p>Enter the loan amount, annual interest rate and repayment term.</p>
+        </div>
+        <div class="form-grid">
+          <div class="field-group">
+            <label for="loan-amount">Loan amount</label>
+            <div class="input-with-select">
+              <input id="loan-amount" name="amount" type="number" min="0.01" max="1000000000000" step="0.01" value="20000" required inputmode="decimal">
+              <select id="currency" name="currency" aria-label="Currency">
+                <option value="EUR" selected>EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="USD">USD ($)</option>
+                <option value="BDT">BDT (৳)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="interest-rate">Annual interest rate (%)</label>
+            <input id="interest-rate" name="rate" type="number" min="0" max="100" step="0.01" value="6.5" required inputmode="decimal">
+          </div>
+          <div class="field-group">
+            <label for="loan-term">Loan term (years)</label>
+            <input id="loan-term" name="term" type="number" min="1" max="50" step="1" value="5" required inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label for="start-date">First payment date</label>
+            <input id="start-date" name="startDate" type="date">
+          </div>
+        </div>
+        <button class="button button-primary calculate-button" type="submit">Calculate loan</button>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+      </form>
+
+      <section class="loan-results" id="loan-results" aria-live="polite" hidden>
+        <div class="results-heading">
+          <div>
+            <p class="eyebrow">YOUR ESTIMATE</p>
+            <h2>Loan repayment summary</h2>
+          </div>
+          <button id="print-button" class="button button-secondary" type="button">Print summary</button>
+        </div>
+        <div class="result-cards">
+          <article class="result-card result-card-featured">
+            <span>Monthly payment (EMI)</span>
+            <strong id="monthly-payment">€0.00</strong>
+          </article>
+          <article class="result-card">
+            <span>Total interest</span>
+            <strong id="total-interest">€0.00</strong>
+          </article>
+          <article class="result-card">
+            <span>Total repayment</span>
+            <strong id="total-payment">€0.00</strong>
+          </article>
+          <article class="result-card">
+            <span>Loan principal</span>
+            <strong id="principal-output">€0.00</strong>
+          </article>
+        </div>
+
+        <div class="repayment-heading">
+          <div>
+            <h3>Repayment schedule</h3>
+            <p>Monthly principal and interest breakdown.</p>
+          </div>
+          <button id="download-csv" class="button button-secondary" type="button">Download CSV</button>
+        </div>
+        <div class="table-scroll">
+          <table class="repayment-table">
+            <thead>
+              <tr>
+                <th scope="col">Payment</th>
+                <th scope="col">Date</th>
+                <th scope="col">Payment amount</th>
+                <th scope="col">Principal</th>
+                <th scope="col">Interest</th>
+                <th scope="col">Balance</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="tool-info">
+      <h2>How is the monthly payment calculated?</h2>
+      <p>For a fixed-rate loan with monthly payments, the standard amortisation formula is used:</p>
+      <div class="formula" aria-label="Monthly payment formula">M = P × r × (1 + r)<sup>n</sup> ÷ ((1 + r)<sup>n</sup> − 1)</div>
+      <p><strong>M</strong> is the monthly payment, <strong>P</strong> is the principal, <strong>r</strong> is the monthly interest rate and <strong>n</strong> is the total number of monthly payments. For a 0% interest rate, the principal is divided equally across the payments.</p>
+      <p>This calculator provides an estimate. Actual lender fees, taxes, insurance, variable rates, payment timing and rounding rules may change your repayment amount.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>© <span data-current-year>2026</span> NoeloTools</span>
+      <span>Free online tools. Nothing uploaded.</span>
+      <nav aria-label="Legal links">
+        <a href="../../pages/privacy-policy.html">Privacy</a>
+        <a href="../../pages/cookie-policy.html">Cookies</a>
+        <a href="../../pages/terms.html">Terms</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
