@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- এই ফাইলে ওয়ার্ড কাউন্টার টুলের মূল HTML কাঠামো রাখা হয়েছে। -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Count words, characters, sentences and paragraphs instantly. Estimate reading time with this free browser-based word counter.">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Word Counter – Free Online Text Counter | NoeloTools</title>
+  <link rel="canonical" href="https://noelotools.com/tools/word-counter/">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="site-brand" href="../../index.html" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a href="../../index.html#tools">All tools</a>
+        <a href="../../index.html#categories">Categories</a>
+        <a href="../../pages/about.html">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container word-counter-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span aria-hidden="true">/</span>
+      <a href="../../index.html#tools">Tools</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Word Counter</span>
+    </nav>
+
+    <section class="tool-intro">
+      <p class="eyebrow">WRITING TOOL</p>
+      <h1>Word Counter</h1>
+      <p>Count words, characters, sentences and paragraphs as you type. Your text stays in your browser.</p>
+    </section>
+
+    <section class="word-counter-layout" aria-label="Word counter workspace">
+      <div class="editor-panel">
+        <div class="editor-heading">
+          <label for="text-input">Your text</label>
+          <span id="text-status" class="text-status">Ready to count</span>
+        </div>
+        <textarea id="text-input" spellcheck="true" placeholder="Paste or type your text here…" aria-describedby="privacy-note"></textarea>
+        <div class="editor-footer">
+          <p id="privacy-note">Your text is processed locally and is not uploaded.</p>
+          <button id="clear-button" class="button button-secondary" type="button">Clear text</button>
+        </div>
+      </div>
+
+      <aside class="stats-panel" aria-label="Text statistics">
+        <h2>Text statistics</h2>
+        <div class="stats-grid">
+          <article class="stat-card stat-card-primary">
+            <span class="stat-label">Words</span>
+            <output class="stat-value" id="word-count" aria-live="polite">0</output>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Characters</span>
+            <output class="stat-value" id="character-count">0</output>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Characters (no spaces)</span>
+            <output class="stat-value" id="character-no-spaces-count">0</output>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Sentences</span>
+            <output class="stat-value" id="sentence-count">0</output>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Paragraphs</span>
+            <output class="stat-value" id="paragraph-count">0</output>
+          </article>
+          <article class="stat-card stat-card-reading">
+            <span class="stat-label">Estimated reading time</span>
+            <output class="stat-value" id="reading-time">0 min</output>
+            <span class="stat-hint">Based on 200 words per minute</span>
+          </article>
+        </div>
+      </aside>
+    </section>
+
+    <section class="tool-info">
+      <h2>How to use the Word Counter</h2>
+      <ol>
+        <li>Type or paste your text into the editor.</li>
+        <li>View the word, character, sentence and paragraph counts instantly.</li>
+        <li>Use the reading-time estimate as a general guide.</li>
+      </ol>
+      <p>Counts update automatically. Sentence detection uses common sentence-ending punctuation, so abbreviations may affect the result.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>© <span data-current-year>2026</span> NoeloTools</span>
+      <span>Free online tools. Nothing uploaded.</span>
+      <nav aria-label="Legal links">
+        <a href="../../pages/privacy-policy.html">Privacy</a>
+        <a href="../../pages/cookie-policy.html">Cookies</a>
+        <a href="../../pages/terms.html">Terms</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
