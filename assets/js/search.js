@@ -9,6 +9,7 @@ function normalizeText(value) {
 }
 
 export function initToolSearch() {
+  if (!document) return;
   const searchInputs = document.querySelectorAll("[data-tool-search]");
   const toolCards = Array.from(document.querySelectorAll("[data-tool-card]"));
   const emptyStates = document.querySelectorAll("[data-search-empty]");
