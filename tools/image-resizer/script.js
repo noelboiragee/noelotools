@@ -1,11 +1,18 @@
-// Image Resizer — stable image loading, aspect-ratio handling and visible preview.
+// Image Resizer — original and resized previews, matching the Image Compressor workflow.
 const $ = (s) => document.querySelector(s);
 const fileInput = $("#file"), widthInput = $("#width"), heightInput = $("#height");
-const mode = $("#mode"), lock = $("#lock"), preview = $("#preview"), download = $("#download"), result = $("#result");
-let image = null, outputBlob = null, originalWidth = 0, originalHeight = 0, originalUrl = null, previewUrl = null, syncing = false;
+const mode = $("#mode"), lock = $("#lock"), before = $("#before"), after = $("#after");
+const download = $("#download"), result = $("#result");
+let image = null, outputBlob = null, originalWidth = 0, originalHeight = 0;
+let originalUrl = null, previewUrl = null, syncing = false;
+const size = (n) => n < 1024 ? n + " B" : (n / 1024).toFixed(1) + " KB";
 function message(text, kind = "success") { result.textContent = text; result.dataset.kind = kind; result.hidden = false; }
 function clearUrl(url) { if (url) URL.revokeObjectURL(url); }
 function updateDimensions() { $("#dimensions").textContent = image ? `Original: ${originalWidth} × ${originalHeight} px` : "Choose an image to see dimensions."; }
+function clearOutput() {
+  clearUrl(previewUrl); previewUrl = null; after.removeAttribute("src"); after.hidden = true;
+  $("#after-size").textContent = ""; outputBlob = null; download.disabled = true;
+}
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) return;
@@ -16,9 +23,10 @@ fileInput.addEventListener("change", () => {
   nextImage.onload = () => {
     clearUrl(originalUrl); originalUrl = nextUrl; image = nextImage;
     originalWidth = image.naturalWidth; originalHeight = image.naturalHeight;
+    before.src = originalUrl; before.hidden = false;
+    $("#before-size").textContent = `Original: ${size(file.size)} · ${originalWidth} × ${originalHeight} px`;
     mode.value = "pixels"; widthInput.value = originalWidth; heightInput.value = originalHeight;
-    updateDimensions(); clearUrl(previewUrl); previewUrl = null; preview.removeAttribute("src"); preview.hidden = true;
-    outputBlob = null; download.disabled = true; result.hidden = true;
+    updateDimensions(); clearOutput(); result.hidden = true;
   };
   nextImage.onerror = () => { clearUrl(nextUrl); message("The selected image could not be opened.", "error"); };
   nextImage.src = nextUrl;
@@ -37,6 +45,7 @@ mode.addEventListener("change", () => {
   if (!image) return;
   if (mode.value === "percent") { widthInput.value = 100; heightInput.value = 100; }
   else { widthInput.value = originalWidth; heightInput.value = originalHeight; }
+  clearOutput();
 });
 $("#calculate").addEventListener("click", () => {
   if (!image) return message("Choose an image first.", "error");
@@ -54,7 +63,9 @@ $("#calculate").addEventListener("click", () => {
   canvas.toBlob((blob) => {
     if (!blob) return message("Could not resize this image.", "error");
     outputBlob = blob; clearUrl(previewUrl); previewUrl = URL.createObjectURL(blob);
-    preview.src = previewUrl; preview.hidden = false; download.disabled = false;
+    after.src = previewUrl; after.hidden = false;
+    $("#after-size").textContent = `Output: ${size(blob.size)} · ${w} × ${h} px`;
+    download.disabled = false;
     message(`Resized to ${w} × ${h} px. Output format: ${mime === "image/png" ? "PNG" : "JPG"}.`);
   }, mime, .92);
 });
@@ -65,8 +76,8 @@ download.addEventListener("click", () => {
   link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 $("#reset").addEventListener("click", () => {
-  fileInput.value = ""; clearUrl(originalUrl); clearUrl(previewUrl); originalUrl = previewUrl = null;
-  image = outputBlob = null; preview.removeAttribute("src"); preview.hidden = true;
-  widthInput.value = 800; heightInput.value = 600; mode.value = "pixels"; lock.checked = true;
-  download.disabled = true; updateDimensions(); result.hidden = true;
+  fileInput.value = ""; clearUrl(originalUrl); originalUrl = null; clearOutput();
+  before.removeAttribute("src"); before.hidden = true; $("#before-size").textContent = "";
+  image = null; widthInput.value = 800; heightInput.value = 600; mode.value = "pixels"; lock.checked = true;
+  updateDimensions(); result.hidden = true;
 });
