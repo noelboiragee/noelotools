@@ -349,5 +349,80 @@
     ],
     "status": "available",
     "browserOnly": true
+  },
+  {
+    "id": "typing-speed-test",
+    "name": "Typing Speed Test",
+    "description": "Test typing speed in 30 or 60 seconds with live accuracy and error tracking.",
+    "category": "Everyday",
+    "url": "/noelotools/tools/typing-speed-test/",
+    "icon": "keyboard",
+    "keywords": [
+      "typing test",
+      "words per minute",
+      "wpm"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "unit-price-calculator",
+    "name": "Unit Price Calculator",
+    "description": "Compare 2 to 5 products by metric quantity and find the lowest unit price.",
+    "category": "Money Tax",
+    "url": "/noelotools/tools/unit-price-calculator/",
+    "icon": "scale",
+    "keywords": [
+      "unit price",
+      "price per kg",
+      "price comparison"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "sales-tax-calculator",
+    "name": "Sales Tax Calculator",
+    "description": "Calculate net, tax and gross totals across multiple line items with custom tax rates.",
+    "category": "Money Tax",
+    "url": "/noelotools/tools/sales-tax-calculator/",
+    "icon": "receipt-text",
+    "keywords": [
+      "sales tax",
+      "tax breakdown",
+      "line items"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "time-zone-converter",
+    "name": "Time Zone Converter",
+    "description": "Convert a date and time across European and international time zones with daylight-saving awareness.",
+    "category": "Everyday",
+    "url": "/noelotools/tools/time-zone-converter/",
+    "icon": "globe-2",
+    "keywords": [
+      "time zone",
+      "world clock",
+      "DST"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "scientific-calculator",
+    "name": "Scientific Calculator",
+    "description": "Evaluate scientific expressions with trigonometry, powers, roots, memory and calculation history.",
+    "category": "Math",
+    "url": "/noelotools/tools/scientific-calculator/",
+    "icon": "calculator",
+    "keywords": [
+      "scientific calculator",
+      "trigonometry",
+      "logarithms"
+    ],
+    "status": "available",
+    "browserOnly": true
   }
 ]
