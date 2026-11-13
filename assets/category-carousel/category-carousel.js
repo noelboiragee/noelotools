@@ -93,16 +93,18 @@
   }
 
   // বাংলা: কার্ডগুলোকে সরল লাইনে নয়, বৃত্তাকার 3D আর্কে সাজায়
-  function cardPose(d, cardWidth) {
+  function cardPose(d, cardWidth, total) {
     var abs = Math.abs(d);
-    var angle = d * 40;
+    // বাংলা: মোট কার্ডসংখ্যা অনুযায়ী ৩৬০° বৃত্তে সমান কৌণিক দূরত্ব
+    var angle = d * (360 / Math.max(total || 1, 1));
     var radians = angle * Math.PI / 180;
-    var radius = cardWidth * 1.25;
+    // বাংলা: পাশের কার্ডগুলো যেন মোবাইলেও দৃশ্যমান থাকে
+    var radius = cardWidth * 0.9;
     var x = Math.sin(radians) * radius;
     var z = (Math.cos(radians) - 1) * radius;
     var rotate = -angle;
-    var scale = abs === 0 ? 1 : (abs === 1 ? 0.84 : 0.68);
-    var opacity = abs === 0 ? 1 : (abs === 1 ? 0.88 : (abs === 2 ? 0.22 : 0));
+    var scale = abs === 0 ? 1 : (abs === 1 ? 0.86 : 0.7);
+    var opacity = abs === 0 ? 1 : (abs === 1 ? 0.9 : (abs === 2 ? 0.28 : 0));
     return {
       transform: 'translate3d(' + x.toFixed(1) + 'px,0,' + z.toFixed(1) + 'px) rotateY(' + rotate + 'deg) scale(' + scale + ')',
       opacity: opacity,
@@ -213,7 +215,7 @@
       var n = cards.length;
       var w = cards[0].offsetWidth || 280;
       cards.forEach(function (card, i) {
-        var pose = cardPose(circularOffset(i, active, n), w);
+        var pose = cardPose(circularOffset(i, active, n), w, n);
         card.style.transform = pose.transform;
         card.style.opacity = pose.opacity;
         card.style.zIndex = pose.z;
