@@ -653,3 +653,11 @@
     transform: none;
   }
 }
+
+
+/* বাংলা: সব টুল পেজে কুকি সম্মতির ব্যানারের সাধারণ বিন্যাস। */
+.cookie-banner{position:fixed;z-index:300;left:1rem;right:1rem;bottom:1rem;max-width:760px;margin:auto;padding:1.25rem;border:1px solid var(--border);border-radius:18px;background:var(--bg);color:var(--text);box-shadow:0 16px 48px rgb(0 0 0 / .18)}
+.cookie-banner p{color:var(--text-muted);margin:.5rem 0 1rem}
+.cookie-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.cookie-settings{margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border)}
+[data-cookie-banner][hidden],[data-cookie-settings][hidden]{display:none}
