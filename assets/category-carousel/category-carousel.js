@@ -102,44 +102,58 @@
     return d;
   }
 
-  // বাংলা: প্রতিটি কার্ডের মুখ ১৬টি সরু 3D প্যানেলে ভাগ করে বাঁকানো হয়
-  function buildCurvedSurface(card) {
+  // বাংলা: কার্ডের পুরো মুখ (লেখা, আইকন ও লিংকসহ) সরু 3D স্লাইসে ভাগ করা হয়
+  function buildCurvedSurface(card, content) {
     var surface = document.createElement('div');
     surface.className = 'cc-surface';
     surface.setAttribute('aria-hidden', 'true');
-    var segments = 16;
+    var segments = 32;
     for (var s = 0; s < segments; s++) {
       var strip = document.createElement('span');
       strip.className = 'cc-surface-strip';
-      strip.style.width = (100 / segments + 0.8) + '%';
-      strip.style.left = '50%';
-      strip.style.marginLeft = (-50 / segments - 0.4) + '%';
-      strip.style.setProperty('--segment', s);
-      if (s === 0) strip.classList.add('is-first');
-      if (s === segments - 1) strip.classList.add('is-last');
+      strip.style.left = (s * 100 / segments) + '%';
+      strip.style.width = 'calc(100% / ' + segments + ' + 1px)';
+      var copy = content.cloneNode(true);
+      copy.classList.add('cc-content-copy');
+      copy.setAttribute('aria-hidden', 'true');
+      copy.querySelectorAll('a,button,input,select,textarea').forEach(function (node) {
+        node.setAttribute('tabindex', '-1');
+        node.removeAttribute('id');
+      });
+      copy.style.width = (card.offsetWidth || 300) + 'px';
+      copy.style.left = (-s * (card.offsetWidth || 300) / segments) + 'px';
+      strip.appendChild(copy);
       surface.appendChild(strip);
     }
     card.appendChild(surface);
     card._ccSurface = surface;
   }
 
-  // বাংলা: মাঝের কার্ড সমতল, পাশের দুটি বিপরীত দিকে বাঁকানো
+  // বাংলা: মাঝের কার্ড সমতল; দুই পাশের কার্ডের সম্পূর্ণ মুখ বিপরীত দিকে বাঁকে
   function setCardCurve(card, offset, width) {
     var surface = card._ccSurface;
     if (!surface) return;
     var strips = surface.children;
     var segments = strips.length;
     var direction = offset < 0 ? -1 : (offset > 0 ? 1 : 0);
-    var maxAngle = 18 * Math.PI / 180;
-    var radius = width / (2 * Math.sin(maxAngle));
+    var maxAngle = 16 * Math.PI / 180;
+    var radius = width / (2 * maxAngle);
+    var stripWidth = width / segments;
     for (var s = 0; s < segments; s++) {
       var t = ((s + 0.5) / segments) - 0.5;
-      var angle = direction === 0 ? 0 : t * 2 * maxAngle;
-      var x = direction === 0 ? t * width : radius * Math.sin(angle);
+      var angle = t * 2 * maxAngle;
+      var baseX = (s + 0.5) * stripWidth - width / 2;
+      var targetX = radius * Math.sin(angle);
       var z = direction === 0 ? 0 : radius * (Math.cos(angle) - 1) * direction;
-      strips[s].style.transform =
-        'translateX(' + x.toFixed(2) + 'px) translateZ(' + z.toFixed(2) + 'px) rotateY(' +
-        (angle * 180 / Math.PI).toFixed(2) + 'deg)';
+      var rotate = direction === 0 ? 0 : angle * direction;
+      var strip = strips[s];
+      strip.style.transform = 'translate3d(' + (direction === 0 ? 0 : targetX - baseX).toFixed(2) +
+        'px,0,' + z.toFixed(2) + 'px) rotateY(' + (rotate * 180 / Math.PI).toFixed(2) + 'deg)';
+      var copy = strip.firstElementChild;
+      if (copy) {
+        copy.style.width = width + 'px';
+        copy.style.left = (-s * stripWidth) + 'px';
+      }
     }
     surface.setAttribute('data-curve', direction === 0 ? 'flat' : (direction < 0 ? 'left' : 'right'));
   }
@@ -208,12 +222,12 @@
       groups.forEach(function (g, i) {
         var card = el('article', 'cc-card');
         card.style.setProperty('--h', g.meta.hue);
-        buildCurvedSurface(card);
+        var content = el('div', 'cc-content');
         card.setAttribute('data-category', g.key);
         card.setAttribute('aria-label', g.meta.label + ', ' + g.count + (g.count === 1 ? ' tool' : ' tools'));
 
-        card.appendChild(el('span', 'cc-icon', g.meta.icon)).setAttribute('aria-hidden', 'true');
-        card.appendChild(el('h3', 'cc-title', g.meta.label));
+        content.appendChild(el('span', 'cc-icon', g.meta.icon)).setAttribute('aria-hidden', 'true');
+        content.appendChild(el('h3', 'cc-title', g.meta.label));
 
         var ul = el('ul', 'cc-list');
         g.top.forEach(function (t) {
@@ -223,7 +237,7 @@
           li.appendChild(a);
           ul.appendChild(li);
         });
-        card.appendChild(ul);
+        content.appendChild(ul);
 
         var foot = el('div', 'cc-foot');
         foot.appendChild(el('span', 'cc-count', g.count + (g.count === 1 ? ' tool' : ' tools')));
@@ -237,7 +251,9 @@
           }
         });
         foot.appendChild(more);
-        card.appendChild(foot);
+        content.appendChild(foot);
+        card.appendChild(content);
+        buildCurvedSurface(card, content);
 
         // পাশের কার্ডে ক্লিক করলে সেটা মাঝে আসে (লিংকে নয়)
         card.addEventListener('click', function (e) {
