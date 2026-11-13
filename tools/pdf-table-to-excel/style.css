@@ -1,0 +1,32 @@
+/* বাংলা: PDF Table to Excel টুলের স্টাইল।
+   রং সাইটের CSS ভেরিয়েবল থেকে নেয়; না থাকলে ডিফল্ট রং ব্যবহার হয়।
+   ডার্ক মোডে কাজ করার জন্য স্বচ্ছ ধূসর বর্ডার ব্যবহার করা হয়েছে। */
+.ptx { margin: 1.5rem 0; }
+.ptx-file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.ptx-drop { display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: 2rem 1rem; text-align: center; cursor: pointer; border: 2px dashed rgba(128,128,128,.55); border-radius: 12px; }
+.ptx-drop:hover, .ptx-drop.ptx-drag { border-color: var(--primary, #4f46e5); background: rgba(79,70,229,.06); }
+.ptx-file:focus-visible + .ptx-status, .ptx-drop:focus-within { outline: 3px solid var(--primary, #4f46e5); outline-offset: 2px; }
+.ptx-file:focus-visible ~ .ptx-drop { outline: 3px solid var(--primary, #4f46e5); outline-offset: 2px; }
+.ptx-drop-title { font-weight: 700; font-size: 1.1rem; }
+.ptx-drop-hint { font-size: .9rem; opacity: .75; }
+.ptx-status { min-height: 1.4em; margin: .75rem 0 0; }
+.ptx-status.ptx-error { color: #b42318; font-weight: 600; }
+.ptx-options {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(128,128,128,.35);
+  border-radius: 12px;
+  display: grid;
+}
+.ptx-summary { font-weight: 600; margin: 0 0 .5rem; }
+.ptx-preview { max-height: 22rem; overflow: auto; border: 1px solid rgba(128,128,128,.35); border-radius: 10px; }
+.ptx-table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+.ptx-table td { padding: .4rem .6rem; border-bottom: 1px solid rgba(128,128,128,.25); white-space: nowrap; }
+.ptx-table tr:first-child td { font-weight: 700; }
+.ptx-note { margin: .5rem .6rem; font-size: .85rem; opacity: .8; }
+.ptx-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1rem 0 .5rem; }
+.ptx-btn { padding: .7rem 1.1rem; min-height: 44px; border: 1px solid rgba(128,128,128,.55); border-radius: 10px; background: transparent; color: inherit; font: inherit; font-weight: 600; cursor: pointer; }
+.ptx-btn-primary { background: var(--primary, #4f46e5); border-color: var(--primary, #4f46e5); color: #fff; }
+.ptx-btn:focus-visible { outline: 3px solid var(--primary, #4f46e5); outline-offset: 2px; }
+.ptx-warning { font-size: .9rem; opacity: .85; margin-top: .75rem; }
+@media (max-width: 480px) { .ptx-actions .ptx-btn { flex: 1 1 100%; } }

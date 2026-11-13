@@ -424,5 +424,21 @@
     ],
     "status": "available",
     "browserOnly": true
+  },
+  {
+    "id": "pdf-table-to-excel",
+    "name": "PDF Table to Excel",
+    "description": "Extract tables from text-based PDF files and export them to Excel (XLSX) or CSV in your browser.",
+    "category": "Money Tax",
+    "url": "/noelotools/tools/pdf-table-to-excel/",
+    "icon": "file-spreadsheet",
+    "keywords": [
+      "pdf to excel",
+      "pdf table extractor",
+      "pdf to csv",
+      "bank statement to excel"
+    ],
+    "status": "available",
+    "browserOnly": true
   }
 ]

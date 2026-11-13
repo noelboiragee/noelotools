@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- বাংলা: নতুন টুল পেজের প্রাথমিক HTML কাঠামো। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Extract tables from text-based PDF files and export them to Excel or CSV. Free, browser-based conversion with preview and column controls.">
+  <meta name="theme-color" content="#ffffff">
+  <title>PDF Table to Excel — Free Online Tool | NoeloTools</title>
+  <link rel="canonical" href="https://noelotools.com/tools/pdf-table-to-excel/">
+  <link rel="stylesheet" href="/noelotools/assets/css/theme.css">
+  <link rel="stylesheet" href="/noelotools/assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <script type="module" src="../../assets/js/main.js"></script>
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <!-- বাংলা: কিবোর্ড ও স্ক্রিন রিডার ব্যবহারকারীদের জন্য দ্রুত নেভিগেশন। -->
+  <a class="skip-link" href="#main-content">Skip to tool</a>
+
+  <!-- বাংলা: প্রকাশিত পেজে shared/header.html-এর কনটেন্ট এখানে বসাতে হবে। -->
+  <header class="site-header" data-site-header>
+    <div class="container header-inner">
+      <a class="site-brand" href="../../" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" data-primary-nav aria-label="Main navigation">
+        <a href="../../#tools">All tools</a>
+        <a href="../../#categories">Categories</a>
+        <a href="../../blog/">Blog</a>
+        <a href="../../pages/about/">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="button button-ghost" type="button" data-theme-toggle aria-pressed="false">
+          <span data-theme-label>Dark mode</span>
+        </button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container tool-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../../#categories">Money &amp; Tax</a><span aria-hidden="true">/</span><span aria-current="page">PDF Table to Excel</span></nav>
+    <h1>PDF Table to Excel</h1>
+<p>Convert a text-based PDF table, such as a bank statement, into an Excel (XLSX) or CSV file. Everything runs in your browser and your PDF is not uploaded.</p>
+<section class="ptx" aria-labelledby="ptx-heading">
+  <h2 id="ptx-heading">Use the tool</h2>
+  <label class="ptx-drop" id="ptx-drop" for="ptx-file"><span class="ptx-drop-title">Choose a PDF</span><span class="ptx-drop-hint">or drop it here. Text-based PDFs only, up to 30 MB.</span></label>
+  <input class="ptx-file" id="ptx-file" type="file" accept="application/pdf,.pdf">
+  <p class="ptx-status" id="ptx-status" role="status" aria-live="polite"></p>
+  <fieldset class="ptx-options" id="ptx-options" hidden>
+    <legend>Adjust the result</legend>
+    <div class="ptx-field"><label for="ptx-gap">Column spacing: <output id="ptx-gap-value" for="ptx-gap">0.8</output></label><input id="ptx-gap" type="range" min="0.3" max="3" step="0.1" value="0.8"><span class="ptx-help">Lower it if two columns are joined. Raise it if one column is split.</span></div>
+    <div class="ptx-field"><label for="ptx-numbers">Numbers in the Excel file</label><select id="ptx-numbers"><option value="text" selected>Keep as text (safest)</option><option value="eu">Convert to numbers: 1.234,56 (European)</option><option value="en">Convert to numbers: 1,234.56 (English)</option></select></div>
+    <div class="ptx-field"><label for="ptx-delimiter">CSV separator</label><select id="ptx-delimiter"><option value=";" selected>Semicolon ( ; )</option><option value=",">Comma ( , )</option><option value="tab">Tab</option></select></div>
+    <div class="ptx-check"><input id="ptx-repeated" type="checkbox" checked><label for="ptx-repeated">Remove repeated header rows on each page</label></div>
+    <div class="ptx-check"><input id="ptx-single" type="checkbox"><label for="ptx-single">Remove rows with only one cell (titles, page numbers)</label></div>
+  </fieldset>
+  <div class="ptx-result" id="ptx-result" hidden><p class="ptx-summary" id="ptx-summary"></p><div class="ptx-preview" id="ptx-preview" tabindex="0" aria-label="Table preview"></div><div class="ptx-actions"><button type="button" class="ptx-btn ptx-btn-primary" id="ptx-xlsx">Download Excel (XLSX)</button><button type="button" class="ptx-btn" id="ptx-csv">Download CSV</button><button type="button" class="ptx-btn" id="ptx-reset">Start over</button></div><p class="ptx-warning">Check the result against the original document before you use it. Automatic extraction can misplace columns or miss rows.</p></div>
+</section>
+<h2>How to use</h2><ol><li>Choose a PDF that has selectable text, or drop it on the box.</li><li>Check the preview. If columns are joined or split, move the column spacing slider.</li><li>Choose how numbers should appear, then download the XLSX or CSV file.</li></ol>
+<h2>Frequently asked questions</h2>
+<h3>Is my PDF uploaded to a server?</h3><p>No. The file is read and converted in your browser. The PDF and Excel libraries load from a public CDN when the page opens, so you need an internet connection to load the page.</p>
+<h3>Does it work with scanned PDFs?</h3><p>No. Scanned PDFs are images and have no text to read. They need OCR, which this tool does not include.</p>
+<h3>Why are some columns wrong?</h3><p>Every bank lays out its statements differently. The tool finds columns by the position of the text, so it can be wrong on unusual layouts. Change the column spacing slider and check the preview.</p>
+<h3>Are numbers converted automatically?</h3><p>Only if you choose it. By default values stay as text so nothing changes silently. Choose European or English format to get real numbers in Excel. Values with leading zeros and very long digit strings stay as text.</p>
+<h3>Why does the CSV keep the original text?</h3><p>The CSV contains the values exactly as written in the PDF. Use the XLSX download if you want converted numbers.</p>
+<h2>Related tools</h2><ul><li><a href="../merge-pdf/">Merge PDF</a></li><li><a href="../compress-pdf/">Compress PDF</a></li><li><a href="../currency-converter/">Currency Converter</a></li></ul>
+  </main>
+
+  <!-- বাংলা: প্রকাশিত পেজে shared/footer.html-এর কনটেন্ট এখানে বসাতে হবে। -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a class="site-brand" href="../../"><span class="site-brand-mark">N</span><span>NoeloTools</span></a><p class="footer-description">Free online tools for everything. All in one place.</p></div>
+        <div class="footer-column"><h2>Explore</h2><ul class="footer-links"><li><a href="../../#tools">All tools</a></li><li><a href="/#categories">Categories</a></li></ul></div>
+        <div class="footer-column"><h2>Company</h2><ul class="footer-links"><li><a href="../../pages/about/">About</a></li><li><a href="../../pages/contact/">Contact</a></li></ul></div>
+        <div class="footer-column"><h2>Legal</h2><ul class="footer-links"><li><a href="../../pages/privacy-policy/">Privacy policy</a></li><li><a href="../../pages/cookie-policy/">Cookie policy</a></li><li><a href="../../pages/terms/">Terms</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com</span><span>Made for a simpler web.</span></div>
+    </div>
+  </footer>
+
+  <!-- বাংলা: কুকি সম্মতির UI; shared/cookie-consent.html-এর সমতুল্য। -->
+  <section class="cookie-banner" data-cookie-banner role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
+    <h2 id="cookie-title">Your privacy matters</h2>
+    <p id="cookie-description">Optional analytics and advertising are only enabled with your permission.</p>
+    <div class="cookie-actions">
+      <button class="button button-primary" type="button" data-cookie-accept>Accept all</button>
+      <button class="button button-secondary" type="button" data-cookie-reject>Reject optional</button>
+      <button class="button button-ghost" type="button" data-cookie-customise>Customise</button>
+    </div>
+    <div class="cookie-settings" data-cookie-settings hidden>
+      <label><input type="checkbox" checked disabled> Necessary (always active)</label><br>
+      <label><input type="checkbox" name="cookie-analytics"> Analytics</label><br>
+      <label><input type="checkbox" name="cookie-advertising"> Advertising</label><br>
+      <button class="button button-primary" type="button" data-cookie-save>Save preferences</button>
+    </div>
+  </section>
+</body>
+</html>
