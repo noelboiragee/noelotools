@@ -199,6 +199,25 @@
     var cards = [];
     var dots = [];
     var active = 0;
+    var autoplayTimer = null;
+    var autoplayDelay = 4000;
+    var autoplayPaused = false;
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function stopAutoplay() {
+      if (autoplayTimer !== null) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      if (reducedMotion || autoplayPaused || document.hidden || cards.length < 2) return;
+      autoplayTimer = setInterval(function () {
+        go(active + 1);
+      }, autoplayDelay);
+    }
 
     fetch(src, { credentials: 'same-origin' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
@@ -208,6 +227,7 @@
         build();
         root.hidden = false;
         layout();
+        startAutoplay();
       })
       .catch(function (err) { if (window.console) console.warn('Category carousel skipped:', err); });
 
@@ -301,7 +321,32 @@
       var n = cards.length;
       active = ((i % n) + n) % n;
       layout();
+      startAutoplay();
     }
+
+    // ব্যবহারকারী কার্ডে কাজ করলে অটো-চেঞ্জ থামে; বের হলে আবার শুরু হয়
+    root.addEventListener('mouseenter', function () { autoplayPaused = true; stopAutoplay(); });
+    root.addEventListener('mouseleave', function () { autoplayPaused = false; startAutoplay(); });
+    root.addEventListener('focusin', function () { autoplayPaused = true; stopAutoplay(); });
+    root.addEventListener('focusout', function () {
+      setTimeout(function () {
+        if (!root.contains(document.activeElement)) {
+          autoplayPaused = false;
+          startAutoplay();
+        }
+      }, 0);
+    });
+    stage.addEventListener('pointerdown', function () { autoplayPaused = true; stopAutoplay(); });
+    function resumeAfterPointer() {
+      autoplayPaused = false;
+      startAutoplay();
+    }
+    stage.addEventListener('pointerup', resumeAfterPointer);
+    stage.addEventListener('pointercancel', resumeAfterPointer);
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stopAutoplay();
+      else startAutoplay();
+    });
 
     prevBtn.addEventListener('click', function () { go(active - 1); });
     nextBtn.addEventListener('click', function () { go(active + 1); });
