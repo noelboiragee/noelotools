@@ -81,3 +81,34 @@ $("#reset").addEventListener("click", () => {
   image = null; widthInput.value = 800; heightInput.value = 600; mode.value = "pixels"; lock.checked = true;
   updateDimensions(); result.hidden = true;
 });
+
+// Tap a preview to inspect it in a large, screen-fitted lightbox.
+const lightbox = document.createElement("dialog");
+lightbox.className = "image-lightbox";
+lightbox.setAttribute("aria-label", "Image preview");
+lightbox.innerHTML = '<button type="button" class="image-lightbox-close" aria-label="Close image preview">×</button><img alt="Enlarged image preview">';
+document.body.append(lightbox);
+const lightboxImage = lightbox.querySelector("img");
+function openImagePreview(preview) {
+  if (preview.hidden || !preview.src) return;
+  lightboxImage.src = preview.src;
+  lightboxImage.alt = preview.alt || "Enlarged image preview";
+  if (!lightbox.open) lightbox.showModal();
+}
+[before, after].forEach((preview) => {
+  preview.tabIndex = 0;
+  preview.setAttribute("role", "button");
+  preview.setAttribute("aria-label", "Tap to enlarge " + (preview.alt || "image"));
+  preview.addEventListener("click", () => openImagePreview(preview));
+  preview.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openImagePreview(preview);
+    }
+  });
+});
+lightbox.querySelector(".image-lightbox-close").addEventListener("click", () => lightbox.close());
+lightbox.addEventListener("click", (event) => {
+  if (event.target === lightbox) lightbox.close();
+});
+lightbox.addEventListener("close", () => { lightboxImage.removeAttribute("src"); });
