@@ -35,7 +35,7 @@
     if (s.indexOf('every') === 0) return 'everyday';
     if (s.indexOf('dev') === 0) return 'developer';
     if (s.indexOf('media') === 0 || s.indexOf('image') === 0) return 'media';
-    return '';
+    return s;
   }
 
   // বাংলা: tools.json-এর বিভিন্ন গঠন সামলায় (অ্যারে, {tools:[]}, {items:[]})
@@ -72,14 +72,24 @@
       });
     });
     var result = [];
-    ORDER.concat(Object.keys(CATEGORIES)).forEach(function (key) {
+    // বাংলা: পরিচিত ক্যাটাগরির পর tools.json-এ থাকা সব নতুন ক্যাটাগরিও যোগ হয়
+    ORDER.concat(Object.keys(groups)).forEach(function (key) {
       if (!groups[key] || result.some(function (g) { return g.key === key; })) return;
       if (groups[key].length < minTools) return;
       var tools = groups[key];
       var top = tools.filter(function (t) { return t.featured; })
         .concat(tools.filter(function (t) { return !t.featured; }))
         .slice(0, 3);
-      result.push({ key: key, meta: CATEGORIES[key], count: tools.length, top: top });
+      var meta = CATEGORIES[key];
+      if (!meta) {
+        var label = key.split('-').map(function (part) {
+          return part.charAt(0).toUpperCase() + part.slice(1);
+        }).join(' ');
+        var hue = 0;
+        for (var h = 0; h < key.length; h++) hue = (hue * 31 + key.charCodeAt(h)) % 360;
+        meta = { label: label, icon: '✦', hue: hue };
+      }
+      result.push({ key: key, meta: meta, count: tools.length, top: top });
     });
     return result;
   }
