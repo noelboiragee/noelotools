@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- বাংলা: নতুন টুল পেজের প্রাথমিক HTML কাঠামো। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="[Write a clear description of this tool in 150–160 characters.]">
+  <meta name="theme-color" content="#ffffff">
+  <title>[Tool Name] — Free Online Tool | NoeloTools</title>
+  <link rel="canonical" href="https://noelotools.com/tools/[tool-slug]/">
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="/assets/js/main.js"></script>
+  <script type="module" src="./script.js"></script>
+</head>
+<body>
+  <!-- বাংলা: কিবোর্ড ও স্ক্রিন রিডার ব্যবহারকারীদের জন্য দ্রুত নেভিগেশন। -->
+  <a class="skip-link" href="#main-content">Skip to tool</a>
+
+  <!-- বাংলা: প্রকাশিত পেজে shared/header.html-এর কনটেন্ট এখানে বসাতে হবে। -->
+  <header class="site-header" data-site-header>
+    <div class="container header-inner">
+      <a class="site-brand" href="/" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" data-primary-nav aria-label="Main navigation">
+        <a href="/#tools">All tools</a>
+        <a href="/#categories">Categories</a>
+        <a href="/blog/">Blog</a>
+        <a href="/pages/about/">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="button button-ghost" type="button" data-theme-toggle aria-pressed="false">
+          <span data-theme-label>Dark mode</span>
+        </button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container tool-page">
+    <!-- বাংলা: টুলের পরিচিতি ও সংক্ষিপ্ত নির্দেশনা। -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#categories">[Category]</a><span aria-hidden="true">/</span><span aria-current="page">[Tool Name]</span>
+    </nav>
+
+    <header class="tool-intro">
+      <p class="eyebrow">[Category]</p>
+      <h1>[Tool Name]</h1>
+      <p>[Explain what the tool does and who it helps.]</p>
+    </header>
+
+    <!-- বাংলা: প্রতিটি টুলের নিজস্ব ইনপুট, অপশন ও ফলাফল এখানে তৈরি হবে। -->
+    <section class="tool-workspace card" aria-labelledby="workspace-title">
+      <h2 id="workspace-title">Use the tool</h2>
+      <div class="tool-inputs" data-tool-inputs>
+        <p class="tool-placeholder">Replace this area with the controls required by your tool.</p>
+      </div>
+      <div class="tool-actions">
+        <button class="button button-primary" type="button" data-tool-run>Run tool</button>
+        <button class="button button-secondary" type="button" data-tool-reset>Reset</button>
+      </div>
+      <div class="tool-result" data-tool-result aria-live="polite" hidden></div>
+    </section>
+
+    <!-- বাংলা: টুলের ব্যবহারবিধি ও সহায়ক তথ্য যোগ করার জায়গা। -->
+    <section class="tool-guide">
+      <h2>How to use [Tool Name]</h2>
+      <ol>
+        <li>[Add the first step.]</li>
+        <li>[Add the next step.]</li>
+        <li>[Explain how to use or save the result.]</li>
+      </ol>
+      <h2>Frequently asked questions</h2>
+      <details><summary>[Add a common question]</summary><p>[Add a concise, accurate answer.]</p></details>
+    </section>
+  </main>
+
+  <!-- বাংলা: প্রকাশিত পেজে shared/footer.html-এর কনটেন্ট এখানে বসাতে হবে। -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a class="site-brand" href="/"><span class="site-brand-mark">N</span><span>NoeloTools</span></a><p class="footer-description">Free online tools for everything. All in one place.</p></div>
+        <div class="footer-column"><h2>Explore</h2><ul class="footer-links"><li><a href="/#tools">All tools</a></li><li><a href="/#categories">Categories</a></li></ul></div>
+        <div class="footer-column"><h2>Company</h2><ul class="footer-links"><li><a href="/pages/about/">About</a></li><li><a href="/pages/contact/">Contact</a></li></ul></div>
+        <div class="footer-column"><h2>Legal</h2><ul class="footer-links"><li><a href="/pages/privacy-policy/">Privacy policy</a></li><li><a href="/pages/cookie-policy/">Cookie policy</a></li><li><a href="/pages/terms/">Terms</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com</span><span>Made for a simpler web.</span></div>
+    </div>
+  </footer>
+
+  <!-- বাংলা: কুকি সম্মতির UI; shared/cookie-consent.html-এর সমতুল্য। -->
+  <section class="cookie-banner" data-cookie-banner role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
+    <h2 id="cookie-title">Your privacy matters</h2>
+    <p id="cookie-description">Optional analytics and advertising are only enabled with your permission.</p>
+    <div class="cookie-actions">
+      <button class="button button-primary" type="button" data-cookie-accept>Accept all</button>
+      <button class="button button-secondary" type="button" data-cookie-reject>Reject optional</button>
+      <button class="button button-ghost" type="button" data-cookie-customise>Customise</button>
+    </div>
+    <div class="cookie-settings" data-cookie-settings hidden>
+      <label><input type="checkbox" checked disabled> Necessary (always active)</label><br>
+      <label><input type="checkbox" name="cookie-analytics"> Analytics</label><br>
+      <label><input type="checkbox" name="cookie-advertising"> Advertising</label><br>
+      <button class="button button-primary" type="button" data-cookie-save>Save preferences</button>
+    </div>
+  </section>
+</body>
+</html>
