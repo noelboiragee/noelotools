@@ -15,6 +15,7 @@ let currentRates = null;
 let currentBase = null;
 let lastUpdated = null;
 let loading = false;
+let latestRequestId = 0;
 
 function formatCurrency(value, currency) {
   try {
@@ -43,12 +44,12 @@ function showError(message) {
 }
 
 async function fetchRates(base, forceRefresh = false) {
-  if (loading) return;
   if (!forceRefresh && currentBase === base && currentRates) {
     calculate();
     return;
   }
 
+  const requestId = ++latestRequestId;
   setLoading(true);
   errorMessage.hidden = true;
   updatedLabel.textContent = "Fetching latest available rates…";
@@ -63,6 +64,9 @@ async function fetchRates(base, forceRefresh = false) {
       throw new Error("The exchange-rate service returned an invalid response.");
     }
 
+    // সর্বশেষ নির্বাচিত মুদ্রার অনুরোধের ফলই শুধু গ্রহণ করা হবে।
+    if (requestId !== latestRequestId) return;
+
     currentBase = base;
     currentRates = data.rates;
     lastUpdated = data.time_last_update_utc || null;
@@ -71,10 +75,11 @@ async function fetchRates(base, forceRefresh = false) {
       ? "Rates last updated by provider: " + lastUpdated
       : "Rate data loaded from provider.";
   } catch (error) {
+    if (requestId !== latestRequestId) return;
     showError(error.message || "Unable to load exchange rates. Check your connection and try again.");
     updatedLabel.textContent = "Exchange rates unavailable.";
   } finally {
-    setLoading(false);
+    if (requestId === latestRequestId) setLoading(false);
   }
 }
 
