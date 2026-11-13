@@ -27,20 +27,28 @@
   margin-left: calc(min(64vw, 300px) / -2);
   min-height: 19rem;
   box-sizing: border-box;
-  padding: 1.25rem 1.25rem 1rem;
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-  border: 0;
-  border-radius: 24px;
-  transition: transform .55s cubic-bezier(.22,.8,.3,1), opacity .4s ease, visibility .4s ease;
+  transition: transform .55s cubic-bezier(.22,.8,.3,1), opacity .4s ease;
   transform-style: preserve-3d;
   will-change: transform, opacity;
 }
+.cc-content {
+  position: relative;
+  z-index: 2;
+  min-height: 19rem;
+  box-sizing: border-box;
+  padding: 1.25rem 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--border, #ddd));
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface, #fff));
+  box-shadow: 0 8px 22px -15px color-mix(in srgb, var(--accent) 65%, transparent);
+}
+.cc-card:not(.is-active) > .cc-content { opacity: 0; }
 .cc-surface {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   transform-style: preserve-3d;
   pointer-events: none;
 }
@@ -48,26 +56,19 @@
   position: absolute;
   top: 0;
   bottom: 0;
+  overflow: hidden;
   box-sizing: border-box;
-  background: color-mix(in srgb, var(--accent) 13%, var(--surface, #fff));
-  border-top: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-bottom: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-left: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-  box-shadow: 0 8px 18px -14px color-mix(in srgb, var(--accent) 55%, transparent);
+  transform-origin: 50% 50%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
-.cc-surface-strip.is-first {
-  border-left: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-radius: 24px 0 0 24px;
+.cc-content-copy {
+  position: absolute;
+  top: 0;
+  min-height: 19rem;
+  pointer-events: none;
 }
-.cc-surface-strip.is-last {
-  border-right: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-radius: 0 24px 24px 0;
-}
-.cc-card > :not(.cc-surface) { position: relative; z-index: 2; }
-.cc-card.is-active .cc-surface-strip {
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface, #fff));
-}
+.cc-card.is-active .cc-surface { display: none; }
 .cc-card.is-active {
   filter: drop-shadow(0 18px 18px color-mix(in srgb, var(--accent) 24%, transparent));
 }
