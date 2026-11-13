@@ -1,0 +1,274 @@
+/* এই ফাইলের কাজ: NoeloTools-এর Global Layout, Typography, Container ও সাধারণ Utility Class নির্ধারণ করা। */
+
+/* সব HTML এলিমেন্টের ডিফল্ট বক্স মডেল ও মার্জিন নিয়ন্ত্রণ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* পেজের প্রস্থ, স্ক্রলিং ও ডিফল্ট মার্জিন নিয়ন্ত্রণ */
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* পুরো ওয়েবসাইটের মূল লেআউট */
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ছবি, ভিডিও ও SVG-কে কন্টেইনারের মধ্যে রাখা */
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ফর্মের উপাদানে একই ফন্ট ব্যবহার */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* বাটনে ক্লিকযোগ্য কার্সর দেখানো */
+button {
+  cursor: pointer;
+}
+
+/* লিংকের সাধারণ আচরণ */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+/* লিংকের হোভার রং */
+a:hover {
+  color: var(--primary);
+}
+
+/* তালিকার ডিফল্ট চিহ্ন সরানো */
+ul,
+ol {
+  list-style: none;
+}
+
+/* সব শিরোনামের সাধারণ Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* অনুচ্ছেদের সাধারণ স্টাইল */
+p {
+  margin-bottom: var(--space-4);
+  color: var(--text-muted);
+}
+
+/* মূল কন্টেন্টের সর্বোচ্চ প্রস্থ */
+.container {
+  width: min(calc(100% - 40px), var(--container-width));
+  margin-inline: auto;
+}
+
+/* প্রশস্ত কন্টেন্টের জন্য কন্টেইনার */
+.container-wide {
+  width: min(calc(100% - 32px), 1440px);
+  margin-inline: auto;
+}
+
+/* ছোট কন্টেন্ট ও আর্টিকেলের জন্য কন্টেইনার */
+.container-small {
+  width: min(calc(100% - 40px), 800px);
+  margin-inline: auto;
+}
+
+/* প্রতিটি সেকশনের ওপর-নিচের ফাঁকা জায়গা */
+.section {
+  padding-block: var(--section-padding);
+}
+
+/* সেকশনের শিরোনাম ও বর্ণনার গ্রুপ */
+.section-header {
+  max-width: 720px;
+  margin: 0 auto var(--space-10);
+  text-align: center;
+}
+
+/* সেকশনের মূল শিরোনাম */
+.section-title {
+  margin-bottom: var(--space-3);
+  font-size: clamp(1.65rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+/* সেকশনের সংক্ষিপ্ত বর্ণনা */
+.section-description {
+  max-width: 620px;
+  margin-inline: auto;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* সেকশনের ছোট পরিচিতিমূলক লেবেল */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* সাধারণ কন্টেন্ট শিরোনাম */
+.content-title {
+  margin-bottom: var(--space-4);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: -0.035em;
+}
+
+/* সাধারণ কন্টেন্টের বর্ণনা */
+.content-text {
+  max-width: 760px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+/* সাধারণ টেক্সট অ্যালাইনমেন্ট */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+/* পুনর্ব্যবহারযোগ্য Flex Layout */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* পুনর্ব্যবহারযোগ্য Grid Layout */
+.grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* কন্টেন্টের সর্বোচ্চ প্রস্থ নির্ধারণ */
+.max-width-sm {
+  max-width: 480px;
+}
+
+.max-width-md {
+  max-width: 720px;
+}
+
+.max-width-lg {
+  max-width: 960px;
+}
+
+/* সাধারণ মার্জিন ইউটিলিটি */
+.mt-2 { margin-top: var(--space-2); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+
+/* সহায়ক প্রযুক্তির জন্য দৃশ্যমান নয় এমন লেখা */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* প্রয়োজন অনুযায়ী কোনো উপাদান লুকানো */
+.hidden {
+  display: none !important;
+}
+
+/* মোবাইলে কন্টেইনার ও সেকশনের ফাঁকা জায়গা সামঞ্জস্য */
+@media (max-width: 767px) {
+  .container,
+  .container-small {
+    width: calc(100% - 32px);
+  }
+
+  .container-wide {
+    width: calc(100% - 24px);
+  }
+
+  .section-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .section-description {
+    font-size: 0.9375rem;
+  }
+}
+
+/* খুব ছোট মোবাইল স্ক্রিনের জন্য অতিরিক্ত সমন্বয় */
+@media (max-width: 380px) {
+  .container,
+  .container-small {
+    width: calc(100% - 24px);
+  }
+
+  .section {
+    padding-block: 36px;
+  }
+}
+
+/* অ্যানিমেশন কমানোর সিস্টেম পছন্দ মেনে চলা */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
