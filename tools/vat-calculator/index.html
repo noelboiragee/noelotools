@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculate VAT, net price and gross price with a free online VAT calculator.">
+  <title>VAT Calculator - NoeloTools</title>
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <!-- নেভিগেশন হেডার -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="/" aria-label="NoeloTools home"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
+      <nav class="primary-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/#categories">Categories</a><a href="/blog/">Blog</a></nav>
+      <div class="header-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button></div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/#categories">Money &amp; Tax</a><span>/</span><span aria-current="page">VAT Calculator</span></nav>
+    <section class="tool-intro">
+      <p class="eyebrow">MONEY &amp; TAX</p>
+      <h1>VAT Calculator</h1>
+      <p>Calculate VAT, net price and gross price in seconds.</p>
+    </section>
+
+    <section class="calculator-card" aria-labelledby="calculator-title">
+      <h2 id="calculator-title">VAT calculation</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label for="calculation-mode">Calculation</label>
+          <select id="calculation-mode">
+            <option value="add">Add VAT to net price</option>
+            <option value="remove">Remove VAT from gross price</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="USD">USD ($)</option>
+            <option value="PLN">PLN (zł)</option>
+            <option value="CHF">CHF</option>
+            <option value="BDT">BDT (৳)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="amount" id="amount-label">Net price</label>
+          <input id="amount" type="number" min="0" step="0.01" value="100" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="vat-rate">VAT rate (%)</label>
+          <input id="vat-rate" type="number" min="0" max="100" step="0.01" value="20" inputmode="decimal">
+        </div>
+      </div>
+
+      <div class="results" aria-live="polite" aria-atomic="true">
+        <div class="result-item"><span>Net price</span><strong id="net-result">€100.00</strong></div>
+        <div class="result-item"><span>VAT amount</span><strong id="vat-result">€20.00</strong></div>
+        <div class="result-item result-total"><span>Gross price</span><strong id="gross-result">€120.00</strong></div>
+      </div>
+      <p class="input-error" id="error-message" role="alert" hidden>Please enter a valid amount and VAT rate between 0 and 100.</p>
+      <button class="button button-secondary reset-button" id="reset-button" type="button">Reset calculator</button>
+    </section>
+
+    <section class="tool-info">
+      <h2>How to use the VAT calculator</h2>
+      <ol>
+        <li>Choose whether to add VAT to a net price or remove VAT from a gross price.</li>
+        <li>Select a currency and enter the amount.</li>
+        <li>Enter the applicable VAT rate to see the net price, VAT amount and gross price.</li>
+      </ol>
+      <p class="disclaimer">VAT rates vary by country, product and service. Check the rate that applies to your situation; this calculator provides estimates and is not tax advice.</p>
+    </section>
+  </main>
+
+  <!-- পাদদেশ -->
+  <footer class="site-footer"><div class="footer-bottom"><span>© <span id="current-year">2026</span> NoeloTools</span><a href="/pages/privacy-policy/">Privacy</a><a href="/pages/contact/">Contact</a></div></footer>
+</body>
+</html>
