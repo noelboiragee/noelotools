@@ -50,7 +50,10 @@ function applyConsent(consent) {
 }
 
 export function initCookieConsent() {
+  if (typeof document === "undefined" || !document.documentElement) return;
   const banner = document.querySelector("[data-cookie-banner]");
+  const hasControls = document.querySelector("[data-cookie-accept], [data-cookie-reject], [data-cookie-customise], [data-cookie-save], [data-cookie-open-settings]");
+  if (!banner && !hasControls) return;
   const settings = document.querySelector("[data-cookie-settings]");
   const currentConsent = readConsent();
 
