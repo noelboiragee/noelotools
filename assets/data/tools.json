@@ -4,7 +4,7 @@
     "name": "Merge PDF",
     "description": "Combine multiple PDF files into one document.",
     "category": "pdf",
-    "url": "/tools/merge-pdf/",
+    "url": "/noelotools/tools/merge-pdf/",
     "icon": "file-plus-2",
     "keywords": [
       "combine pdf",
@@ -19,7 +19,7 @@
     "name": "Compress PDF",
     "description": "Reduce PDF file size while keeping documents readable.",
     "category": "pdf",
-    "url": "/tools/compress-pdf/",
+    "url": "/noelotools/tools/compress-pdf/",
     "icon": "file-archive",
     "keywords": [
       "reduce pdf size",
@@ -33,7 +33,7 @@
     "name": "Loan Calculator",
     "description": "Estimate monthly loan payments, interest and total repayment.",
     "category": "money-tax",
-    "url": "/tools/loan-calculator/",
+    "url": "/noelotools/tools/loan-calculator/",
     "icon": "calculator",
     "keywords": [
       "monthly payment",
@@ -48,7 +48,7 @@
     "name": "VAT Calculator",
     "description": "Add or remove VAT and calculate the tax amount.",
     "category": "money-tax",
-    "url": "/tools/vat-calculator/",
+    "url": "/noelotools/tools/vat-calculator/",
     "icon": "receipt",
     "keywords": [
       "value added tax",
@@ -60,26 +60,11 @@
     "browserOnly": true
   },
   {
-    "id": "net-salary-germany",
-    "name": "Net Salary Germany",
-    "description": "Estimate take-home pay in Germany from gross salary.",
-    "category": "money-tax",
-    "url": "/tools/net-salary-germany/",
-    "icon": "wallet",
-    "keywords": [
-      "germany salary",
-      "gross to net",
-      "take home pay"
-    ],
-    "status": "available",
-    "browserOnly": true
-  },
-  {
     "id": "europe-salary-calculator",
     "name": "Europe Salary Calculator",
     "description": "Estimate take-home pay in Germany; additional European country models are in progress.",
     "category": "money-tax",
-    "url": "/tools/europe-salary-calculator/",
+    "url": "/noelotools/tools/europe-salary-calculator/",
     "icon": "globe",
     "keywords": [
       "europe salary",
@@ -94,7 +79,7 @@
     "name": "Currency Converter",
     "description": "Convert amounts between supported currencies.",
     "category": "money-tax",
-    "url": "/tools/currency-converter/",
+    "url": "/noelotools/tools/currency-converter/",
     "icon": "arrow-left-right",
     "keywords": [
       "exchange rate",
@@ -109,7 +94,7 @@
     "name": "Adult BMI Calculator (18+)",
     "description": "Adult BMI screening calculator (18+). Not intended for people under 18.",
     "category": "health",
-    "url": "/tools/bmi-calculator/",
+    "url": "/noelotools/tools/bmi-calculator/",
     "icon": "heart-pulse",
     "keywords": [
       "adult bmi",
@@ -124,7 +109,7 @@
     "name": "Word Counter",
     "description": "Count words, characters, sentences and paragraphs.",
     "category": "writing",
-    "url": "/tools/word-counter/",
+    "url": "/noelotools/tools/word-counter/",
     "icon": "text",
     "keywords": [
       "character counter",
@@ -139,7 +124,7 @@
     "name": "QR Code Generator",
     "description": "Create a QR code from text or a web address.",
     "category": "everyday",
-    "url": "/tools/qr-code-generator/",
+    "url": "/noelotools/tools/qr-code-generator/",
     "icon": "qr-code",
     "keywords": [
       "qr code",
@@ -154,7 +139,7 @@
     "name": "Password Generator",
     "description": "Generate a strong random password in your browser.",
     "category": "developer",
-    "url": "/tools/password-generator/",
+    "url": "/noelotools/tools/password-generator/",
     "icon": "key-round",
     "keywords": [
       "random password",
