@@ -1,6 +1,21 @@
-// বাংলা: Date Difference Calculator টুলের সব প্রসেসিং ব্যবহারকারীর ব্রাউজারেই সম্পন্ন হয়।
-const $=(selector)=>document.querySelector(selector);
-function showResult(node,message){node.textContent=message;node.dataset.kind="success";node.hidden=false;}
-function showError(node,message){node.textContent=message;node.dataset.kind="error";node.hidden=false;}
-function fmt(n){return new Intl.NumberFormat("en-GB",{maximumFractionDigits:8}).format(n);}
-const s=document.querySelector("#start"),e=document.querySelector("#end"),inc=document.querySelector("#include"),out=document.querySelector("#result");function parse(s){const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s.trim());if(!m)return null;const d=new Date(+m[3],+m[2]-1,+m[1]);return d.getFullYear()===+m[3]&&d.getMonth()===+m[2]-1&&d.getDate()===+m[1]?d:null;}document.querySelector("#calculate").addEventListener("click",()=>{let a=parse(s.value),b=parse(e.value);if(!a||!b){showError(out,"Enter both dates in valid DD/MM/YYYY format.");return;}if(a>b)[a,b]=[b,a];const days=Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/86400000)+(inc.checked?1:0);let months=(b.getFullYear()-a.getFullYear())*12+b.getMonth()-a.getMonth();if(b.getDate()<a.getDate())months--;const weeks=days/7;showResult(out,days+" days · "+fmt(weeks)+" weeks · "+months+" complete calendar months. "+(inc.checked?"End date included.":"End date excluded."));});document.querySelector("#reset").addEventListener("click",()=>{s.value="";e.value="";inc.checked=false;out.hidden=true;});
+// Date Difference Calculator — native date inputs provide calendar pickers.
+const $ = (s) => document.querySelector(s);
+const start = $("#start"), end = $("#end"), include = $("#include"), out = $("#result");
+function localDate(value) {
+  if (!value) return null;
+  const [y, m, d] = value.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d ? date : null;
+}
+function show(message, kind = "success") { out.textContent = message; out.dataset.kind = kind; out.hidden = false; }
+$("#calculate").addEventListener("click", () => {
+  let a = localDate(start.value), b = localDate(end.value);
+  if (!a || !b) return show("Choose both dates from the calendar.", "error");
+  if (a > b) [a, b] = [b, a];
+  const days = Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000) + (include.checked ? 1 : 0);
+  let months = (b.getFullYear() - a.getFullYear()) * 12 + b.getMonth() - a.getMonth();
+  if (b.getDate() < a.getDate()) months--;
+  const weeks = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 }).format(days / 7);
+  show(`${days} days · ${weeks} weeks · ${months} complete calendar months. ${include.checked ? "End date included." : "End date excluded."}`);
+});
+$("#reset").addEventListener("click", () => { start.value = ""; end.value = ""; include.checked = false; out.hidden = true; });
