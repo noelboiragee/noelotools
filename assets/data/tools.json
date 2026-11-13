@@ -147,5 +147,162 @@
     ],
     "status": "available",
     "browserOnly": true
+  },
+  {
+    "id": "percentage-calculator",
+    "name": "Percentage Calculator",
+    "description": "Calculate a percentage of a number, find what percentage one number is of another, or calculate percentage change.",
+    "category": "math",
+    "icon": "percent",
+    "keywords": [
+      "percentage of",
+      "percent change",
+      "percentage increase",
+      "percentage decrease"
+    ],
+    "url": "/noelotools/tools/percentage-calculator/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "unit-converter",
+    "name": "Unit Converter",
+    "description": "Convert length, weight, temperature, volume, area and speed with metric-first units.",
+    "category": "math",
+    "icon": "ruler",
+    "keywords": [
+      "metric converter",
+      "kilometres",
+      "kilograms",
+      "celsius",
+      "litres"
+    ],
+    "url": "/noelotools/tools/unit-converter/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "age-calculator",
+    "name": "Age Calculator",
+    "description": "Calculate an exact age in years, months and days, plus the days until the next birthday.",
+    "category": "everyday",
+    "icon": "cake",
+    "keywords": [
+      "date of birth",
+      "birthday countdown",
+      "exact age"
+    ],
+    "url": "/noelotools/tools/age-calculator/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "date-difference-calculator",
+    "name": "Date Difference Calculator",
+    "description": "Calculate the days, weeks and calendar months between two dates, including or excluding the end date.",
+    "category": "everyday",
+    "icon": "calendar-days",
+    "keywords": [
+      "days between dates",
+      "date calculator",
+      "weeks between dates"
+    ],
+    "url": "/noelotools/tools/date-difference-calculator/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "json-formatter",
+    "name": "JSON Formatter",
+    "description": "Format, minify and validate JSON with useful error position details and one-click copy.",
+    "category": "developer",
+    "icon": "braces",
+    "keywords": [
+      "json validator",
+      "pretty print json",
+      "minify json"
+    ],
+    "url": "/noelotools/tools/json-formatter/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "base64-encoder-decoder",
+    "name": "Base64 Encoder & Decoder",
+    "description": "Encode or decode UTF-8 text as Base64 directly in your browser.",
+    "category": "developer",
+    "icon": "binary",
+    "keywords": [
+      "base64 encode",
+      "base64 decode",
+      "utf8 base64"
+    ],
+    "url": "/noelotools/tools/base64-encoder-decoder/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "text-case-converter",
+    "name": "Text Case Converter",
+    "description": "Convert text to uppercase, lowercase, title case, sentence case, camelCase, snake_case and kebab-case.",
+    "category": "writing",
+    "icon": "case-sensitive",
+    "keywords": [
+      "uppercase",
+      "lowercase",
+      "title case",
+      "camel case"
+    ],
+    "url": "/noelotools/tools/text-case-converter/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "image-compressor",
+    "name": "Image Compressor",
+    "description": "Compress JPG, PNG or WebP images in your browser and compare the output size before downloading.",
+    "category": "media",
+    "icon": "image-down",
+    "keywords": [
+      "compress photo",
+      "reduce image size",
+      "jpg compressor",
+      "png compressor",
+      "webp"
+    ],
+    "url": "/noelotools/tools/image-compressor/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "image-resizer",
+    "name": "Image Resizer",
+    "description": "Resize JPG, PNG or WebP images by pixel dimensions or percentage, with optional aspect-ratio lock.",
+    "category": "media",
+    "icon": "scan",
+    "keywords": [
+      "resize photo",
+      "image dimensions",
+      "resize by percentage"
+    ],
+    "url": "/noelotools/tools/image-resizer/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "iban-validator",
+    "name": "IBAN Validator",
+    "description": "Check an IBAN country code, country-specific length, format and MOD-97 checksum. Does not verify account existence.",
+    "category": "money-tax",
+    "icon": "landmark",
+    "keywords": [
+      "iban check",
+      "bank account format",
+      "mod 97",
+      "international bank account"
+    ],
+    "url": "/noelotools/tools/iban-validator/",
+    "status": "available",
+    "browserOnly": true
   }
 ]
