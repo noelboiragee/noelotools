@@ -1,0 +1,139 @@
+<!doctype html>
+<!-- এই ফাইলে পিডিএফ কমপ্রেস টুলের মূল HTML কাঠামো রাখা হয়েছে। -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compress PDF files in your browser. Choose text-preserving optimization or image-based maximum compression.">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Compress PDF – Free Online PDF Compressor | NoeloTools</title>
+  <link rel="canonical" href="https://noelotools.com/tools/compress-pdf/">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" defer></script>
+  <script type="module" src="./script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="site-brand" href="../../index.html" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a href="../../index.html#tools">All tools</a>
+        <a href="../../index.html#categories">Categories</a>
+        <a href="../../pages/about.html">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container compress-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span aria-hidden="true">/</span>
+      <a href="../../index.html#tools">Tools</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Compress PDF</span>
+    </nav>
+
+    <section class="tool-intro">
+      <p class="eyebrow">PDF TOOL</p>
+      <h1>Compress PDF</h1>
+      <p>Reduce PDF file size in your browser. Choose whether to preserve selectable text or prioritise a smaller file.</p>
+    </section>
+
+    <section class="compress-workspace" aria-label="PDF compression workspace">
+      <div class="upload-panel">
+        <label class="upload-dropzone" id="dropzone" for="pdf-file">
+          <span class="upload-icon" aria-hidden="true">↑</span>
+          <strong>Choose a PDF file</strong>
+          <span>or drag and drop it here</span>
+          <span class="upload-file-types">PDF files only</span>
+        </label>
+        <input id="pdf-file" type="file" accept="application/pdf,.pdf" hidden>
+        <div class="selected-file" id="selected-file" hidden>
+          <span class="file-symbol" aria-hidden="true">PDF</span>
+          <span class="file-details">
+            <strong id="file-name"></strong>
+            <small id="file-size"></small>
+          </span>
+          <button id="remove-file" class="text-button" type="button">Remove</button>
+        </div>
+      </div>
+
+      <div class="mode-panel">
+        <h2>Choose compression mode</h2>
+        <label class="mode-option">
+          <input type="radio" name="compression-mode" value="preserve" checked>
+          <span class="mode-copy">
+            <strong>Text Preservation</strong>
+            <span>Optimise the PDF structure while keeping text selectable, searchable and copyable. File-size reduction may be limited.</span>
+            <span class="mode-tag">Best for documents</span>
+          </span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="compression-mode" value="maximum">
+          <span class="mode-copy">
+            <strong>Maximum Compression</strong>
+            <span>Rebuild pages as compressed images to prioritise a smaller file. Text will no longer be selectable or searchable.</span>
+            <span class="mode-tag mode-tag-warning">Image-based PDF · quality may change</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="action-panel">
+        <button id="compress-button" class="button button-primary" type="button" disabled>Compress PDF</button>
+        <p id="status-message" class="status-message" role="status" aria-live="polite">Choose a PDF to get started.</p>
+        <progress id="progress-bar" max="100" value="0" hidden></progress>
+      </div>
+
+      <section class="result-panel" id="result-panel" aria-live="polite" hidden>
+        <div class="result-heading">
+          <span class="result-check" aria-hidden="true">✓</span>
+          <div>
+            <h2>Compression complete</h2>
+            <p id="result-summary"></p>
+          </div>
+        </div>
+        <div class="size-comparison">
+          <div><span>Original size</span><strong id="original-size"></strong></div>
+          <div><span>New size</span><strong id="new-size"></strong></div>
+          <div><span>Change</span><strong id="size-change"></strong></div>
+        </div>
+        <a id="download-link" class="button button-primary button-block" href="#" download="noelotools-compressed.pdf">Download compressed PDF</a>
+      </section>
+    </section>
+
+    <p class="privacy-note">Your PDF is processed on your device. The file is not uploaded to NoeloTools. Compression libraries are loaded from public CDNs, so an internet connection is required.</p>
+
+    <section class="tool-info">
+      <h2>Which compression mode should you use?</h2>
+      <ul>
+        <li><strong>Text Preservation:</strong> Choose this for contracts, reports, forms and documents where text selection and search matter.</li>
+        <li><strong>Maximum Compression:</strong> Choose this when smaller file size matters more than selectable text, such as for image-heavy scans.</li>
+      </ul>
+      <p>Results depend on the source PDF. Text-preserving optimisation cannot guarantee a smaller file. Image-based compression can reduce clarity and removes searchable text and many interactive PDF features. Keep your original file.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>© <span data-current-year>2026</span> NoeloTools</span>
+      <span>Free online tools. Nothing uploaded.</span>
+      <nav aria-label="Legal links">
+        <a href="../../pages/privacy-policy.html">Privacy</a>
+        <a href="../../pages/cookie-policy.html">Cookies</a>
+        <a href="../../pages/terms.html">Terms</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
