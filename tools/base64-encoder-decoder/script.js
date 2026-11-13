@@ -1,0 +1,6 @@
+// বাংলা: এই টুলের ডেটা ও প্রসেসিং ব্যবহারকারীর ব্রাউজারেই থাকে।
+const $=s=>document.querySelector(s);
+function showResult(n,t){n.textContent=t;n.dataset.kind="success";n.hidden=false}
+function showError(n,t){n.textContent=t;n.dataset.kind="error";n.hidden=false}
+function fmt(n){return new Intl.NumberFormat("en-GB",{maximumFractionDigits:8}).format(n)}
+const s=$("#source"),o=$("#output"),r=$("#result");$("#encode").onclick=()=>{try{const bytes=new TextEncoder().encode(s.value);let b="";bytes.forEach(x=>b+=String.fromCharCode(x));o.value=btoa(b);showResult(r,"UTF-8 text encoded.");}catch{showError(r,"Could not encode input.");}};$("#decode").onclick=()=>{try{const v=s.value.replace(/\s/g,"");if(!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(v))throw Error();const b=atob(v),bytes=Uint8Array.from(b,c=>c.charCodeAt(0));o.value=new TextDecoder("utf-8",{fatal:true}).decode(bytes);showResult(r,"Base64 decoded.");}catch{showError(r,"Invalid Base64 or invalid UTF-8.");}};$("#copy").onclick=async()=>{if(!o.value)return showError(r,"No output to copy.");try{await navigator.clipboard.writeText(o.value);showResult(r,"Copied.");}catch{showError(r,"Clipboard unavailable; copy manually.");}};$("#reset").onclick=()=>{s.value=o.value="";r.hidden=true;};
