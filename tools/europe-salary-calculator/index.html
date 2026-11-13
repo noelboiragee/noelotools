@@ -10,13 +10,15 @@
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
   <link rel="stylesheet" href="style.css">
   <script type="module" src="script.js"></script>
+  <script type="module" src="../../assets/js/main.js"></script>
+  <link rel="icon" href="/noelotools/assets/img/favicon.svg" type="image/svg+xml">
 </head>
 <body>
   <!-- নেভিগেশন হেডার -->
-  <header class="site-header">
+  <header class="site-header" data-site-header>
     <div class="header-inner">
       <a class="site-brand" href="/noelotools/" aria-label="NoeloTools home"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
-      <nav class="primary-nav" aria-label="Main navigation"><a href="/noelotools/">Home</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/blog/">Blog</a></nav>
+      <nav class="primary-nav" data-primary-nav aria-label="Main navigation"><a href="/noelotools/">Home</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/blog/">Blog</a></nav>
       <div class="header-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button></div>
     </div>
   </header>
@@ -130,5 +132,7 @@
 
   <!-- পাদদেশ -->
   <footer class="site-footer"><div class="footer-bottom"><span>© <span id="current-year">2026</span> NoeloTools</span><a href="/noelotools/pages/privacy-policy/">Privacy</a><a href="/noelotools/pages/contact/">Contact</a></div></footer>
+<!-- বাংলা: ঐচ্ছিক কুকি চালু করার আগে ব্যবহারকারীর সম্মতি নেওয়া হয়। -->
+<section class="cookie-banner" data-cookie-banner role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden><h2 id="cookie-title">Your privacy matters</h2><p id="cookie-description">Necessary storage keeps this site working. Optional analytics and advertising require your permission.</p><div class="cookie-actions"><button class="button button-primary" type="button" data-cookie-accept>Accept all</button><button class="button button-secondary" type="button" data-cookie-reject>Reject optional</button><button class="button button-ghost" type="button" data-cookie-customise>Customise</button></div><div class="cookie-settings" data-cookie-settings hidden><label><input type="checkbox" checked disabled> Necessary (always active)</label><br><label><input type="checkbox" name="cookie-analytics"> Analytics</label><br><label><input type="checkbox" name="cookie-advertising"> Advertising</label><br><button class="button button-primary" type="button" data-cookie-save>Save preferences</button></div></section>
 </body>
 </html>
