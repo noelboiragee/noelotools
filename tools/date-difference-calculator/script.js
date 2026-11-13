@@ -1,4 +1,4 @@
-// Date Difference Calculator — native date inputs provide calendar pickers.
+// Date Difference Calculator — calendar-day duration with minute and second totals.
 const $ = (s) => document.querySelector(s);
 const start = $("#start"), end = $("#end"), include = $("#include"), out = $("#result");
 function localDate(value) {
@@ -12,10 +12,13 @@ $("#calculate").addEventListener("click", () => {
   let a = localDate(start.value), b = localDate(end.value);
   if (!a || !b) return show("Choose both dates from the calendar.", "error");
   if (a > b) [a, b] = [b, a];
-  const days = Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000) + (include.checked ? 1 : 0);
+  const startUtc = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+  const endUtc = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+  const days = Math.round((endUtc - startUtc) / 86400000) + (include.checked ? 1 : 0);
   let months = (b.getFullYear() - a.getFullYear()) * 12 + b.getMonth() - a.getMonth();
   if (b.getDate() < a.getDate()) months--;
+  const totalHours = days * 24, totalMinutes = days * 1440, totalSeconds = days * 86400;
   const weeks = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 }).format(days / 7);
-  show(`${days} days · ${weeks} weeks · ${months} complete calendar months. ${include.checked ? "End date included." : "End date excluded."}`);
+  show(`${days} days · ${weeks} weeks · ${months} complete calendar months · ${totalHours} total hours · ${totalMinutes} total minutes · ${totalSeconds} total seconds. ${include.checked ? "End date included." : "End date excluded."}`);
 });
 $("#reset").addEventListener("click", () => { start.value = ""; end.value = ""; include.checked = false; out.hidden = true; });
