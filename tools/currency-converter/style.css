@@ -1,0 +1,39 @@
+/* এই ফাইলে কারেন্সি কনভার্টারের নিজস্ব স্টাইল রাখা হয়েছে। */
+.tool-page{width:min(100% - 32px,900px);margin:0 auto;padding:32px 0 72px}
+.breadcrumbs{display:flex;flex-wrap:wrap;gap:9px;color:var(--text-muted);font-size:.875rem;margin-bottom:32px}
+.breadcrumbs a{color:var(--text-muted);text-decoration:none}
+.breadcrumbs a:hover{color:var(--primary)}
+.tool-intro{text-align:center;margin:0 auto 32px;max-width:700px}
+.tool-intro h1{font-size:clamp(2rem,5vw,3rem);margin:8px 0 12px;color:var(--text)}
+.tool-intro>p:last-child{color:var(--text-muted);line-height:1.6}
+.converter-card,.tool-info{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:clamp(20px,4vw,32px);box-shadow:0 8px 28px rgba(31,41,55,.06)}
+.card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.card-heading h2,.tool-info h2{font-size:1.35rem;margin:0;color:var(--text)}
+.live-indicator{display:flex;align-items:center;gap:7px;color:var(--text-muted);font-size:.8rem}
+.live-indicator span{width:8px;height:8px;border-radius:50%;background:#16a34a}
+.amount-field,.currency-field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.amount-field label,.currency-field label{font-weight:600;font-size:.92rem;color:var(--text)}
+.amount-field input,.currency-field select{width:100%;min-height:50px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg-alt);color:var(--text);font:inherit}
+.amount-field input:focus,.currency-field select:focus{outline:2px solid var(--primary);outline-offset:2px}
+.currency-row{display:grid;grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr);align-items:end;gap:12px;margin-top:18px}
+.swap-button{width:46px;height:46px;border:1px solid var(--border);border-radius:12px;background:var(--bg-alt);color:var(--primary);font-size:1.5rem;cursor:pointer}
+.swap-button:hover{border-color:var(--primary);background:var(--primary-soft)}
+.conversion-result{display:flex;flex-direction:column;align-items:center;gap:10px;margin:28px 0 18px;padding:24px 16px;border:1px solid var(--primary);border-radius:14px;background:var(--primary-soft);text-align:center}
+.conversion-result>span:first-child{color:var(--text-muted);font-size:.9rem}
+.conversion-result strong{font-size:clamp(1.8rem,6vw,2.7rem);color:var(--primary-dark);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.rate-line{color:var(--text-muted);font-size:.88rem}
+.convert-button{width:100%;justify-content:center}
+.rate-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;color:var(--text-muted);font-size:.82rem}
+.rate-meta button{border:0;background:transparent;color:var(--primary);font:inherit;font-weight:600;cursor:pointer}
+.error-message{padding:12px 14px;border-radius:9px;background:#fef2f2;color:#b91c1c;font-size:.9rem}
+.tool-info{margin-top:24px}
+.tool-info h2{margin-bottom:16px}
+.tool-info p{color:var(--text-muted);line-height:1.7}
+.disclaimer{padding:14px 16px;background:var(--bg-alt);border-left:3px solid var(--primary);border-radius:8px;font-size:.9rem}
+.source-links{font-size:.86rem}
+.source-links a{color:var(--primary)}
+.footer-bottom{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;padding:24px 16px}
+.footer-bottom a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+@media(max-width:620px){.currency-row{grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:7px}.swap-button{width:40px;height:46px}.currency-field select{font-size:.82rem;padding:8px 6px}.rate-meta{align-items:flex-start;flex-direction:column}.tool-page{padding-top:24px}.breadcrumbs{margin-bottom:24px}}
+@media(prefers-reduced-motion:no-preference){.converter-card{transition:box-shadow .18s ease}.converter-card:focus-within{box-shadow:0 10px 32px rgba(124,58,237,.1)}}
