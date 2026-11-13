@@ -68,11 +68,11 @@
     }
     [data-cookie-banner][hidden], [data-cookie-settings][hidden] { display: none; }
 
-    /* বাংলা: নতুন 3D Orbit Carousel */
+    /* বাংলা: Orbit ছাড়া 3D sliding feature cards */
     .orbit-section {
       width: 100%;
-      height: 100vh;
-      min-height: 600px;
+      min-height: 520px;
+      padding: 4rem 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -80,77 +80,65 @@
       position: relative;
       isolation: isolate;
       color: #fff;
-      background: radial-gradient(ellipse at center, #20205b, #10132e 40%, #050817 75%);
+      background: radial-gradient(ellipse at center, #20205b, #10132e 48%, #050817 85%);
     }
     .orbit-section::before {
       content: "";
       position: absolute;
-      width: 650px;
-      height: 650px;
+      width: 520px;
+      height: 520px;
       border-radius: 50%;
       background: #5734ff;
       filter: blur(150px);
       opacity: .16;
       pointer-events: none;
     }
-    .orbit-scene {
-      width: 100%;
-      height: 500px;
+    .feature-carousel {
       position: relative;
-      perspective: 1200px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .orbit-ring {
-      width: 180px;
-      height: 180px;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      margin: -90px 0 0 -90px;
-      transform-style: preserve-3d;
+      width: min(100%, 850px);
+      height: 340px;
+      perspective: 1100px;
       touch-action: pan-y;
-      cursor: grab;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    .orbit-ring:active { cursor: grabbing; }
-    .orbit-light {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 580px;
-      height: 230px;
-      margin: -115px 0 0 -290px;
-      border: 2px solid rgba(135,80,255,.55);
-      border-radius: 50%;
-      transform: rotateX(65deg);
-      box-shadow: 0 0 15px #914cff, inset 0 0 15px #914cff;
-      pointer-events: none;
-    }
-    .orbit-light.second {
-      width: 650px;
-      height: 280px;
-      margin: -140px 0 0 -325px;
-      border-color: rgba(0,220,255,.4);
-      box-shadow: 0 0 15px #00d9ff, inset 0 0 15px #00d9ff;
+      z-index: 1;
     }
     .orbit-card {
       position: absolute;
-      width: 120px;
-      height: 180px;
+      width: 160px;
+      height: 240px;
       left: 50%;
       top: 50%;
-      margin: -90px 0 0 -60px;
-      transform: rotateY(calc(var(--i) * 45deg)) translateZ(300px);
-      border-radius: 14px;
+      margin: -120px 0 0 -80px;
+      border-radius: 16px;
       overflow: hidden;
       background: #151a35;
       border: 2px solid var(--glow);
-      box-shadow: 0 0 15px var(--glow);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--glow) 75%, transparent);
       backface-visibility: hidden;
-      -webkit-user-drag: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(0) scale(.72);
+      transition: transform 750ms cubic-bezier(.2,.75,.25,1), opacity 650ms ease, filter 650ms ease;
+      filter: brightness(.65);
+    }
+    .orbit-card.is-active {
+      opacity: 1;
+      z-index: 3;
+      pointer-events: auto;
+      transform: translateX(0) rotateY(0) scale(1);
+      filter: brightness(1);
+      box-shadow: 0 18px 55px rgba(0,0,0,.45), 0 0 24px color-mix(in srgb, var(--glow) 85%, transparent);
+    }
+    .orbit-card.is-prev {
+      opacity: .72;
+      z-index: 2;
+      transform: translateX(-190px) rotateY(18deg) scale(.82);
+      filter: brightness(.72);
+    }
+    .orbit-card.is-next {
+      opacity: .72;
+      z-index: 2;
+      transform: translateX(190px) rotateY(-18deg) scale(.82);
+      filter: brightness(.72);
     }
     .orbit-card img {
       display: block;
@@ -169,47 +157,29 @@
     .orbit-card .card-title {
       position: absolute;
       z-index: 2;
-      bottom: 12px;
+      bottom: 15px;
       left: 8px;
       right: 8px;
       color: #fff;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       text-align: center;
       pointer-events: none;
     }
-    .crystal {
-      position: absolute;
-      width: 125px;
-      height: 125px;
-      z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: crystalFloat 3s ease-in-out infinite;
-      filter: drop-shadow(0 0 15px #a64cff);
-      pointer-events: none;
-    }
-    .crystal svg { width: 100%; height: 100%; }
-    @keyframes crystalFloat {
-      0%, 100% { transform: translateY(-8px) rotate(0deg); }
-      50% { transform: translateY(8px) rotate(8deg); }
-    }
     @media (max-width: 600px) {
-      .orbit-scene { height: 420px; perspective: 850px; }
+      .orbit-section { min-height: 420px; padding: 3rem .5rem; }
+      .feature-carousel { height: 270px; perspective: 850px; }
       .orbit-card {
-        width: 95px;
-        height: 145px;
-        margin: -72.5px 0 0 -47.5px;
-        transform: rotateY(calc(var(--i) * 45deg)) translateZ(195px);
+        width: 125px;
+        height: 185px;
+        margin: -92.5px 0 0 -62.5px;
       }
-      .orbit-light { width: 370px; height: 160px; margin: -80px 0 0 -185px; }
-      .orbit-light.second { width: 420px; height: 190px; margin: -95px 0 0 -210px; }
-      .crystal { width: 95px; height: 95px; }
-      .orbit-card .card-title { font-size: 9px; }
+      .orbit-card.is-prev { transform: translateX(-132px) rotateY(16deg) scale(.78); }
+      .orbit-card.is-next { transform: translateX(132px) rotateY(-16deg) scale(.78); }
+      .orbit-card .card-title { font-size: 11px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .crystal { animation: none; }
+      .orbit-card { transition-duration: 1ms; }
     }
 
   </style>
@@ -258,13 +228,11 @@
       </div>
     </section>
 
-    <!-- বাংলা: 3D Orbit Carousel — আটটি ঘূর্ণায়মান কার্ড ও কেন্দ্রীয় ক্রিস্টাল। -->
+    <!-- বাংলা: Orbit ছাড়া স্বয়ংক্রিয়ভাবে সামনে-পেছনে স্লাইড করা আটটি Card। -->
     <section class="orbit-section" aria-labelledby="orbit-title">
       <h2 class="sr-only" id="orbit-title">Explore featured topics</h2>
-      <div class="orbit-scene">
-        <div class="orbit-light" aria-hidden="true"></div>
-        <div class="orbit-light second" aria-hidden="true"></div>
-        <div class="orbit-ring" id="orbitRing" aria-label="Drag horizontally to rotate the featured cards">
+      <div class="feature-carousel" id="featureCarousel" aria-label="Featured cards">
+
           <div class="orbit-card" style="--i:0;--glow:#bd65ff">
             <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400" alt="Nature landscape" loading="lazy" draggable="false">
             <div class="card-title">Nature</div>
@@ -297,16 +265,6 @@
             <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Electronic components" loading="lazy" draggable="false">
             <div class="card-title">Electronics</div>
           </div>
-        </div>
-        <div class="crystal" aria-hidden="true">
-          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5">
-            <path d="M60 5 L105 60 L60 115 L15 60 Z" stroke="#bd65ff"/>
-            <path d="M60 5 L60 115 M15 60 L105 60" stroke="#00eaff"/>
-            <path d="M60 5 L85 60 L60 115 L35 60 Z" stroke="#bd65ff"/>
-            <path d="M15 60 L60 35 L105 60 L60 85 Z" stroke="#00eaff"/>
-            <path d="M60 5 L60 35 L85 60 L60 85 L35 60 L60 35" stroke="white"/>
-          </svg>
-        </div>
       </div>
     </section>
 
@@ -392,49 +350,54 @@
     </div>
   </section>
 
-  <!-- বাংলা: 3D Orbit Carousel-এর স্বয়ংক্রিয় ঘূর্ণন ও pointer drag নিয়ন্ত্রণ। -->
+  <!-- বাংলা: Card-গুলো Orbit ছাড়াই নির্দিষ্ট বিরতিতে সামনে আসে; swipe-ও করা যায়। -->
   <script>
     (() => {
-      const ring = document.getElementById("orbitRing");
-      if (!ring) return;
+      const carousel = document.getElementById("featureCarousel");
+      if (!carousel) return;
+      const cards = Array.from(carousel.querySelectorAll(".orbit-card"));
+      if (!cards.length) return;
 
-      let rotation = 0;
-      let isDragging = false;
-      let lastX = 0;
-      let animationFrame = 0;
+      let activeIndex = 0;
+      let startX = 0;
+      let pointerDown = false;
+      let autoTimer;
 
-      function animate() {
-        if (!isDragging) rotation += 0.35;
-        ring.style.transform = `rotateY(${rotation}deg)`;
-        animationFrame = requestAnimationFrame(animate);
+      function showCard(index) {
+        activeIndex = (index + cards.length) % cards.length;
+        cards.forEach((card, i) => {
+          card.classList.remove("is-active", "is-prev", "is-next");
+          if (i === activeIndex) card.classList.add("is-active");
+          else if (i === (activeIndex - 1 + cards.length) % cards.length) card.classList.add("is-prev");
+          else if (i === (activeIndex + 1) % cards.length) card.classList.add("is-next");
+        });
       }
 
-      ring.addEventListener("pointerdown", (event) => {
-        if (event.pointerType === "mouse" && event.button !== 0) return;
-        isDragging = true;
-        lastX = event.clientX;
-        ring.setPointerCapture(event.pointerId);
+      function restartAutoRotation() {
+        window.clearInterval(autoTimer);
+        autoTimer = window.setInterval(() => showCard(activeIndex + 1), 2800);
+      }
+
+      carousel.addEventListener("pointerdown", (event) => {
+        pointerDown = true;
+        startX = event.clientX;
+        carousel.setPointerCapture(event.pointerId);
       });
-
-      ring.addEventListener("pointermove", (event) => {
-        if (!isDragging) return;
-        rotation += (event.clientX - lastX) * 0.6;
-        lastX = event.clientX;
+      carousel.addEventListener("pointerup", (event) => {
+        if (!pointerDown) return;
+        const distance = event.clientX - startX;
+        pointerDown = false;
+        if (Math.abs(distance) > 35) {
+          showCard(activeIndex + (distance < 0 ? 1 : -1));
+          restartAutoRotation();
+        }
       });
+      carousel.addEventListener("pointercancel", () => { pointerDown = false; });
+      carousel.addEventListener("lostpointercapture", () => { pointerDown = false; });
 
-      function stopDrag() {
-        isDragging = false;
-      }
-
-      ring.addEventListener("pointerup", stopDrag);
-      ring.addEventListener("pointercancel", stopDrag);
-      ring.addEventListener("lostpointercapture", stopDrag);
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        ring.style.animation = "none";
-      }
-      animate();
-      window.addEventListener("pagehide", () => cancelAnimationFrame(animationFrame), { once: true });
+      showCard(0);
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) restartAutoRotation();
+      window.addEventListener("pagehide", () => window.clearInterval(autoTimer), { once: true });
     })();
   </script>
 
