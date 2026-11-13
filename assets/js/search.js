@@ -9,7 +9,7 @@ function normalizeText(value) {
 }
 
 export function initToolSearch() {
-  if (!document) return;
+  if (typeof document === "undefined") return;
   const searchInputs = document.querySelectorAll("[data-tool-search]");
   const toolCards = Array.from(document.querySelectorAll("[data-tool-card]"));
   const emptyStates = document.querySelectorAll("[data-search-empty]");
@@ -49,7 +49,11 @@ export function initToolSearch() {
   };
 
   categoryFilters.forEach((filter) => {
-    filter.addEventListener("click", () => {
+    filter.addEventListener("click", (event) => {
+      if (filter.getAttribute("aria-disabled") === "true") {
+        event.preventDefault();
+        return;
+      }
       activeCategory = filter.dataset.categoryFilter || "";
       filterTools(document.querySelector("[data-tool-search]")?.value || "");
     });
