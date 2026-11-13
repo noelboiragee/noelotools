@@ -3,7 +3,7 @@
     "id": "merge-pdf",
     "name": "Merge PDF",
     "description": "Combine multiple PDF files into one document.",
-    "category": "pdf",
+    "category": "PDF",
     "url": "/noelotools/tools/merge-pdf/",
     "icon": "file-plus-2",
     "keywords": [
@@ -18,7 +18,7 @@
     "id": "compress-pdf",
     "name": "Compress PDF",
     "description": "Reduce PDF file size while keeping documents readable.",
-    "category": "pdf",
+    "category": "PDF",
     "url": "/noelotools/tools/compress-pdf/",
     "icon": "file-archive",
     "keywords": [
@@ -30,9 +30,9 @@
   },
   {
     "id": "loan-calculator",
-    "name": "Loan Calculator",
-    "description": "Estimate monthly loan payments, interest and total repayment.",
-    "category": "money-tax",
+    "name": "Loan EMI Calculator",
+    "description": "Calculate monthly EMI, total interest, total repayment and a monthly amortisation schedule in EUR.",
+    "category": "Money Tax",
     "url": "/noelotools/tools/loan-calculator/",
     "icon": "calculator",
     "keywords": [
@@ -47,7 +47,7 @@
     "id": "vat-calculator",
     "name": "VAT Calculator",
     "description": "Add or remove VAT and calculate the tax amount.",
-    "category": "money-tax",
+    "category": "Money Tax",
     "url": "/noelotools/tools/vat-calculator/",
     "icon": "receipt",
     "keywords": [
@@ -63,7 +63,7 @@
     "id": "europe-salary-calculator",
     "name": "Europe Salary Calculator",
     "description": "Estimate take-home pay in Germany; additional European country models are in progress.",
-    "category": "money-tax",
+    "category": "Money Tax",
     "url": "/noelotools/tools/europe-salary-calculator/",
     "icon": "globe",
     "keywords": [
@@ -78,7 +78,7 @@
     "id": "currency-converter",
     "name": "Currency Converter",
     "description": "Convert amounts between supported currencies.",
-    "category": "money-tax",
+    "category": "Money Tax",
     "url": "/noelotools/tools/currency-converter/",
     "icon": "arrow-left-right",
     "keywords": [
@@ -93,7 +93,7 @@
     "id": "bmi-calculator",
     "name": "Adult BMI Calculator (18+)",
     "description": "Adult BMI screening calculator (18+). Not intended for people under 18.",
-    "category": "health",
+    "category": "Health",
     "url": "/noelotools/tools/bmi-calculator/",
     "icon": "heart-pulse",
     "keywords": [
@@ -108,7 +108,7 @@
     "id": "word-counter",
     "name": "Word Counter",
     "description": "Count words, characters, sentences and paragraphs.",
-    "category": "writing",
+    "category": "Writing",
     "url": "/noelotools/tools/word-counter/",
     "icon": "text",
     "keywords": [
@@ -123,7 +123,7 @@
     "id": "qr-generator",
     "name": "QR Code Generator",
     "description": "Create a QR code from text or a web address.",
-    "category": "everyday",
+    "category": "Everyday",
     "url": "/noelotools/tools/qr-code-generator/",
     "icon": "qr-code",
     "keywords": [
@@ -138,7 +138,7 @@
     "id": "password-generator",
     "name": "Password Generator",
     "description": "Generate a strong random password in your browser.",
-    "category": "developer",
+    "category": "Developer",
     "url": "/noelotools/tools/password-generator/",
     "icon": "key-round",
     "keywords": [
@@ -152,7 +152,7 @@
     "id": "percentage-calculator",
     "name": "Percentage Calculator",
     "description": "Calculate a percentage of a number, find what percentage one number is of another, or calculate percentage change.",
-    "category": "math",
+    "category": "Math",
     "icon": "percent",
     "keywords": [
       "percentage of",
@@ -168,7 +168,7 @@
     "id": "unit-converter",
     "name": "Unit Converter",
     "description": "Convert length, weight, temperature, volume, area and speed with metric-first units.",
-    "category": "math",
+    "category": "Math",
     "icon": "ruler",
     "keywords": [
       "metric converter",
@@ -185,7 +185,7 @@
     "id": "age-calculator",
     "name": "Age Calculator",
     "description": "Calculate an exact age in years, months and days, plus the days until the next birthday.",
-    "category": "everyday",
+    "category": "Everyday",
     "icon": "cake",
     "keywords": [
       "date of birth",
@@ -200,7 +200,7 @@
     "id": "date-difference-calculator",
     "name": "Date Difference Calculator",
     "description": "Calculate the days, weeks and calendar months between two dates, including or excluding the end date.",
-    "category": "everyday",
+    "category": "Everyday",
     "icon": "calendar-days",
     "keywords": [
       "days between dates",
@@ -215,7 +215,7 @@
     "id": "json-formatter",
     "name": "JSON Formatter",
     "description": "Format, minify and validate JSON with useful error position details and one-click copy.",
-    "category": "developer",
+    "category": "Developer",
     "icon": "braces",
     "keywords": [
       "json validator",
@@ -230,7 +230,7 @@
     "id": "base64-encoder-decoder",
     "name": "Base64 Encoder & Decoder",
     "description": "Encode or decode UTF-8 text as Base64 directly in your browser.",
-    "category": "developer",
+    "category": "Developer",
     "icon": "binary",
     "keywords": [
       "base64 encode",
@@ -245,7 +245,7 @@
     "id": "text-case-converter",
     "name": "Text Case Converter",
     "description": "Convert text to uppercase, lowercase, title case, sentence case, camelCase, snake_case and kebab-case.",
-    "category": "writing",
+    "category": "Writing",
     "icon": "case-sensitive",
     "keywords": [
       "uppercase",
@@ -261,7 +261,7 @@
     "id": "image-compressor",
     "name": "Image Compressor",
     "description": "Compress JPG, PNG or WebP images in your browser and compare the output size before downloading.",
-    "category": "media",
+    "category": "Media",
     "icon": "image-down",
     "keywords": [
       "compress photo",
@@ -278,7 +278,7 @@
     "id": "image-resizer",
     "name": "Image Resizer",
     "description": "Resize JPG, PNG or WebP images by pixel dimensions or percentage, with optional aspect-ratio lock.",
-    "category": "media",
+    "category": "Media",
     "icon": "scan",
     "keywords": [
       "resize photo",
@@ -293,7 +293,7 @@
     "id": "iban-validator",
     "name": "IBAN Validator",
     "description": "Check an IBAN country code, country-specific length, format and MOD-97 checksum. Does not verify account existence.",
-    "category": "money-tax",
+    "category": "Money Tax",
     "icon": "landmark",
     "keywords": [
       "iban check",
@@ -302,6 +302,51 @@
       "international bank account"
     ],
     "url": "/noelotools/tools/iban-validator/",
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "stopwatch",
+    "name": "Stopwatch",
+    "description": "Measure elapsed time with start, pause, reset and lap timing.",
+    "category": "Everyday",
+    "url": "/noelotools/tools/stopwatch/",
+    "icon": "stopwatch",
+    "keywords": [
+      "lap timer",
+      "stop watch",
+      "centiseconds"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "random-number-generator",
+    "name": "Random Number Generator",
+    "description": "Generate secure random integers with duplicate and sorting options.",
+    "category": "Math",
+    "url": "/noelotools/tools/random-number-generator/",
+    "icon": "dice-5",
+    "keywords": [
+      "random integer",
+      "random numbers",
+      "secure random"
+    ],
+    "status": "available",
+    "browserOnly": true
+  },
+  {
+    "id": "color-picker",
+    "name": "Color Picker",
+    "description": "Convert HEX, RGB and HSL colours and check WCAG text contrast.",
+    "category": "Developer",
+    "url": "/noelotools/tools/color-picker/",
+    "icon": "palette",
+    "keywords": [
+      "hex rgb hsl",
+      "colour picker",
+      "contrast checker"
+    ],
     "status": "available",
     "browserOnly": true
   }
