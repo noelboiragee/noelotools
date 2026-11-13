@@ -2,7 +2,7 @@
 const iconLabels = {
   "file-plus-2": "PDF+", "file-archive": "PDF↓", calculator: "€",
   receipt: "%", globe: "EU", "arrow-left-right": "↔",
-  "heart-pulse": "♡", text: "Aa", "qr-code": "▦", "key-round": "⌑"
+  "heart-pulse": "♡", text: "Aa", "qr-code": "▦", "key-round": "⌑", stopwatch: "◷", "dice-5": "⚄", palette: "◉"
 };
 
 function createToolCard(tool, popular = false) {
