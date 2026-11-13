@@ -98,14 +98,14 @@
     <!-- বাংলা: প্রধান পরিচিতি, সার্চ ও ওয়েবসাইটের মূল বার্তা। -->
     <section class="hero">
       <div class="container hero-copy">
-        <p class="eyebrow">One simple place. 11 useful tools.</p>
+        <p class="eyebrow">One simple place. 10 useful tools.</p>
         <h1>Free online tools for <span class="text-primary">everything.</span></h1>
         <p>10 free tools are currently listed. No sign-up required. Browser-based processing where supported.</p>
         <div class="hero-search-wrap">
           <label class="sr-only" for="home-tool-search">Search all tools</label>
           <input class="search-field" id="home-tool-search" type="search" placeholder="What do you need to do?" autocomplete="off" data-tool-search>
         </div>
-        <p class="hero-note"><span data-search-count>11</span> tools listed · Free forever · Privacy-first</p>
+        <p class="hero-note"><span data-total-tools>10</span> tools listed · Free forever · Privacy-first</p>
         <div style="margin-top:1.5rem">
           <a class="button button-primary" href="#tools">Explore all tools</a>
         </div>
@@ -165,45 +165,24 @@
       </div>
     </section>
 
-    <!-- বাংলা: বর্তমানে ক্যাটালগে থাকা প্রথম দশটি টুলের কার্ড। -->
-    <section class="tools-section" id="tools">
+    <!-- বাংলা: ছয়টি জনপ্রিয় টুল ও সম্পূর্ণ ক্যাটালগ আলাদা রাখা হয়েছে। -->
+    <section class="tools-section" aria-labelledby="popular-tools-title">
       <div class="container">
         <div class="section-heading">
-          <div><h2>Popular tools</h2><p>Start with one of these free utilities.</p></div>
-          <span class="text-muted"><span data-search-count>11</span> available in catalogue</span>
+          <div><h2 id="popular-tools-title">Popular tools</h2><p>Start with six useful utilities.</p></div>
+          <span class="text-muted"><span data-popular-count>6</span> popular tools</span>
         </div>
-        <div class="tool-grid">
-          <a class="tool-card" href="/noelotools/tools/merge-pdf/" data-tool-card data-name="Merge PDF" data-category="PDF" data-description="combine multiple PDF files">
-            <span class="tool-card-icon">PDF+</span><span class="tool-card-title">Merge PDF</span><span class="tool-card-description">Combine multiple PDF files into one document.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/compress-pdf/" data-tool-card data-name="Compress PDF" data-category="PDF" data-description="reduce PDF file size">
-            <span class="tool-card-icon">PDF↓</span><span class="tool-card-title">Compress PDF</span><span class="tool-card-description">Reduce PDF file size while keeping documents readable.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/loan-calculator/" data-tool-card data-name="Loan Calculator" data-category="Money Tax" data-description="monthly loan payments interest repayment">
-            <span class="tool-card-icon">€</span><span class="tool-card-title">Loan Calculator</span><span class="tool-card-description">Estimate monthly payments, interest and total repayment.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/vat-calculator/" data-tool-card data-name="VAT Calculator" data-category="Money Tax" data-description="add remove VAT tax">
-            <span class="tool-card-icon">%</span><span class="tool-card-title">VAT Calculator</span><span class="tool-card-description">Add or remove VAT and calculate the tax amount.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/currency-converter/" data-tool-card data-name="Currency Converter" data-category="Money Tax" data-description="exchange rate convert currency">
-            <span class="tool-card-icon">↔</span><span class="tool-card-title">Currency Converter</span><span class="tool-card-description">Convert amounts between supported currencies.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/europe-salary-calculator/" data-tool-card data-name="Europe Salary Calculator" data-category="Money Tax" data-description="Germany gross net salary; more European country models in progress">
-            <span class="tool-card-icon">EU</span><span class="tool-card-title">Europe Salary Calculator</span><span class="tool-card-description">Estimate take-home pay in Germany; more country models are in progress.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/bmi-calculator/" data-tool-card data-name="Adult BMI Calculator (18+)" data-category="Health" data-description="adult body mass index calculator 18 plus">
-            <span class="tool-card-icon">♡</span><span class="tool-card-title">Adult BMI Calculator (18+)</span><span class="tool-card-description">BMI screening for adults. Not intended for people under 18.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/word-counter/" data-tool-card data-name="Word Counter" data-category="Writing" data-description="count words characters sentences">
-            <span class="tool-card-icon">Aa</span><span class="tool-card-title">Word Counter</span><span class="tool-card-description">Count words, characters, sentences and paragraphs.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/qr-code-generator/" data-tool-card data-name="QR Code Generator" data-category="Everyday" data-description="create QR code text URL">
-            <span class="tool-card-icon">▦</span><span class="tool-card-title">QR Code Generator</span><span class="tool-card-description">Create a QR code from text or a web address.</span>
-          </a>
-          <a class="tool-card" href="/noelotools/tools/password-generator/" data-tool-card data-name="Password Generator" data-category="Developer" data-description="strong random password">
-            <span class="tool-card-icon">⌑</span><span class="tool-card-title">Password Generator</span><span class="tool-card-description">Generate a strong random password in your browser.</span>
-          </a>
+        <div class="tool-grid" data-popular-tools aria-label="Popular tools"></div>
+      </div>
+    </section>
+
+    <section class="tools-section" id="tools" aria-labelledby="all-tools-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><h2 id="all-tools-title">All tools</h2><p>Browse every available tool or filter by category.</p></div>
+          <span class="text-muted"><span data-search-count>10</span> tools shown</span>
         </div>
+        <div class="tool-grid" data-all-tools></div>
         <p class="search-empty" data-search-empty hidden>No tools found. Try another search.</p>
       </div>
     </section>
@@ -211,7 +190,7 @@
     <!-- বাংলা: গোপনীয়তা ও সহজ ব্যবহারের মূল সুবিধাগুলো। -->
     <section class="container" style="padding-bottom:4rem">
       <div class="trust-strip">
-        <span>✓ No sign-up required</span><span>✓ Browser-based tools</span><span>✓ No file uploads</span><span>✓ Privacy-first design</span>
+        <span>✓ No sign-up required</span><span>✓ Browser-based tools</span><span>✓ Browser-based processing where supported</span><span>✓ Privacy-first design</span>
       </div>
     </section>
   </main>
