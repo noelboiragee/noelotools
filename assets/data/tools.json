@@ -77,7 +77,7 @@
   {
     "id": "europe-salary-calculator",
     "name": "Europe Salary Calculator",
-    "description": "Explore gross-to-net salary estimates across selected European countries. Country models are being added progressively.",
+    "description": "Estimate take-home pay in Germany; additional European country models are in progress.",
     "category": "money-tax",
     "url": "/tools/europe-salary-calculator/",
     "icon": "globe",
@@ -107,7 +107,7 @@
   {
     "id": "bmi-calculator",
     "name": "Adult BMI Calculator (18+)",
-    "description": "Adult BMI screening calculator. Not intended for people under 18.",
+    "description": "Adult BMI screening calculator (18+). Not intended for people under 18.",
     "category": "health",
     "url": "/tools/bmi-calculator/",
     "icon": "heart-pulse",
