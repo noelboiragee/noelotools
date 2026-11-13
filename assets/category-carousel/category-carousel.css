@@ -20,6 +20,9 @@
 .cc-track { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; } /* বাংলা: track নিজে ক্লিক আটকায় না, শুধু কার্ড ক্লিক পায় */
 
 .cc-card {
+  /* বাংলা: কার্ডের পেছনের দিক লুকিয়ে 3D চাকার সামনের কার্ডগুলো দেখায় */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   --accent: hsl(var(--h) 72% 48%);
   position: absolute;
   top: 0; left: 50%;

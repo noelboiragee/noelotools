@@ -92,24 +92,21 @@
     return d;
   }
 
-  // বাংলা: কার্ডগুলোকে সরল লাইনে নয়, বৃত্তাকার 3D আর্কে সাজায়
+  // বাংলা: সব ক্যাটাগরি কার্ডকে একই 3D সিলিন্ডার/চাকার চারপাশে বসায়
   function cardPose(d, cardWidth, total) {
-    var abs = Math.abs(d);
-    // বাংলা: মোট কার্ডসংখ্যা অনুযায়ী ৩৬০° বৃত্তে সমান কৌণিক দূরত্ব
-    var angle = d * (360 / Math.max(total || 1, 1));
-    var radians = angle * Math.PI / 180;
-    // বাংলা: পাশের কার্ডগুলো যেন মোবাইলেও দৃশ্যমান থাকে
+    var count = Math.max(total || 1, 1);
+    var angle = d * (360 / count);
+    // বাংলা: কেন্দ্র থেকে কার্ডের দূরত্ব; সব কার্ড একই বৃত্তে থাকে
     var radius = cardWidth * 0.9;
-    var x = Math.sin(radians) * radius;
-    var z = (Math.cos(radians) - 1) * radius;
-    var rotate = -angle;
-    var scale = abs === 0 ? 1 : (abs === 1 ? 0.86 : 0.7);
-    var opacity = abs === 0 ? 1 : (abs === 1 ? 0.9 : (abs === 2 ? 0.28 : 0));
+    var radians = angle * Math.PI / 180;
+    var depth = Math.cos(radians);
+    var scale = Math.abs(d) === 0 ? 1 : 0.92;
     return {
-      transform: 'translate3d(' + x.toFixed(1) + 'px,0,' + z.toFixed(1) + 'px) rotateY(' + rotate + 'deg) scale(' + scale + ')',
-      opacity: opacity,
-      z: abs === 0 ? 3 : (abs === 1 ? 2 : 1),
-      visible: abs <= 2
+      // বাংলা: rotateY + translateZ মিলে প্রকৃত 3D circular wheel তৈরি করে
+      transform: 'rotateY(' + angle.toFixed(2) + 'deg) translateZ(' + radius.toFixed(1) + 'px) scale(' + scale + ')',
+      opacity: 1,
+      z: Math.round(100 + depth * 50),
+      visible: true
     };
   }
 
