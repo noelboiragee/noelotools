@@ -1,6 +1,67 @@
-// বাংলা: এই টুলের ডেটা ও প্রসেসিং ব্যবহারকারীর ব্রাউজারেই থাকে।
-const $=s=>document.querySelector(s);
-function showResult(n,t){n.textContent=t;n.dataset.kind="success";n.hidden=false}
-function showError(n,t){n.textContent=t;n.dataset.kind="error";n.hidden=false}
-function fmt(n){return new Intl.NumberFormat("en-GB",{maximumFractionDigits:8}).format(n)}
-const f=$("#file"),q=$("#quality"),r=$("#result"),before=$("#before"),after=$("#after"),download=$("#download");let blob=null;function size(n){return n<1024?n+" B":(n/1024).toFixed(1)+" KB";}q.oninput=()=>$("#qv").value=q.value;function compress(file){const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0);c.toBlob(b=>{if(!b)return showError(r,"Could not create output image.");blob=b;after.src=URL.createObjectURL(b);after.hidden=false;$("#after-size").textContent=size(b.size);download.disabled=false;showResult(r,"Compressed in browser. Size change: "+(100*(1-b.size/file.size)).toFixed(1)+"%.");},$("#format").value,Number(q.value));};im.onerror=()=>showError(r,"Image could not be opened.");im.src=URL.createObjectURL(file);}f.onchange=()=>{const file=f.files[0];blob=null;download.disabled=true;if(!file)return;if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>20*1024*1024){showError(r,"Choose JPG, PNG or WebP under 20 MB.");f.value="";return;}before.src=URL.createObjectURL(file);before.hidden=false;$("#before-size").textContent=size(file.size);compress(file);};q.onchange=()=>f.files[0]&&compress(f.files[0]);$("#format").onchange=()=>f.files[0]&&compress(f.files[0]);download.onclick=()=>{if(!blob)return;const a=document.createElement("a"),u=URL.createObjectURL(blob);a.href=u;a.download="compressed."+( $("#format").value==="image/jpeg"?"jpg":$("#format").value==="image/png"?"png":"webp");a.click();URL.revokeObjectURL(u);};$("#reset").onclick=()=>{f.value="";before.hidden=after.hidden=true;blob=null;download.disabled=true;r.hidden=true;};
+// Image Compressor — previews and compression are handled locally in the browser.
+const $ = (s) => document.querySelector(s);
+const fileInput = $("#file"), quality = $("#quality"), result = $("#result");
+const before = $("#before"), after = $("#after"), download = $("#download"), format = $("#format");
+let outputBlob = null, beforeUrl = null, afterUrl = null;
+const size = (n) => n < 1024 ? n + " B" : (n / 1024).toFixed(1) + " KB";
+function message(text, kind = "success") { result.textContent = text; result.dataset.kind = kind; result.hidden = false; }
+function clearUrl(url) { if (url) URL.revokeObjectURL(url); }
+function updateQuality() {
+  $("#qv").value = quality.value;
+  quality.disabled = format.value === "image/png";
+}
+quality.addEventListener("input", updateQuality);
+format.addEventListener("change", updateQuality);
+function loadPreview(file) {
+  clearUrl(beforeUrl); beforeUrl = URL.createObjectURL(file);
+  before.src = beforeUrl; before.hidden = false;
+  $("#before-size").textContent = "Original: " + size(file.size);
+  clearUrl(afterUrl); afterUrl = null; after.removeAttribute("src"); after.hidden = true;
+  $("#after-size").textContent = "";
+  outputBlob = null; download.disabled = true; result.hidden = true;
+}
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 20 * 1024 * 1024) {
+    message("Choose a JPG, PNG or WebP image under 20 MB.", "error"); fileInput.value = ""; return;
+  }
+  loadPreview(file);
+});
+$("#calculate").addEventListener("click", () => {
+  const file = fileInput.files[0];
+  if (!file) return message("Choose an image first.", "error");
+  const image = new Image();
+  image.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+    const context = canvas.getContext("2d");
+    if (!context) return message("Your browser could not prepare the image.", "error");
+    context.drawImage(image, 0, 0);
+    canvas.toBlob((blob) => {
+      if (!blob) return message("Could not create the compressed image.", "error");
+      outputBlob = blob; clearUrl(afterUrl); afterUrl = URL.createObjectURL(blob);
+      after.src = afterUrl; after.hidden = false;
+      $("#after-size").textContent = "Output: " + size(blob.size);
+      download.disabled = false;
+      const change = ((1 - blob.size / file.size) * 100).toFixed(1);
+      message(`Processed in your browser. File size change: ${change}%.`);
+    }, format.value, Number(quality.value));
+    clearUrl(image.src.startsWith("blob:") ? image.src : null);
+  };
+  image.onerror = () => message("The selected image could not be opened.", "error");
+  image.src = URL.createObjectURL(file);
+});
+download.addEventListener("click", () => {
+  if (!outputBlob) return;
+  const url = URL.createObjectURL(outputBlob), link = document.createElement("a");
+  link.href = url; link.download = "compressed." + (format.value === "image/jpeg" ? "jpg" : format.value === "image/png" ? "png" : "webp");
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+$("#reset").addEventListener("click", () => {
+  fileInput.value = ""; clearUrl(beforeUrl); clearUrl(afterUrl); beforeUrl = afterUrl = null;
+  before.removeAttribute("src"); after.removeAttribute("src"); before.hidden = after.hidden = true;
+  $("#before-size").textContent = $("#after-size").textContent = "";
+  outputBlob = null; download.disabled = true; result.hidden = true;
+});
+updateQuality();
