@@ -1,0 +1,110 @@
+/* বাংলা: প্রতিটি টুল পেজের নিজস্ব CSS-এর ভিত্তি। */
+
+.tool-page {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.breadcrumbs a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--primary);
+}
+
+.tool-intro {
+  max-width: 760px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.tool-intro > p:last-child {
+  color: var(--text-muted);
+}
+
+.tool-workspace {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg);
+}
+
+.tool-workspace h2 {
+  margin-top: 0;
+}
+
+.tool-inputs {
+  display: grid;
+  gap: 1rem;
+}
+
+.tool-placeholder {
+  padding: 1.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.tool-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.tool-result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-alt);
+  overflow-wrap: anywhere;
+}
+
+.tool-guide {
+  max-width: 760px;
+  margin: 3rem auto 0;
+}
+
+.tool-guide h2 {
+  margin-top: 2rem;
+}
+
+.tool-guide li {
+  margin-block: 0.5rem;
+}
+
+.tool-guide details {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tool-guide summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .tool-page {
+    padding-top: 1.25rem;
+  }
+
+  .tool-actions > button {
+    flex: 1 1 100%;
+  }
+}
