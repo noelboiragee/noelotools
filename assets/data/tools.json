@@ -1,0 +1,112 @@
+[
+  {
+    "id": "merge-pdf",
+    "name": "Merge PDF",
+    "description": "Combine multiple PDF files into one document.",
+    "category": "pdf",
+    "url": "/tools/merge-pdf/",
+    "icon": "file-plus-2",
+    "keywords": ["combine pdf", "join pdf", "pdf merger"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "compress-pdf",
+    "name": "Compress PDF",
+    "description": "Reduce PDF file size while keeping documents readable.",
+    "category": "pdf",
+    "url": "/tools/compress-pdf/",
+    "icon": "file-archive",
+    "keywords": ["reduce pdf size", "pdf compressor"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "loan-calculator",
+    "name": "Loan Calculator",
+    "description": "Estimate monthly loan payments, interest and total repayment.",
+    "category": "money-tax",
+    "url": "/tools/loan-calculator/",
+    "icon": "calculator",
+    "keywords": ["monthly payment", "loan interest", "emi"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "vat-calculator",
+    "name": "VAT Calculator",
+    "description": "Add or remove VAT and calculate the tax amount.",
+    "category": "money-tax",
+    "url": "/tools/vat-calculator/",
+    "icon": "receipt",
+    "keywords": ["value added tax", "tax calculator", "net price", "gross price"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "net-salary-germany",
+    "name": "Net Salary Germany",
+    "description": "Estimate take-home pay in Germany from gross salary.",
+    "category": "money-tax",
+    "url": "/tools/net-salary-germany/",
+    "icon": "wallet",
+    "keywords": ["germany salary", "gross to net", "take home pay"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "currency-converter",
+    "name": "Currency Converter",
+    "description": "Convert amounts between supported currencies.",
+    "category": "money-tax",
+    "url": "/tools/currency-converter/",
+    "icon": "arrow-left-right",
+    "keywords": ["exchange rate", "forex", "convert currency"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "bmi-calculator",
+    "name": "BMI Calculator",
+    "description": "Calculate body mass index using height and weight.",
+    "category": "health",
+    "url": "/tools/bmi-calculator/",
+    "icon": "heart-pulse",
+    "keywords": ["body mass index", "bmi"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "word-counter",
+    "name": "Word Counter",
+    "description": "Count words, characters, sentences and paragraphs.",
+    "category": "writing",
+    "url": "/tools/word-counter/",
+    "icon": "text",
+    "keywords": ["character counter", "sentence counter", "text statistics"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "qr-generator",
+    "name": "QR Code Generator",
+    "description": "Create a QR code from text or a web address.",
+    "category": "everyday",
+    "url": "/tools/qr-generator/",
+    "icon": "qr-code",
+    "keywords": ["qr code", "create qr", "qr maker"],
+    "status": "planned",
+    "browserOnly": true
+  },
+  {
+    "id": "password-generator",
+    "name": "Password Generator",
+    "description": "Generate a strong random password in your browser.",
+    "category": "developer",
+    "url": "/tools/password-generator/",
+    "icon": "key-round",
+    "keywords": ["random password", "secure password"],
+    "status": "planned",
+    "browserOnly": true
+  }
+]
