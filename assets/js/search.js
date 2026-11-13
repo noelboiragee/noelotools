@@ -1,0 +1,60 @@
+// বাংলা: টুলের নাম, বিবরণ ও ক্যাটাগরি দিয়ে তাৎক্ষণিক সার্চ।
+
+function normalizeText(value) {
+  return String(value || "")
+    .toLocaleLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+export function initToolSearch() {
+  const searchInputs = document.querySelectorAll("[data-tool-search]");
+  const toolCards = Array.from(document.querySelectorAll("[data-tool-card]"));
+  const emptyStates = document.querySelectorAll("[data-search-empty]");
+  const countTargets = document.querySelectorAll("[data-search-count]");
+
+  if (!searchInputs.length || !toolCards.length) return;
+
+  const filterTools = (query) => {
+    const normalizedQuery = normalizeText(query);
+    let visibleCount = 0;
+
+    toolCards.forEach((card) => {
+      const searchableText = normalizeText([
+        card.dataset.name,
+        card.dataset.category,
+        card.dataset.description,
+        card.textContent
+      ].join(" "));
+
+      const matches = !normalizedQuery || searchableText.includes(normalizedQuery);
+      card.hidden = !matches;
+      if (matches) visibleCount += 1;
+    });
+
+    emptyStates.forEach((emptyState) => {
+      emptyState.hidden = visibleCount !== 0;
+    });
+
+    countTargets.forEach((target) => {
+      target.textContent = String(visibleCount);
+    });
+  };
+
+  searchInputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      filterTools(input.value);
+      searchInputs.forEach((otherInput) => {
+        if (otherInput !== input) otherInput.value = input.value;
+      });
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        input.value = "";
+        filterTools("");
+      }
+    });
+  });
+}
