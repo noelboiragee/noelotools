@@ -44,9 +44,11 @@ export async function initToolCatalog() {
 
     const orbitCategories = ["pdf", "money-tax", "media", "developer", "writing", "health", "math", "everyday"];
     orbitCategories.forEach((category) => {
-      const categoryTools = availableTools.filter((tool) => tool.category.toLowerCase().replace(/\\s+/g, "-") === category);
+      const categoryTools = availableTools.filter((tool) => tool.category.toLowerCase().replace(/\s+/g, "-") === category);
       const linksContainer = document.querySelector(`[data-orbit-tools="${category}"]`);
       const countLabel = document.querySelector(`[data-orbit-count="${category}"]`);
+      const orbitCard = document.querySelector(`.orbit-card[data-category-filter="${category}"]`);
+      if (orbitCard) orbitCard.style.setProperty("--orbit-link-count", String(Math.min(categoryTools.length, 3)));
       if (linksContainer) {
         linksContainer.replaceChildren(...categoryTools.slice(0, 3).map((tool) => {
           const link = document.createElement("a");
