@@ -8,6 +8,7 @@ function initCategoryTheme() {
   const categoryMap = {
     "pdf": "pdf",
     "money & tax": "money-tax",
+    "money tax": "money-tax",
     "media": "media",
     "developer": "developer",
     "writing": "writing",
