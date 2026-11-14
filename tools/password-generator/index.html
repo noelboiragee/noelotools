@@ -13,10 +13,12 @@
   <link rel="stylesheet" href="/noelotools/assets/css/theme.css">
   <link rel="stylesheet" href="/noelotools/assets/css/global.css">
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
+<link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
+<script defer src="/noelotools/assets/js/tool-theme.js"></script>
   <script type="module" src="../../assets/js/main.js"></script>
 </head>
 <body>
-<header class="site-header" data-site-header><div class="container header-inner"><a class="site-brand" href="/noelotools/">NoeloTools</a><nav class="primary-nav" data-primary-nav aria-label="Main navigation"><a href="/noelotools/#tools">All tools</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/blog/">Blog</a><a href="/noelotools/pages/about/">About</a></nav><div class="header-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="Toggle theme">◐</button><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">☰</button></div></div></header>
+<header class="site-header" data-site-header><div class="container header-inner"><a class="site-brand" href="/noelotools/">NoeloTools</a><nav class="primary-nav" data-primary-nav aria-label="Main navigation"><a href="/noelotools/#tools">All tools</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/blog/">Blog</a><a href="/noelotools/pages/about/">About</a></nav><div class="header-actions tool-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="Toggle theme">◐</button><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">☰</button></div></div></header>
   <main class="page-shell">
     <a class="back-link" href="/noelotools/">← NoeloTools</a>
     <header class="page-heading">
@@ -25,7 +27,7 @@
       <p class="intro">Create a random password with the character types and length you choose. Generation happens in your browser.</p>
     </header>
     <section class="generator-card">
-      <form id="password-form">
+      <form class="tool-panel" id="password-form">
         <div class="length-heading">
           <label for="password-length">Password length</label>
           <output id="length-value" for="password-length">20</output>
@@ -40,13 +42,13 @@
           <label class="option"><input id="include-symbols" type="checkbox" checked> <span>Symbols (!@#$…)</span></label>
         </fieldset>
         <p class="form-error" id="form-error" role="alert" aria-live="polite"></p>
-        <button class="primary-button" type="submit">Generate Password</button>
+        <button class="primary-button tool-btn tool-btn-primary" type="submit">Generate Password</button>
       </form>
       <div class="output-section">
         <label for="password-output">Generated password</label>
         <div class="password-output-wrap">
           <input id="password-output" type="text" readonly autocomplete="off" spellcheck="false" placeholder="Your password will appear here">
-          <button id="copy-button" class="copy-button" type="button" disabled>Copy</button>
+          <button id="copy-button" class="copy-button tool-btn" type="button" disabled>Copy</button>
         </div>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite">Generate a password to begin.</p>
       </div>

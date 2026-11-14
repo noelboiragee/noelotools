@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
   <link rel="stylesheet" href="/noelotools/tools/style.css">
   <link rel="stylesheet" href="/noelotools/assets/css/category-themes.css">
+<link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
+<script defer src="/noelotools/assets/js/tool-theme.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <script defer src="./script.js"></script>
   <script type="module" src="../../assets/js/main.js"></script>
@@ -30,7 +32,7 @@
         <a href="/noelotools/#categories">Categories</a>
         <a href="/noelotools/pages/about/">About</a>
       <a href="/noelotools/blog/">Blog</a></nav>
-      <div class="header-actions">
+      <div class="header-actions tool-actions">
         <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
       </div>
@@ -61,13 +63,13 @@
         <input id="pdf-files" type="file" accept="application/pdf,.pdf" multiple>
         <div class="selected-heading">
           <div><h2>Selected files</h2><span id="file-count">0 files</span></div>
-          <button id="clear-files" class="button button-secondary" type="button" disabled>Clear all</button>
+          <button id="clear-files" class="button button-secondary tool-btn" type="button" disabled>Clear all</button>
         </div>
         <ol id="file-list" class="file-list" aria-live="polite">
           <li class="empty-state">No files selected yet.</li>
         </ol>
         <div class="merge-actions">
-          <button id="merge-button" class="button button-primary" type="button" disabled>Merge PDF files</button>
+          <button id="merge-button" class="button button-primary tool-btn tool-btn-primary" type="button" disabled>Merge PDF files</button>
           <p id="status-message" role="status" aria-live="polite">Select at least two PDF files to begin.</p>
         </div>
       </div>
