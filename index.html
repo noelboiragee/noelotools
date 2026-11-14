@@ -126,7 +126,7 @@
       left: 50%;
       top: 50%;
       margin: -115px 0 0 -77.5px;
-      transform: rotateY(calc(var(--i) * 45deg)) translateZ(330px);
+      transform: rotateY(calc(var(--i) * var(--orbit-card-angle, 45deg))) translateZ(var(--orbit-radius-desktop, 330px));
       border-radius: 14px;
       overflow: hidden;
       background: radial-gradient(ellipse at 50% 18%, color-mix(in srgb, var(--glow) 38%, #101426), #101426 72%);
@@ -136,6 +136,7 @@
       -webkit-user-drag: none;
     }
     .orbit-card img { display: none; }
+    .orbit-card[hidden], .tool-card[hidden] { display: none !important; }
 
     /* Category-specific abstract backgrounds keep each card visually distinct. */
     .orbit-card[data-category-filter="pdf"] {
@@ -256,7 +257,7 @@
         width: 125px;
         height: 190px;
         margin: -95px 0 0 -62.5px;
-        transform: rotateY(calc(var(--i) * 45deg)) translateZ(215px);
+        transform: rotateY(calc(var(--i) * var(--orbit-card-angle, 45deg))) translateZ(var(--orbit-radius-mobile, 215px));
       }
       .orbit-card .orbit-tool-links { top: 66px; left: 5px; right: 5px; gap: 4px; }
       .orbit-card .orbit-tool-link { padding: 3px 2px; font-size: 8px; }
@@ -314,64 +315,7 @@
     <section class="orbit-section" aria-labelledby="orbit-title">
       <h2 class="sr-only" id="orbit-title">Explore featured topics</h2>
       <div class="orbit-scene">
-        <div class="orbit-ring" id="orbitRing" aria-label="Drag horizontally to rotate the featured cards">
-          <div class="orbit-card" data-category-filter="pdf" style="--i:0;--glow:#ff5d73" role="link" tabindex="0" aria-label="Browse pdf tools">
-<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400" alt="PDF tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">📄</div>
-            <div class="card-title">PDF Tools</div>
-            <div class="orbit-tool-links" data-orbit-tools="pdf"></div>
-            <div class="orbit-tool-count" data-orbit-count="pdf"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="money-tax" style="--i:1;--glow:#fbbf24" role="link" tabindex="0" aria-label="Browse money-tax tools">
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400" alt="Money and tax tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">💰</div>
-            <div class="card-title">Money &amp; Tax</div>
-            <div class="orbit-tool-links" data-orbit-tools="money-tax"></div>
-            <div class="orbit-tool-count" data-orbit-count="money-tax"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="media" style="--i:2;--glow:#38bdf8" role="link" tabindex="0" aria-label="Browse media tools">
-<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400" alt="Media tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">🖼️</div>
-            <div class="card-title">Media</div>
-            <div class="orbit-tool-links" data-orbit-tools="media"></div>
-            <div class="orbit-tool-count" data-orbit-count="media"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="developer" style="--i:3;--glow:#a78bfa" role="link" tabindex="0" aria-label="Browse developer tools">
-<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400" alt="Developer tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">&lt;/&gt;</div>
-            <div class="card-title">Developer</div>
-            <div class="orbit-tool-links" data-orbit-tools="developer"></div>
-            <div class="orbit-tool-count" data-orbit-count="developer"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="writing" style="--i:4;--glow:#fb7185" role="link" tabindex="0" aria-label="Browse writing tools">
-<img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400" alt="Writing tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">✍️</div>
-            <div class="card-title">Writing</div>
-            <div class="orbit-tool-links" data-orbit-tools="writing"></div>
-            <div class="orbit-tool-count" data-orbit-count="writing"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="health" style="--i:5;--glow:#34d399" role="link" tabindex="0" aria-label="Browse health tools">
-<img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Health tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">♡</div>
-            <div class="card-title">Health</div>
-            <div class="orbit-tool-links" data-orbit-tools="health"></div>
-            <div class="orbit-tool-count" data-orbit-count="health"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="math" style="--i:6;--glow:#f97316" role="link" tabindex="0" aria-label="Browse math tools">
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Math tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">∑</div>
-            <div class="card-title">Math</div>
-            <div class="orbit-tool-links" data-orbit-tools="math"></div>
-            <div class="orbit-tool-count" data-orbit-count="math"></div>
-          </div>
-          <div class="orbit-card" data-category-filter="everyday" style="--i:7;--glow:#2dd4bf" role="link" tabindex="0" aria-label="Browse everyday tools">
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Everyday tools" loading="lazy" draggable="false">
-            <div class="card-icon" aria-hidden="true">✦</div>
-            <div class="card-title">Everyday</div>
-            <div class="orbit-tool-links" data-orbit-tools="everyday"></div>
-            <div class="orbit-tool-count" data-orbit-count="everyday"></div>
-          </div>
-        </div>
+        <div class="orbit-ring" id="orbitRing" data-orbit-ring aria-label="Drag horizontally to rotate the category cards"></div>
 
       </div>
     </section>
@@ -382,16 +326,7 @@
         <div class="section-heading">
           <div><h2>Browse by category</h2><p>Find the right tool for the task.</p></div>
         </div>
-        <div class="category-grid">
-          <a class="category-card" href="#tools" data-category-filter="pdf"><span class="category-card-icon">PDF</span><span class="category-card-title">PDF Tools</span><span class="category-card-description">Documents and file utilities</span></a>
-          <a class="category-card" href="#tools" data-category-filter="money-tax"><span class="category-card-icon">€</span><span class="category-card-title">Money & Tax</span><span class="category-card-description">Calculators for money and tax</span></a>
-          <a class="category-card" href="#tools" data-category-filter="media"><span class="category-card-icon">✦</span><span class="category-card-title">Media</span><span class="category-card-description">Image tools</span></a>
-          <a class="category-card" href="#tools" data-category-filter="developer"><span class="category-card-icon">{ }</span><span class="category-card-title">Developer</span><span class="category-card-description">Utilities for developers</span></a>
-          <a class="category-card" href="#tools" data-category-filter="writing"><span class="category-card-icon">Aa</span><span class="category-card-title">Writing</span><span class="category-card-description">Text and content helpers</span></a>
-          <a class="category-card" href="#tools" data-category-filter="health"><span class="category-card-icon">♡</span><span class="category-card-title">Health</span><span class="category-card-description">Everyday health calculators</span></a>
-          <a class="category-card" href="#tools" data-category-filter="math"><span class="category-card-icon">∑</span><span class="category-card-title">Math</span><span class="category-card-description">Calculators and converters</span></a>
-          <a class="category-card" href="#tools" data-category-filter="everyday"><span class="category-card-icon">⌁</span><span class="category-card-title">Everyday</span><span class="category-card-description">Small tools for daily life</span></a>
-        </div>
+        <div class="category-grid" data-category-grid></div>
       </div>
     </section>
 
