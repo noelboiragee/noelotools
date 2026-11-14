@@ -691,5 +691,5 @@
   padding: 0;
 }
 .theme-toggle .theme-icon { display: none; }
-html[data-theme="light"] .theme-toggle .theme-icon-moon { display: block; }
-html[data-theme="dark"] .theme-toggle .theme-icon-sun { display: block; }
+html[data-theme="light"] .theme-toggle .theme-icon-sun { display: block; }
+html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
