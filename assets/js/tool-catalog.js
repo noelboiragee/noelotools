@@ -42,6 +42,25 @@ export async function initToolCatalog() {
     const tools = await response.json();
     const availableTools = tools.filter((tool) => tool.status === "available");
 
+    const orbitCategories = ["pdf", "money-tax", "media", "developer", "writing", "health", "math", "everyday"];
+    orbitCategories.forEach((category) => {
+      const categoryTools = availableTools.filter((tool) => tool.category.toLowerCase().replace(/\\s+/g, "-") === category);
+      const linksContainer = document.querySelector(`[data-orbit-tools="${category}"]`);
+      const countLabel = document.querySelector(`[data-orbit-count="${category}"]`);
+      if (linksContainer) {
+        linksContainer.replaceChildren(...categoryTools.slice(0, 3).map((tool) => {
+          const link = document.createElement("a");
+          link.className = "orbit-tool-link";
+          link.href = tool.url;
+          link.textContent = tool.name;
+          link.title = tool.name;
+          link.addEventListener("click", (event) => event.stopPropagation());
+          return link;
+        }));
+      }
+      if (countLabel) countLabel.textContent = `${categoryTools.length} tools available`;
+    });
+
     popularContainer.replaceChildren(...availableTools.slice(0, 6).map((tool) => createToolCard(tool, true)));
     allContainer.replaceChildren(...availableTools.map((tool) => createToolCard(tool)));
 
