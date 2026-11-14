@@ -139,6 +139,27 @@
       object-fit: cover;
       pointer-events: none;
     }
+    .orbit-card .card-icon {
+      position: absolute;
+      z-index: 2;
+      top: 14px;
+      left: 50%;
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      transform: translateX(-50%);
+      border: 1px solid var(--glow);
+      border-radius: 14px;
+      background: rgba(5, 8, 23, .78);
+      box-shadow: 0 0 14px var(--glow);
+      color: #fff;
+      font-size: 25px;
+      font-weight: 800;
+      line-height: 1;
+      text-shadow: 0 0 10px var(--glow);
+      pointer-events: none;
+    }
     .orbit-card::after {
       content: "";
       position: absolute;
@@ -220,37 +241,45 @@
       <h2 class="sr-only" id="orbit-title">Explore featured topics</h2>
       <div class="orbit-scene">
         <div class="orbit-ring" id="orbitRing" aria-label="Drag horizontally to rotate the featured cards">
-          <div class="orbit-card" style="--i:0;--glow:#bd65ff">
-            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400" alt="Nature landscape" loading="lazy" draggable="false">
-            <div class="card-title">Nature</div>
+          <div class="orbit-card" style="--i:0;--glow:#ff5d73">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400" alt="PDF tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">📄</div>
+            <div class="card-title">PDF Tools</div>
           </div>
-          <div class="orbit-card" style="--i:1;--glow:#00eaff">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400" alt="Technology" loading="lazy" draggable="false">
-            <div class="card-title">Technology</div>
+          <div class="orbit-card" style="--i:1;--glow:#fbbf24">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400" alt="Money and tax tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">💰</div>
+            <div class="card-title">Money &amp; Tax</div>
           </div>
-          <div class="orbit-card" style="--i:2;--glow:#bd65ff">
-            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400" alt="Innovation" loading="lazy" draggable="false">
-            <div class="card-title">Innovation</div>
+          <div class="orbit-card" style="--i:2;--glow:#38bdf8">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400" alt="Media tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">🖼️</div>
+            <div class="card-title">Media</div>
           </div>
-          <div class="orbit-card" style="--i:3;--glow:#00eaff">
-            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400" alt="Digital workspace" loading="lazy" draggable="false">
-            <div class="card-title">Digital World</div>
+          <div class="orbit-card" style="--i:3;--glow:#a78bfa">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400" alt="Developer tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">&lt;/&gt;</div>
+            <div class="card-title">Developer</div>
           </div>
-          <div class="orbit-card" style="--i:4;--glow:#bd65ff">
-            <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400" alt="Adventure landscape" loading="lazy" draggable="false">
-            <div class="card-title">Adventure</div>
+          <div class="orbit-card" style="--i:4;--glow:#fb7185">
+            <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400" alt="Writing tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">✍️</div>
+            <div class="card-title">Writing</div>
           </div>
-          <div class="orbit-card" style="--i:5;--glow:#00eaff">
-            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Modern workspace" loading="lazy" draggable="false">
-            <div class="card-title">Workspace</div>
+          <div class="orbit-card" style="--i:5;--glow:#34d399">
+            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Health tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">♡</div>
+            <div class="card-title">Health</div>
           </div>
-          <div class="orbit-card" style="--i:6;--glow:#bd65ff">
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Creative electronics" loading="lazy" draggable="false">
-            <div class="card-title">Creative</div>
+          <div class="orbit-card" style="--i:6;--glow:#f97316">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Math tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">∑</div>
+            <div class="card-title">Math</div>
           </div>
-          <div class="orbit-card" style="--i:7;--glow:#00eaff">
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Electronic components" loading="lazy" draggable="false">
-            <div class="card-title">Electronics</div>
+          <div class="orbit-card" style="--i:7;--glow:#2dd4bf">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Everyday tools" loading="lazy" draggable="false">
+            <div class="card-icon" aria-hidden="true">✦</div>
+            <div class="card-title">Everyday</div>
           </div>
         </div>
 
@@ -348,7 +377,12 @@
       let rotation = 0;
       let isDragging = false;
       let lastX = 0;
+      let startX = 0;
+      let startY = 0;
+      let dragMoved = false;
+      let suppressClickUntil = 0;
       let animationFrame = 0;
+      const dragThreshold = 8;
 
       function animate() {
         if (!isDragging) rotation += 0.35;
@@ -359,19 +393,34 @@
       ring.addEventListener("pointerdown", (event) => {
         if (event.pointerType === "mouse" && event.button !== 0) return;
         isDragging = true;
-        lastX = event.clientX;
+        dragMoved = false;
+        startX = lastX = event.clientX;
+        startY = event.clientY;
         ring.setPointerCapture(event.pointerId);
       });
 
       ring.addEventListener("pointermove", (event) => {
         if (!isDragging) return;
-        rotation += (event.clientX - lastX) * 0.6;
+        const deltaX = event.clientX - lastX;
+        if (Math.hypot(event.clientX - startX, event.clientY - startY) > dragThreshold) {
+          dragMoved = true;
+        }
+        rotation += deltaX * 0.6;
         lastX = event.clientX;
       });
 
       function stopDrag() {
+        if (!isDragging) return;
         isDragging = false;
+        if (dragMoved) suppressClickUntil = performance.now() + 400;
       }
+
+      ring.addEventListener("click", (event) => {
+        if (performance.now() > suppressClickUntil) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClickUntil = 0;
+      }, true);
 
       ring.addEventListener("pointerup", stopDrag);
       ring.addEventListener("pointercancel", stopDrag);
