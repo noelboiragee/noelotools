@@ -684,3 +684,12 @@
 .cookie-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
 .cookie-settings{margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border)}
 [data-cookie-banner][hidden],[data-cookie-settings][hidden]{display:none}
+
+/* Theme control uses a compact sun/moon icon instead of text labels. */
+.theme-toggle {
+  flex: 0 0 42px;
+  padding: 0;
+}
+.theme-toggle .theme-icon { display: none; }
+html[data-theme="light"] .theme-toggle .theme-icon-moon { display: block; }
+html[data-theme="dark"] .theme-toggle .theme-icon-sun { display: block; }
