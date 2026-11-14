@@ -154,8 +154,8 @@ export async function initToolCatalog() {
         return createOrbitCard(category, index, categoryNames.length, categoryTools);
       });
       ring.style.setProperty("--orbit-card-angle", `${360 / Math.max(categoryNames.length, 1)}deg`);
-      ring.style.setProperty("--orbit-radius-desktop", `${Math.round(330 * categoryNames.length / 8)}px`);
-      ring.style.setProperty("--orbit-radius-mobile", `${Math.round(215 * categoryNames.length / 8)}px`);
+      ring.style.setProperty("--orbit-radius-desktop", `${Math.round(225 * categoryNames.length / 8)}px`);
+      ring.style.setProperty("--orbit-radius-mobile", `${Math.round(180 * categoryNames.length / 8)}px`);
       ring.replaceChildren(...cards);
     }
 
