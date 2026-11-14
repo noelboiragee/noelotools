@@ -66,6 +66,10 @@ export function initToolSearch() {
       if (event.target.closest(".orbit-tool-link")) return;
       activeCategory = filter.dataset.categoryFilter || "";
       filterTools(document.querySelector("[data-tool-search]")?.value || "");
+      if (filter.classList.contains("orbit-card")) {
+        document.getElementById("tools")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (window.location.hash !== "#tools") history.replaceState(null, "", "#tools");
+      }
     });
   });
 
