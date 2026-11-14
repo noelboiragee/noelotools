@@ -17,6 +17,7 @@ export function initToolSearch() {
   const categoryFilters = document.querySelectorAll("[data-category-filter]");
   const toolsSection = document.getElementById("tools");
   let activeCategory = "";
+  let hasScrolledForSearch = false;
 
   if (!toolCards.length) {
     console.warn("NoeloTools: search initialised without tool cards.");
@@ -89,9 +90,12 @@ export function initToolSearch() {
 
       // Results live in the All tools section, below the hero and category carousel.
       // Bring them into view once when a user starts a search.
-      if (query.trim()) {
+      if (query.trim() && !hasScrolledForSearch) {
         toolsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
         if (window.location.hash !== "#tools") history.replaceState(null, "", "#tools");
+        hasScrolledForSearch = true;
+      } else if (!query.trim()) {
+        hasScrolledForSearch = false;
       }
     });
 
@@ -99,6 +103,7 @@ export function initToolSearch() {
       if (event.key === "Escape") {
         input.value = "";
         activeCategory = "";
+        hasScrolledForSearch = false;
         filterTools("");
         searchInputs.forEach((otherInput) => {
           if (otherInput !== input) otherInput.value = "";
