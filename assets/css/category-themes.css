@@ -265,3 +265,38 @@ body[data-category] .related-tool-links a:hover {
   border-color: var(--primary);
   color: var(--primary);
 }
+
+
+/* Legacy page layouts: apply category accents without changing calculator behaviour. */
+body[data-category] .calculator-card,
+body[data-category] .editor-panel,
+body[data-category] .stats-panel,
+body[data-category] .info-card,
+body[data-category] .disclaimer,
+body[data-category] .tool-info {
+  border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
+}
+body[data-category] .primary-button,
+body[data-category] .stat-card-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+body[data-category] .primary-button:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+body[data-category] .result-panel,
+body[data-category] .notice {
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--primary) 7%, transparent);
+}
+body[data-category] .word-counter-layout .editor-panel:focus-within,
+body[data-category] .calculator-card input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 14%, transparent);
+}
+html[data-theme="dark"] body[data-category] .primary-button,
+html[data-theme="dark"] body[data-category] .stat-card-primary {
+  color: #101318;
+}
