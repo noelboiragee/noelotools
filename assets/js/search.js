@@ -4,7 +4,7 @@ function normalizeText(value) {
   return String(value || "")
     .toLocaleLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\\u0300-\\u036f]/g, "")
     .trim();
 }
 
@@ -15,9 +15,13 @@ export function initToolSearch() {
   const emptyStates = document.querySelectorAll("[data-search-empty]");
   const countTargets = document.querySelectorAll("[data-search-count]");
   const categoryFilters = document.querySelectorAll("[data-category-filter]");
+  const toolsSection = document.getElementById("tools");
   let activeCategory = "";
 
-  if (!toolCards.length) return;
+  if (!toolCards.length) {
+    console.warn("NoeloTools: search initialised without tool cards.");
+    return;
+  }
 
   const filterTools = (query) => {
     const normalizedQuery = normalizeText(query);
@@ -31,7 +35,7 @@ export function initToolSearch() {
         card.textContent
       ].join(" "));
 
-      const category = normalizeText(card.dataset.category).replace(/\s+/g, "-");
+      const category = normalizeText(card.dataset.category).replace(/\\s+/g, "-");
       const matchesCategory = !activeCategory || category === activeCategory;
       const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery);
       const matches = matchesCategory && matchesQuery;
@@ -67,7 +71,7 @@ export function initToolSearch() {
       activeCategory = filter.dataset.categoryFilter || "";
       filterTools(document.querySelector("[data-tool-search]")?.value || "");
       if (filter.classList.contains("orbit-card")) {
-        document.getElementById("tools")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        toolsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
         if (window.location.hash !== "#tools") history.replaceState(null, "", "#tools");
       }
     });
@@ -75,17 +79,34 @@ export function initToolSearch() {
 
   searchInputs.forEach((input) => {
     input.addEventListener("input", () => {
-      filterTools(input.value);
+      const query = input.value;
+      // A new search always searches every category, not the previously selected one.
+      activeCategory = "";
+      filterTools(query);
       searchInputs.forEach((otherInput) => {
-        if (otherInput !== input) otherInput.value = input.value;
+        if (otherInput !== input) otherInput.value = query;
       });
+
+      // Results live in the All tools section, below the hero and category carousel.
+      // Bring them into view once when a user starts a search.
+      if (query.trim()) {
+        toolsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (window.location.hash !== "#tools") history.replaceState(null, "", "#tools");
+      }
     });
 
     input.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         input.value = "";
+        activeCategory = "";
         filterTools("");
+        searchInputs.forEach((otherInput) => {
+          if (otherInput !== input) otherInput.value = "";
+        });
       }
     });
   });
+
+  // Ensure the initial catalogue count and visibility are in sync.
+  filterTools(searchInputs[0]?.value || "");
 }
