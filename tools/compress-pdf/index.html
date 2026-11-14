@@ -35,7 +35,7 @@
         <a href="/noelotools/#categories">Categories</a>
         <a href="/noelotools/pages/about/">About</a>
       <a href="/noelotools/blog/">Blog</a></nav>
-      <div class="header-actions tool-actions">
+      <div class="header-actions">
         <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
       </div>
@@ -56,7 +56,7 @@
     </section>
 
     <section class="compress-workspace" aria-label="PDF compression workspace">
-      <div class="upload-panel">
+      <div class="upload-panel tool-panel">
         <label class="upload-dropzone" id="dropzone" for="pdf-file">
           <span class="upload-icon" aria-hidden="true">↑</span>
           <strong>Choose a PDF file</strong>
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="mode-panel">
+      <div class="mode-panel tool-panel">
         <h2>Choose compression mode</h2>
         <label class="mode-option">
           <input type="radio" name="compression-mode" value="preserve" checked>
@@ -94,26 +94,26 @@
         </label>
       </div>
 
-      <div class="action-panel">
+      <div class="action-panel tool-panel tool-actions">
         <button id="compress-button" class="button button-primary tool-btn tool-btn-primary" type="button" disabled>Compress PDF</button>
         <p id="status-message" class="status-message" role="status" aria-live="polite">Choose a PDF to get started.</p>
         <progress id="progress-bar" max="100" value="0" hidden></progress>
       </div>
 
       <section class="result-panel tool-result" id="result-panel" aria-live="polite" hidden>
-        <div class="result-heading tool-result-label">
+        <div class="result-heading">
           <span class="result-check" aria-hidden="true">✓</span>
           <div>
-            <h2>Compression complete</h2>
+            <h2 class="tool-result-label">Compression complete</h2>
             <p id="result-summary"></p>
           </div>
         </div>
         <div class="size-comparison">
           <div><span>Original size</span><strong id="original-size"></strong></div>
           <div><span>New size</span><strong id="new-size"></strong></div>
-          <div><span>Change</span><strong id="size-change"></strong></div>
+          <div><span>Change</span><strong id="size-change" class="tool-result-value"></strong></div>
         </div>
-        <a id="download-link" class="button button-primary button-block" href="#" download="noelotools-compressed.pdf">Download compressed PDF</a>
+        <a id="download-link" class="button button-primary button-block tool-btn" href="#" download="noelotools-compressed.pdf">Download compressed PDF</a>
       </section>
     </section>
 
