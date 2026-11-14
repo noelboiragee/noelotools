@@ -86,8 +86,8 @@
       overflow: hidden;
       position: relative;
       isolation: isolate;
-      color: #fff;
-      background: radial-gradient(ellipse at center, #20205b, #10132e 40%, #050817 75%);
+      color: var(--text);
+      background: transparent;
     }
     .orbit-section::before {
       content: "";
@@ -95,10 +95,13 @@
       width: 650px;
       height: 650px;
       border-radius: 50%;
-      background: #5734ff;
-      filter: blur(150px);
-      opacity: .16;
+      background: var(--primary);
+      filter: blur(160px);
+      opacity: .08;
       pointer-events: none;
+    }
+    [data-theme="dark"] .orbit-section::before {
+      opacity: .15;
     }
     .orbit-scene {
       width: 100%;
