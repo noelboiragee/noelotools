@@ -49,11 +49,21 @@ export function initToolSearch() {
   };
 
   categoryFilters.forEach((filter) => {
+    if (filter.classList.contains("orbit-card")) {
+      filter.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          if (event.target.closest(".orbit-tool-link")) return;
+          event.preventDefault();
+          filter.click();
+        }
+      });
+    }
     filter.addEventListener("click", (event) => {
       if (filter.getAttribute("aria-disabled") === "true") {
         event.preventDefault();
         return;
       }
+      if (event.target.closest(".orbit-tool-link")) return;
       activeCategory = filter.dataset.categoryFilter || "";
       filterTools(document.querySelector("[data-tool-search]")?.value || "");
     });
