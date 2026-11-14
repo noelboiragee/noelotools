@@ -5,6 +5,7 @@ function normalizeText(value) {
     .normalize("NFKC")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -38,6 +39,7 @@ export function initToolSearch() {
       const searchableText = normalizeText([
         card.dataset.name,
         card.dataset.category,
+        card.dataset.categoryLabel,
         card.dataset.description,
         card.textContent
       ].join(" "));
