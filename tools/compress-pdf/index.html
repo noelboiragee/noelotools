@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
   <link rel="stylesheet" href="/noelotools/tools/style.css">
   <link rel="stylesheet" href="/noelotools/assets/css/category-themes.css">
+<link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
+<script defer src="/noelotools/assets/js/tool-theme.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" defer></script>
@@ -33,7 +35,7 @@
         <a href="/noelotools/#categories">Categories</a>
         <a href="/noelotools/pages/about/">About</a>
       <a href="/noelotools/blog/">Blog</a></nav>
-      <div class="header-actions">
+      <div class="header-actions tool-actions">
         <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
       </div>
@@ -68,7 +70,7 @@
             <strong id="file-name"></strong>
             <small id="file-size"></small>
           </span>
-          <button id="remove-file" class="text-button" type="button">Remove</button>
+          <button id="remove-file" class="text-button tool-btn" type="button">Remove</button>
         </div>
       </div>
 
@@ -93,13 +95,13 @@
       </div>
 
       <div class="action-panel">
-        <button id="compress-button" class="button button-primary" type="button" disabled>Compress PDF</button>
+        <button id="compress-button" class="button button-primary tool-btn tool-btn-primary" type="button" disabled>Compress PDF</button>
         <p id="status-message" class="status-message" role="status" aria-live="polite">Choose a PDF to get started.</p>
         <progress id="progress-bar" max="100" value="0" hidden></progress>
       </div>
 
-      <section class="result-panel" id="result-panel" aria-live="polite" hidden>
-        <div class="result-heading">
+      <section class="result-panel tool-result" id="result-panel" aria-live="polite" hidden>
+        <div class="result-heading tool-result-label">
           <span class="result-check" aria-hidden="true">✓</span>
           <div>
             <h2>Compression complete</h2>

@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="/noelotools/assets/css/global.css">
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
+<script defer src="/noelotools/assets/js/tool-theme.js"></script>
   <script type="module" src="script.js"></script>
   <script type="module" src="../../assets/js/main.js"></script>
   <link rel="icon" href="/noelotools/assets/img/favicon.svg" type="image/svg+xml">
@@ -20,7 +22,7 @@
     <div class="header-inner">
       <a class="site-brand" href="/noelotools/" aria-label="NoeloTools home"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
       <nav class="primary-nav" data-primary-nav aria-label="Main navigation"><a href="/noelotools/">Home</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/blog/">Blog</a></nav>
-      <div class="header-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button></div>
+      <div class="header-actions tool-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button></div>
     </div>
   </header>
 
@@ -34,7 +36,7 @@
 
     <section class="calculator-card" aria-labelledby="calculator-title">
       <h2 id="calculator-title">Choose your country</h2>
-      <div class="field-grid">
+      <div class="field-grid tool-panel">
         <div class="field">
           <label for="country">Country</label>
           <select id="country">
@@ -115,7 +117,7 @@
         <p>We are validating this country's income-tax bands, employee social contributions, allowances and payroll assumptions before showing an estimate. The calculator will be enabled after the model is checked against reliable country-specific sources.</p>
         <p>Your entered salary stays in this browser and is not submitted.</p>
       </div>
-      <button class="button button-secondary reset-button" id="reset-button" type="button">Reset salary</button>
+      <button class="button button-secondary reset-button tool-btn" id="reset-button" type="button">Reset salary</button>
     </section>
 
     <section class="tool-info">
