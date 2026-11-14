@@ -29,7 +29,8 @@ function createToolCard(tool, popular = false) {
   card.href = tool.url;
   card.dataset.name = tool.name;
   card.dataset.category = tool.category;
-  card.dataset.description = [tool.description, ...(tool.keywords || [])].join(" ");
+  card.dataset.categoryLabel = categoryMeta[categorySlug(tool.category)]?.title || tool.category;
+  card.dataset.description = [tool.description, card.dataset.categoryLabel, ...(tool.keywords || [])].join(" ");
   if (!popular) card.dataset.toolCard = "";
 
   const icon = document.createElement("span");
