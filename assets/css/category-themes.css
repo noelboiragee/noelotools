@@ -154,3 +154,114 @@ body[data-category="pdf"] .tool-info {
   body[data-category="pdf"] .pdf-tool-page { padding-top: 20px; padding-bottom: 48px; }
   body[data-category="pdf"] .ptx { padding: 16px; }
 }
+
+
+/* Category-specific visual systems for the remaining tool collections. */
+body[data-category="money-tax"] {
+  --primary: #b58a25;
+  --primary-dark: #8e6816;
+  --primary-soft: #fbf4df;
+  --shadow-glow: 0 0 30px rgba(181, 138, 37, .12);
+}
+body[data-category="media"] {
+  --primary: #2878d0;
+  --primary-dark: #195da8;
+  --primary-soft: #eaf3ff;
+  --shadow-glow: 0 0 30px rgba(40, 120, 208, .13);
+}
+body[data-category="developer"] {
+  --primary: #8054c7;
+  --primary-dark: #633aa8;
+  --primary-soft: #f2edfb;
+  --shadow-glow: 0 0 30px rgba(128, 84, 199, .13);
+}
+body[data-category="writing"] {
+  --primary: #d34d91;
+  --primary-dark: #ad3472;
+  --primary-soft: #fff0f7;
+  --shadow-glow: 0 0 30px rgba(211, 77, 145, .12);
+}
+body[data-category="health"] {
+  --primary: #26966a;
+  --primary-dark: #19764f;
+  --primary-soft: #e8f7ef;
+  --shadow-glow: 0 0 30px rgba(38, 150, 106, .12);
+}
+body[data-category="math"] {
+  --primary: #d97726;
+  --primary-dark: #b65b16;
+  --primary-soft: #fff2e6;
+  --shadow-glow: 0 0 30px rgba(217, 119, 38, .12);
+}
+body[data-category="everyday"] {
+  --primary: #168f91;
+  --primary-dark: #0e7072;
+  --primary-soft: #e7f7f6;
+  --shadow-glow: 0 0 30px rgba(22, 143, 145, .12);
+}
+html[data-theme="dark"] body[data-category="money-tax"] {
+  --primary: #e5bd59; --primary-dark: #f0ce78; --primary-soft: #352d1b;
+}
+html[data-theme="dark"] body[data-category="media"] {
+  --primary: #78b8ff; --primary-dark: #9acaff; --primary-soft: #1d2d42;
+}
+html[data-theme="dark"] body[data-category="developer"] {
+  --primary: #b89aef; --primary-dark: #cbb4f5; --primary-soft: #2d2440;
+}
+html[data-theme="dark"] body[data-category="writing"] {
+  --primary: #f08cbd; --primary-dark: #f5a9ce; --primary-soft: #3b2432;
+}
+html[data-theme="dark"] body[data-category="health"] {
+  --primary: #69d4a3; --primary-dark: #8be2b9; --primary-soft: #1d352b;
+}
+html[data-theme="dark"] body[data-category="math"] {
+  --primary: #ffad70; --primary-dark: #ffc092; --primary-soft: #3b2a20;
+}
+html[data-theme="dark"] body[data-category="everyday"] {
+  --primary: #69d0cf; --primary-dark: #8ae0df; --primary-soft: #1d3636;
+}
+
+/* Shared category treatment: keep tool controls and behaviour unchanged. */
+body[data-category] .tool-intro .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--border));
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+body[data-category]:not([data-category="pdf"]) .tool-workspace {
+  border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
+  box-shadow: 0 14px 38px color-mix(in srgb, var(--primary) 7%, transparent);
+}
+body[data-category] .tool-workspace h2,
+body[data-category] .tool-guide h2,
+body[data-category] .related-tools h2 {
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+}
+body[data-category] .tool-workspace input:focus,
+body[data-category] .tool-workspace select:focus,
+body[data-category] .tool-workspace textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 16%, transparent);
+  outline: none;
+}
+body[data-category]:not([data-category="pdf"]) .tool-workspace .button-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+body[data-category]:not([data-category="pdf"]) .tool-workspace .button-primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+body[data-category] .tool-result {
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 7%, transparent);
+}
+body[data-category] .related-tool-links a:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
