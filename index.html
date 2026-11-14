@@ -71,8 +71,8 @@
     /* বাংলা: নতুন 3D Orbit Carousel */
     .orbit-section {
       width: 100%;
-      height: 280px;
-      min-height: 280px;
+      height: 320px;
+      min-height: 320px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -95,7 +95,7 @@
     }
     .orbit-scene {
       width: 100%;
-      height: 260px;
+      height: 300px;
       position: relative;
       perspective: 1200px;
       display: flex;
@@ -121,26 +121,46 @@
       text-decoration: none;
       color: inherit;
       position: absolute;
-      width: 140px;
-      height: 210px;
+      width: 155px;
+      height: 230px;
       left: 50%;
       top: 50%;
-      margin: -105px 0 0 -70px;
-      transform: rotateY(calc(var(--i) * 45deg)) translateZ(300px);
+      margin: -115px 0 0 -77.5px;
+      transform: rotateY(calc(var(--i) * 45deg)) translateZ(330px);
       border-radius: 14px;
       overflow: hidden;
-      background: #151a35;
+      background: radial-gradient(ellipse at 50% 18%, color-mix(in srgb, var(--glow) 38%, #101426), #101426 72%);
       border: 2px solid var(--glow);
       box-shadow: 0 0 15px var(--glow);
       backface-visibility: hidden;
       -webkit-user-drag: none;
     }
-    .orbit-card img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
+    .orbit-card img { display: none; }
+
+    /* Category-specific abstract backgrounds keep each card visually distinct. */
+    .orbit-card[data-category-filter="pdf"] {
+      background: repeating-linear-gradient(0deg, transparent 0 17px, rgba(255,93,115,.12) 18px 19px), linear-gradient(145deg, #5a172d, #171329 72%);
+    }
+    .orbit-card[data-category-filter="money-tax"] {
+      background: radial-gradient(circle at 75% 24%, rgba(251,191,36,.42), transparent 38%), linear-gradient(145deg, #4c3510, #111b24 75%);
+    }
+    .orbit-card[data-category-filter="media"] {
+      background: radial-gradient(circle at 25% 25%, rgba(56,189,248,.42), transparent 40%), linear-gradient(145deg, #123c62, #101426 76%);
+    }
+    .orbit-card[data-category-filter="developer"] {
+      background: repeating-linear-gradient(90deg, transparent 0 17px, rgba(167,139,250,.12) 18px 19px), repeating-linear-gradient(0deg, #251849 0 17px, #30205a 18px 19px);
+    }
+    .orbit-card[data-category-filter="writing"] {
+      background: repeating-linear-gradient(0deg, transparent 0 14px, rgba(251,113,133,.16) 15px 16px), linear-gradient(145deg, #542238, #171329 76%);
+    }
+    .orbit-card[data-category-filter="health"] {
+      background: radial-gradient(ellipse at 50% 30%, rgba(52,211,153,.4), transparent 46%), linear-gradient(145deg, #124a42, #101a29 78%);
+    }
+    .orbit-card[data-category-filter="math"] {
+      background: repeating-linear-gradient(90deg, transparent 0 19px, rgba(249,115,22,.14) 20px 21px), repeating-linear-gradient(0deg, #492311 0 19px, #5b2b13 20px 21px);
+    }
+    .orbit-card[data-category-filter="everyday"] {
+      background: radial-gradient(circle at 70% 30%, rgba(45,212,191,.4), transparent 40%), linear-gradient(145deg, #104b4d, #101426 76%);
     }
     .orbit-card .card-icon {
       position: absolute;
@@ -205,7 +225,7 @@
     .orbit-card .orbit-tool-count {
       position: absolute;
       z-index: 3;
-      bottom: 34px;
+      top: calc(72px + var(--orbit-link-count, 0) * 25px + 4px);
       left: 4px;
       right: 4px;
       color: #fff;
@@ -216,6 +236,7 @@
       pointer-events: none;
     }
     .orbit-card[role="link"] { cursor: pointer; }
+    #tools { scroll-margin-top: 88px; }
     .orbit-card .card-title {
       position: absolute;
       z-index: 2;
@@ -229,17 +250,17 @@
       pointer-events: none;
     }
     @media (max-width: 600px) {
-      .orbit-section { height: 230px; min-height: 230px; }
-      .orbit-scene { height: 210px; perspective: 850px; }
+      .orbit-section { height: 280px; min-height: 280px; }
+      .orbit-scene { height: 260px; perspective: 850px; }
       .orbit-card {
-        width: 110px;
-        height: 165px;
-        margin: -82.5px 0 0 -55px;
-        transform: rotateY(calc(var(--i) * 45deg)) translateZ(195px);
+        width: 125px;
+        height: 190px;
+        margin: -95px 0 0 -62.5px;
+        transform: rotateY(calc(var(--i) * 45deg)) translateZ(215px);
       }
       .orbit-card .orbit-tool-links { top: 66px; left: 5px; right: 5px; gap: 4px; }
       .orbit-card .orbit-tool-link { padding: 3px 2px; font-size: 8px; }
-      .orbit-card .orbit-tool-count { bottom: 29px; font-size: 8px; }
+      .orbit-card .orbit-tool-count { top: calc(66px + var(--orbit-link-count, 0) * 20px + 4px); font-size: 8px; }
       .orbit-card .card-title { font-size: 10px; }
     }
   </style>
@@ -450,12 +471,15 @@
       let dragMoved = false;
       let suppressClickUntil = 0;
       let animationFrame = 0;
+      let animationRunning = false;
       const dragThreshold = 8;
 
       function animate() {
-        if (!isDragging) rotation += 0.35;
+        if (!isDragging) rotation += 0.20;
         ring.style.transform = `rotateY(${rotation}deg)`;
-        animationFrame = requestAnimationFrame(animate);
+        if (animationRunning && !document.hidden) {
+          animationFrame = requestAnimationFrame(animate);
+        }
       }
 
       ring.addEventListener("pointerdown", (event) => {
@@ -494,11 +518,29 @@
       ring.addEventListener("pointercancel", stopDrag);
       ring.addEventListener("lostpointercapture", stopDrag);
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        ring.style.animation = "none";
+      function startAnimation() {
+        if (animationRunning || document.hidden) return;
+        animationRunning = true;
+        animationFrame = requestAnimationFrame(animate);
       }
-      animate();
-      window.addEventListener("pagehide", () => cancelAnimationFrame(animationFrame), { once: true });
+
+      function stopAnimation() {
+        animationRunning = false;
+        cancelAnimationFrame(animationFrame);
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopAnimation();
+        else startAnimation();
+      });
+      window.addEventListener("pageshow", startAnimation);
+      window.addEventListener("pagehide", stopAnimation);
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        ring.style.transform = "rotateY(0deg)";
+      } else {
+        startAnimation();
+      }
     })();
   </script>
 
