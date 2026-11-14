@@ -1,11 +1,19 @@
-// বাংলা: টুলের নাম, বিবরণ ও ক্যাটাগরি দিয়ে তাৎক্ষণিক সার্চ।
-
+// বাংলা: সার্চ বক্সের নিচে তাৎক্ষণিক ফলাফল দেখায় এবং All Tools তালিকাও ফিল্টার করে।
 function normalizeText(value) {
   return String(value || "")
     .toLocaleLowerCase()
+    .normalize("NFKC")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
     .trim();
+}
+
+function categorySlug(value) {
+  return String(value || "").toLowerCase().trim()
+    .replace(/&/g, " ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 export function initToolSearch() {
@@ -16,7 +24,7 @@ export function initToolSearch() {
   const emptyStates = document.querySelectorAll("[data-search-empty]");
   const countTargets = document.querySelectorAll("[data-search-count]");
   const categoryFilters = document.querySelectorAll("[data-category-filter]");
-  const toolsSection = document.getElementById("tools");
+  const resultPanels = document.querySelectorAll("[data-search-results]");
   let activeCategory = "";
 
   if (!toolCards.length) {
@@ -24,31 +32,80 @@ export function initToolSearch() {
     return;
   }
 
-  const filterTools = (query) => {
+  const getMatches = (query) => {
     const normalizedQuery = normalizeText(query);
-    let visibleCount = 0;
-
-    toolCards.forEach((card) => {
+    return toolCards.filter((card) => {
       const searchableText = normalizeText([
         card.dataset.name,
         card.dataset.category,
         card.dataset.description,
         card.textContent
       ].join(" "));
-      const category = normalizeText(card.dataset.category).replace(/\s+/g, "-");
-      const matches = (!activeCategory || category === activeCategory)
+      const category = categorySlug(card.dataset.category);
+      return (!activeCategory || category === activeCategory)
         && (!normalizedQuery || searchableText.includes(normalizedQuery));
+    });
+  };
 
-      card.hidden = !matches;
-      if (matches) visibleCount += 1;
+  const renderSuggestions = (query, matches) => {
+    const normalizedQuery = normalizeText(query);
+    resultPanels.forEach((panel) => {
+      panel.replaceChildren();
+      if (!normalizedQuery) {
+        panel.hidden = true;
+        return;
+      }
+
+      const suggestions = matches.slice(0, 7);
+      if (!suggestions.length) {
+        const empty = document.createElement("p");
+        empty.className = "search-result-empty";
+        empty.textContent = "No matching tools found. Try another word.";
+        panel.append(empty);
+      } else {
+        suggestions.forEach((card) => {
+          const link = document.createElement("a");
+          link.className = "search-result";
+          link.href = card.href;
+
+          const title = document.createElement("span");
+          title.className = "search-result-title";
+          title.textContent = card.dataset.name || card.textContent.trim();
+
+          const meta = document.createElement("span");
+          meta.className = "search-result-meta";
+          meta.textContent = card.dataset.category || "Tool";
+
+          link.append(title, meta);
+          panel.append(link);
+        });
+
+        if (matches.length > suggestions.length) {
+          const more = document.createElement("p");
+          more.className = "search-result-more";
+          more.textContent = `+${matches.length - suggestions.length} more results shown in All Tools below`;
+          panel.append(more);
+        }
+      }
+      panel.hidden = false;
+    });
+  };
+
+  const filterTools = (query) => {
+    const matches = getMatches(query);
+    const matchedCards = new Set(matches);
+
+    toolCards.forEach((card) => {
+      card.hidden = !matchedCards.has(card);
     });
 
     emptyStates.forEach((emptyState) => {
-      emptyState.hidden = visibleCount !== 0;
+      emptyState.hidden = matches.length !== 0;
     });
     countTargets.forEach((target) => {
-      target.textContent = String(visibleCount);
+      target.textContent = String(matches.length);
     });
+    renderSuggestions(query, matches);
   };
 
   categoryFilters.forEach((filter) => {
@@ -72,27 +129,25 @@ export function initToolSearch() {
       activeCategory = filter.dataset.categoryFilter || "";
       filterTools(searchInputs[0]?.value || "");
       if (filter.classList.contains("orbit-card")) {
-        toolsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
-        if (window.location.hash !== "#tools") {
-          history.replaceState(null, "", "#tools");
-        }
+        document.getElementById("tools")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (window.location.hash !== "#tools") history.replaceState(null, "", "#tools");
       }
     });
   });
 
   searchInputs.forEach((input) => {
-    input.addEventListener("input", () => {
-      // Typing filters results in place. Never scroll the page while the user is typing.
+    const handleSearch = () => {
       activeCategory = "";
       filterTools(input.value);
-
       searchInputs.forEach((otherInput) => {
-        if (otherInput !== input && otherInput.value !== input.value) {
-          otherInput.value = input.value;
-        }
+        if (otherInput !== input && otherInput.value !== input.value) otherInput.value = input.value;
       });
-    });
+      searchInputs.forEach((otherInput) => otherInput.setAttribute("aria-expanded", String(Boolean(normalizeText(input.value)))));
+    };
 
+    input.addEventListener("input", handleSearch);
+    input.addEventListener("search", handleSearch);
+    input.addEventListener("compositionend", handleSearch);
     input.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         input.value = "";
@@ -100,6 +155,7 @@ export function initToolSearch() {
         filterTools("");
         searchInputs.forEach((otherInput) => {
           if (otherInput !== input) otherInput.value = "";
+          otherInput.setAttribute("aria-expanded", "false");
         });
       }
     });
