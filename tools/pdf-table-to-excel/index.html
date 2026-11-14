@@ -15,6 +15,8 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../../assets/css/category-themes.css">
+<link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
+<script defer src="/noelotools/assets/js/tool-theme.js"></script>
   <script defer src="script.js"></script>
   <script type="module" src="../../assets/js/main.js"></script>
   <link rel="icon" href="/noelotools/assets/img/favicon.svg" type="image/svg+xml">
@@ -36,7 +38,7 @@
         <a href="/noelotools/blog/">Blog</a>
         <a href="/noelotools/pages/about/">About</a>
       </nav>
-      <div class="header-actions">
+      <div class="header-actions tool-actions">
         <button class="button button-ghost" type="button" data-theme-toggle aria-pressed="false">
           <span data-theme-label>Dark mode</span>
         </button>
@@ -54,7 +56,7 @@
   <label class="ptx-drop" id="ptx-drop" for="ptx-file"><span class="ptx-drop-title">Choose a PDF</span><span class="ptx-drop-hint">or drop it here. Text-based PDFs only, up to 30 MB.</span></label>
   <input class="ptx-file" id="ptx-file" type="file" accept="application/pdf,.pdf">
   <p class="ptx-status" id="ptx-status" role="status" aria-live="polite"></p>
-  <fieldset class="ptx-options" id="ptx-options" hidden>
+  <fieldset class="ptx-options tool-panel" id="ptx-options" hidden>
     <legend>Adjust the result</legend>
     <div class="ptx-field"><label for="ptx-gap">Column spacing: <output id="ptx-gap-value" for="ptx-gap">0.8</output></label><input id="ptx-gap" type="range" min="0.3" max="3" step="0.1" value="0.8"><span class="ptx-help">Lower it if two columns are joined. Raise it if one column is split.</span></div>
     <div class="ptx-field"><label for="ptx-numbers">Numbers in the Excel file</label><select id="ptx-numbers"><option value="text" selected>Keep as text (safest)</option><option value="eu">Convert to numbers: 1.234,56 (European)</option><option value="en">Convert to numbers: 1,234.56 (English)</option></select></div>
@@ -62,7 +64,7 @@
     <div class="ptx-check"><input id="ptx-repeated" type="checkbox" checked><label for="ptx-repeated">Remove repeated header rows on each page</label></div>
     <div class="ptx-check"><input id="ptx-single" type="checkbox"><label for="ptx-single">Remove rows with only one cell (titles, page numbers)</label></div>
   </fieldset>
-  <div class="ptx-result" id="ptx-result" hidden><p class="ptx-summary" id="ptx-summary"></p><div class="ptx-preview" id="ptx-preview" tabindex="0" aria-label="Table preview"></div><div class="ptx-actions"><button type="button" class="ptx-btn ptx-btn-primary" id="ptx-xlsx">Download Excel (XLSX)</button><button type="button" class="ptx-btn" id="ptx-csv">Download CSV</button><button type="button" class="ptx-btn" id="ptx-reset">Start over</button></div><p class="ptx-warning">Check the result against the original document before you use it. Automatic extraction can misplace columns or miss rows.</p></div>
+  <div class="ptx-result" id="ptx-result" hidden><p class="ptx-summary" id="ptx-summary"></p><div class="ptx-preview" id="ptx-preview" tabindex="0" aria-label="Table preview"></div><div class="ptx-actions"><button type="button" class="ptx-btn ptx-btn-primary tool-btn" id="ptx-xlsx">Download Excel (XLSX)</button><button type="button" class="ptx-btn tool-btn" id="ptx-csv">Download CSV</button><button type="button" class="ptx-btn tool-btn" id="ptx-reset">Start over</button></div><p class="ptx-warning">Check the result against the original document before you use it. Automatic extraction can misplace columns or miss rows.</p></div>
 </section>
 <h2>How to use</h2><ol><li>Choose a PDF that has selectable text, or drop it on the box.</li><li>Check the preview. If columns are joined or split, move the column spacing slider.</li><li>Choose how numbers should appear, then download the XLSX or CSV file.</li></ol>
 <h2>Frequently asked questions</h2>
