@@ -13,8 +13,7 @@ function applyTheme(theme) {
     const isDark = selectedTheme === THEME_DARK;
     toggle.setAttribute("aria-pressed", String(isDark));
     toggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
-    const label = toggle.querySelector("[data-theme-label]");
-    if (label) label.textContent = isDark ? "Light mode" : "Dark mode";
+    toggle.title = isDark ? "Switch to light theme" : "Switch to dark theme";
   }
 }
 
