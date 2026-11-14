@@ -15,7 +15,9 @@ function initCategoryTheme() {
     "health": "health",
     "health & wellness": "health",
     "math": "math",
-    "everyday": "everyday"
+    "everyday": "everyday",
+    "everyday tools": "everyday",
+    "security tools": "developer"
   };
   const categoryLink = document.querySelector('.breadcrumbs a[href*="#categories"]');
   const eyebrow = document.querySelector(".tool-intro .eyebrow, .page-heading .eyebrow");
