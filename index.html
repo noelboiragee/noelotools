@@ -71,8 +71,8 @@
     /* বাংলা: নতুন 3D Orbit Carousel */
     .orbit-section {
       width: 100%;
-      height: 100vh;
-      min-height: 600px;
+      height: 440px;
+      min-height: 440px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -95,7 +95,7 @@
     }
     .orbit-scene {
       width: 100%;
-      height: 500px;
+      height: 380px;
       position: relative;
       perspective: 1200px;
       display: flex;
@@ -159,7 +159,8 @@
       pointer-events: none;
     }
     @media (max-width: 600px) {
-      .orbit-scene { height: 420px; perspective: 850px; }
+      .orbit-section { height: 350px; min-height: 350px; }
+      .orbit-scene { height: 300px; perspective: 850px; }
       .orbit-card {
         width: 95px;
         height: 145px;
