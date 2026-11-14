@@ -5,19 +5,21 @@ import { initCookieConsent } from "./cookie-consent.js";
 import { initToolCatalog } from "./tool-catalog.js";
 
 function initCategoryTheme() {
-  const categoryLink = document.querySelector('.breadcrumbs a[href*="#categories"]');
-  if (!categoryLink) return;
-  const categoryName = categoryLink.textContent.trim().toLowerCase();
   const categoryMap = {
     "pdf": "pdf",
     "money & tax": "money-tax",
     "media": "media",
     "developer": "developer",
     "writing": "writing",
+    "writing tool": "writing",
     "health": "health",
+    "health & wellness": "health",
     "math": "math",
     "everyday": "everyday"
   };
+  const categoryLink = document.querySelector('.breadcrumbs a[href*="#categories"]');
+  const eyebrow = document.querySelector(".tool-intro .eyebrow, .page-heading .eyebrow");
+  const categoryName = (categoryLink?.textContent || eyebrow?.textContent || "").trim().toLowerCase();
   const category = categoryMap[categoryName];
   if (!category) return;
   document.body.dataset.category = category;
