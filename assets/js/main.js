@@ -10,7 +10,7 @@ function initCategoryTheme() {
   const categoryName = categoryLink.textContent.trim().toLowerCase();
   const categoryMap = {
     "pdf": "pdf",
-    "money tax": "money-tax",
+    "money & tax": "money-tax",
     "media": "media",
     "developer": "developer",
     "writing": "writing",
@@ -70,7 +70,8 @@ function safelyInit(name, initializer) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  safelyInit("category theme", initCategoryTheme);\n  safelyInit("theme toggle", initThemeToggle);
+  safelyInit("category theme", initCategoryTheme);
+  safelyInit("theme toggle", initThemeToggle);
   initToolCatalog().finally(() => safelyInit("tool search", initToolSearch));
   safelyInit("cookie consent", initCookieConsent);
   safelyInit("mobile navigation", initMobileNavigation);
