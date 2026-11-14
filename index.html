@@ -117,6 +117,9 @@
     }
     .orbit-ring:active { cursor: grabbing; }
     .orbit-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
       position: absolute;
       width: 140px;
       height: 210px;
@@ -241,46 +244,54 @@
       <h2 class="sr-only" id="orbit-title">Explore featured topics</h2>
       <div class="orbit-scene">
         <div class="orbit-ring" id="orbitRing" aria-label="Drag horizontally to rotate the featured cards">
-          <div class="orbit-card" style="--i:0;--glow:#ff5d73">
+          <a class="orbit-card" href="#tools" data-category-filter="pdf" style="--i:0;--glow:#ff5d73" aria-label="Browse pdf tools">
+            
             <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400" alt="PDF tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">📄</div>
             <div class="card-title">PDF Tools</div>
-          </div>
-          <div class="orbit-card" style="--i:1;--glow:#fbbf24">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="money-tax" style="--i:1;--glow:#fbbf24" aria-label="Browse money-tax tools">
+            
             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400" alt="Money and tax tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">💰</div>
             <div class="card-title">Money &amp; Tax</div>
-          </div>
-          <div class="orbit-card" style="--i:2;--glow:#38bdf8">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="media" style="--i:2;--glow:#38bdf8" aria-label="Browse media tools">
+            
             <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400" alt="Media tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">🖼️</div>
             <div class="card-title">Media</div>
-          </div>
-          <div class="orbit-card" style="--i:3;--glow:#a78bfa">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="developer" style="--i:3;--glow:#a78bfa" aria-label="Browse developer tools">
+            
             <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400" alt="Developer tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">&lt;/&gt;</div>
             <div class="card-title">Developer</div>
-          </div>
-          <div class="orbit-card" style="--i:4;--glow:#fb7185">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="writing" style="--i:4;--glow:#fb7185" aria-label="Browse writing tools">
+            
             <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400" alt="Writing tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">✍️</div>
             <div class="card-title">Writing</div>
-          </div>
-          <div class="orbit-card" style="--i:5;--glow:#34d399">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="health" style="--i:5;--glow:#34d399" aria-label="Browse health tools">
+            
             <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Health tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">♡</div>
             <div class="card-title">Health</div>
-          </div>
-          <div class="orbit-card" style="--i:6;--glow:#f97316">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="math" style="--i:6;--glow:#f97316" aria-label="Browse math tools">
+            
             <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Math tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">∑</div>
             <div class="card-title">Math</div>
-          </div>
-          <div class="orbit-card" style="--i:7;--glow:#2dd4bf">
+          </a>
+          <a class="orbit-card" href="#tools" data-category-filter="everyday" style="--i:7;--glow:#2dd4bf" aria-label="Browse everyday tools">
+            
             <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" alt="Everyday tools" loading="lazy" draggable="false">
             <div class="card-icon" aria-hidden="true">✦</div>
             <div class="card-title">Everyday</div>
-          </div>
+          </a>
         </div>
 
       </div>
