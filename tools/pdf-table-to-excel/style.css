@@ -12,7 +12,7 @@
 .ptx-page .ptx-file{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .ptx-page .ptx-drop{min-height:225px;padding:28px 18px;text-align:center;cursor:pointer;border:2px dashed var(--primary,#4774e8);border-radius:15px;background:var(--surface,#fff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:border-color .2s,background .2s,transform .2s}
 .ptx-page .ptx-drop:hover,.ptx-page .ptx-drop.ptx-drag{border-style:solid;background:var(--primary-soft,#eef3ff);transform:translateY(-2px)}
-.ptx-page .ptx-file:focus-visible + .ptx-upload-help{outline:3px solid var(--primary,#4774e8);outline-offset:3px}
+.ptx-page .ptx-upload-panel:has(.ptx-file:focus-visible) .ptx-drop{outline:3px solid var(--primary,#4774e8);outline-offset:3px}
 .ptx-page .ptx-upload-icon{width:58px;height:58px;display:grid;place-items:center;border-radius:18px;background:var(--primary,#4774e8);color:#fff;font-size:2rem;font-weight:700}
 .ptx-page .ptx-drop-title{font-weight:800;font-size:1.2rem}
 .ptx-page .ptx-drop-hint{font-size:.92rem;opacity:.72}

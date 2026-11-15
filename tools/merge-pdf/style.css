@@ -11,7 +11,7 @@
 .merge-pdf-page #pdf-files{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .merge-pdf-page .drop-zone{min-height:225px;padding:28px 18px;border:2px dashed var(--primary,#4774e8);border-radius:17px;background:var(--surface-soft,#f7f9ff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;cursor:pointer;color:var(--text-muted);transition:border-color .2s,background .2s,transform .2s}
 .merge-pdf-page .drop-zone:hover,.merge-pdf-page .drop-zone.is-dragging{border-style:solid;background:var(--primary-soft,#eef3ff);transform:translateY(-2px)}
-.merge-pdf-page #pdf-files:focus-visible + .drop-zone{outline:3px solid var(--primary,#4774e8);outline-offset:3px}
+.merge-pdf-page .merge-workspace:has(#pdf-files:focus-visible) .drop-zone{outline:3px solid var(--primary,#4774e8);outline-offset:3px}
 .merge-pdf-page .drop-zone strong{font-size:1.2rem;color:var(--text)}
 .merge-pdf-page .upload-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:var(--primary,#4774e8);color:#fff;font-size:2rem;line-height:1}
 .merge-pdf-page .file-limit{font-size:.8rem;border-radius:999px;padding:6px 10px;background:var(--surface-muted,#edf0f5)}
