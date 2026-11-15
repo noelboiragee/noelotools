@@ -47,33 +47,65 @@
     </div>
   </header>
 
-  <main id="main-content" class="container tool-page pdf-tool-page">
+  <main id="main-content" class="container tool-page pdf-tool-page ptx-page">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/noelotools/">Home</a><span aria-hidden="true">/</span><a href="/noelotools/#categories">PDF</a><span aria-hidden="true">/</span><span aria-current="page">PDF Table to Excel</span></nav>
-    <h1>PDF Table to Excel</h1>
-<p>Convert a text-based PDF table, such as a bank statement, into an Excel (XLSX) or CSV file. Everything runs in your browser and your PDF is not uploaded.</p>
-<section class="ptx" aria-labelledby="ptx-heading">
-  <h2 id="ptx-heading">Use the tool</h2>
-  <label class="ptx-drop" id="ptx-drop" for="ptx-file"><span class="ptx-drop-title">Choose a PDF</span><span class="ptx-drop-hint">or drop it here. Text-based PDFs only, up to 30 MB.</span></label>
-  <input class="ptx-file" id="ptx-file" type="file" accept="application/pdf,.pdf">
-  <p class="ptx-status" id="ptx-status" role="status" aria-live="polite"></p>
-  <fieldset class="ptx-options tool-panel" id="ptx-options" hidden>
-    <legend>Adjust the result</legend>
-    <div class="ptx-field"><label for="ptx-gap">Column spacing: <output id="ptx-gap-value" for="ptx-gap">0.8</output></label><input id="ptx-gap" type="range" min="0.3" max="3" step="0.1" value="0.8"><span class="ptx-help">Lower it if two columns are joined. Raise it if one column is split.</span></div>
-    <div class="ptx-field"><label for="ptx-numbers">Numbers in the Excel file</label><select id="ptx-numbers"><option value="text" selected>Keep as text (safest)</option><option value="eu">Convert to numbers: 1.234,56 (European)</option><option value="en">Convert to numbers: 1,234.56 (English)</option></select></div>
-    <div class="ptx-field"><label for="ptx-delimiter">CSV separator</label><select id="ptx-delimiter"><option value=";" selected>Semicolon ( ; )</option><option value=",">Comma ( , )</option><option value="tab">Tab</option></select></div>
-    <div class="ptx-check"><input id="ptx-repeated" type="checkbox" checked><label for="ptx-repeated">Remove repeated header rows on each page</label></div>
-    <div class="ptx-check"><input id="ptx-single" type="checkbox"><label for="ptx-single">Remove rows with only one cell (titles, page numbers)</label></div>
-  </fieldset>
-  <div class="ptx-result" id="ptx-result" hidden><p class="ptx-summary" id="ptx-summary"></p><div class="ptx-preview" id="ptx-preview" tabindex="0" aria-label="Table preview"></div><div class="ptx-actions"><button type="button" class="ptx-btn ptx-btn-primary tool-btn" id="ptx-xlsx">Download Excel (XLSX)</button><button type="button" class="ptx-btn tool-btn" id="ptx-csv">Download CSV</button><button type="button" class="ptx-btn tool-btn" id="ptx-reset">Start over</button></div><p class="ptx-warning">Check the result against the original document before you use it. Automatic extraction can misplace columns or miss rows.</p></div>
-</section>
-<h2>How to use</h2><ol><li>Choose a PDF that has selectable text, or drop it on the box.</li><li>Check the preview. If columns are joined or split, move the column spacing slider.</li><li>Choose how numbers should appear, then download the XLSX or CSV file.</li></ol>
-<h2>Frequently asked questions</h2>
-<h3>Is my PDF uploaded to a server?</h3><p>No. The file is read and converted in your browser. The PDF and Excel libraries load from a public CDN when the page opens, so you need an internet connection to load the page.</p>
-<h3>Does it work with scanned PDFs?</h3><p>No. Scanned PDFs are images and have no text to read. They need OCR, which this tool does not include.</p>
-<h3>Why are some columns wrong?</h3><p>Every bank lays out its statements differently. The tool finds columns by the position of the text, so it can be wrong on unusual layouts. Change the column spacing slider and check the preview.</p>
-<h3>Are numbers converted automatically?</h3><p>Only if you choose it. By default values stay as text so nothing changes silently. Choose European or English format to get real numbers in Excel. Values with leading zeros and very long digit strings stay as text.</p>
-<h3>Why does the CSV keep the original text?</h3><p>The CSV contains the values exactly as written in the PDF. Use the XLSX download if you want converted numbers.</p>
-<h2>Related tools</h2><ul><li><a href="/noelotools/tools/merge-pdf/">Merge PDF</a></li><li><a href="/noelotools/tools/compress-pdf/">Compress PDF</a></li><li><a href="/noelotools/tools/currency-converter/">Currency Converter</a></li></ul>
+
+    <section class="tool-intro">
+      <p class="eyebrow">PDF TOOL</p>
+      <h1>PDF Table to Excel</h1>
+      <p>Extract tables from text-based PDF files and export them to Excel or CSV. Preview the data and adjust column detection before downloading.</p>
+    </section>
+
+    <section class="ptx-workspace" aria-label="PDF table extraction workspace">
+      <section class="ptx tool-panel" aria-labelledby="ptx-heading">
+        <h2 id="ptx-heading">Upload your PDF</h2>
+        <div class="ptx-upload-panel">
+          <label class="ptx-drop" id="ptx-drop" for="ptx-file">
+            <span class="ptx-upload-icon" aria-hidden="true">↑</span>
+            <span class="ptx-drop-title">Drop your PDF here</span>
+            <span class="ptx-drop-hint">or click to browse files</span>
+            <span class="ptx-file-limit">PDF files · Up to 30 MB · Text-based PDFs only</span>
+          </label>
+          <input class="ptx-file" id="ptx-file" type="file" accept="application/pdf,.pdf" aria-describedby="ptx-upload-help">
+          <p class="ptx-upload-help" id="ptx-upload-help">Scanned PDFs need OCR and are not supported by this tool.</p>
+        </div>
+        <p class="ptx-status" id="ptx-status" role="status" aria-live="polite"></p>
+
+        <fieldset class="ptx-options tool-panel" id="ptx-options" hidden>
+          <legend>Adjust extraction settings</legend>
+          <div class="ptx-settings-grid">
+            <div class="ptx-field"><label for="ptx-gap">Column spacing <output id="ptx-gap-value" for="ptx-gap">0.8</output></label><input id="ptx-gap" type="range" min="0.3" max="3" step="0.1" value="0.8"><span class="ptx-help">Lower it if two columns are joined. Raise it if one column is split.</span></div>
+            <div class="ptx-field"><label for="ptx-numbers">Number format in Excel</label><select id="ptx-numbers"><option value="text" selected>Keep as text (safest)</option><option value="eu">Convert to numbers: 1.234,56 (European)</option><option value="en">Convert to numbers: 1,234.56 (English)</option></select></div>
+            <div class="ptx-field"><label for="ptx-delimiter">CSV separator</label><select id="ptx-delimiter"><option value=";" selected>Semicolon ( ; )</option><option value=",">Comma ( , )</option><option value="tab">Tab</option></select></div>
+          </div>
+          <div class="ptx-checks">
+            <div class="ptx-check"><input id="ptx-repeated" type="checkbox" checked><label for="ptx-repeated">Remove repeated header rows on each page</label></div>
+            <div class="ptx-check"><input id="ptx-single" type="checkbox"><label for="ptx-single">Remove rows with only one cell (titles, page numbers)</label></div>
+          </div>
+        </fieldset>
+
+        <div class="ptx-result tool-panel" id="ptx-result" hidden>
+          <div class="ptx-result-heading"><span class="ptx-result-mark" aria-hidden="true">✓</span><div><h2>Table preview</h2><p class="ptx-summary" id="ptx-summary"></p></div></div>
+          <div class="ptx-preview" id="ptx-preview" tabindex="0" aria-label="Table preview"></div>
+          <div class="ptx-actions"><button type="button" class="ptx-btn ptx-btn-primary tool-btn" id="ptx-xlsx">Download Excel (XLSX)</button><button type="button" class="ptx-btn tool-btn" id="ptx-csv">Download CSV</button><button type="button" class="ptx-btn tool-btn" id="ptx-reset">Start over</button></div>
+          <p class="ptx-warning">Check the result against the original document before using it. Automatic extraction can misplace columns or miss rows.</p>
+        </div>
+      </section>
+    </section>
+
+    <p class="ptx-privacy-note">Your PDF is processed on your device and is not uploaded to NoeloTools. An internet connection is needed to load the PDF and Excel libraries.</p>
+
+    <section class="ptx-info">
+      <div class="ptx-info-card"><h2>How to use</h2><ol><li>Choose a PDF that has selectable text, or drop it into the upload area.</li><li>Review the preview. Adjust column spacing if columns are joined or split.</li><li>Choose number and CSV settings, then download your XLSX or CSV file.</li></ol></div>
+      <div class="ptx-info-card"><h2>Frequently asked questions</h2>
+        <h3>Is my PDF uploaded to a server?</h3><p>No. The file is read and converted in your browser. The PDF and Excel libraries load from a public CDN, so an internet connection is needed when the page opens.</p>
+        <h3>Does it work with scanned PDFs?</h3><p>No. Scanned PDFs are images and have no selectable text. They need OCR, which this tool does not include.</p>
+        <h3>Why are some columns wrong?</h3><p>PDF layouts vary. The tool estimates columns from text positions, so unusual layouts may need a different column spacing setting.</p>
+        <h3>Are numbers converted automatically?</h3><p>No. Values stay as text by default. Choose European or English number conversion if needed. Values with leading zeros and very long digit strings stay as text.</p>
+        <h3>Why does the CSV keep the original text?</h3><p>The CSV contains values as written in the PDF. Use the XLSX download if you want converted numbers.</p>
+      </div>
+      <div class="ptx-info-card"><h2>Related tools</h2><ul><li><a href="/noelotools/tools/merge-pdf/">Merge PDF</a></li><li><a href="/noelotools/tools/compress-pdf/">Compress PDF</a></li><li><a href="/noelotools/tools/currency-converter/">Currency Converter</a></li></ul></div>
+    </section>
   </main>
 
   <!-- বাংলা: প্রকাশিত পেজে shared/footer.html-এর কনটেন্ট এখানে বসাতে হবে। -->

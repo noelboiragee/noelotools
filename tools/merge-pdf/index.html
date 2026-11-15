@@ -32,7 +32,7 @@
         <a href="/noelotools/#categories">Categories</a>
         <a href="/noelotools/pages/about/">About</a>
       <a href="/noelotools/blog/">Blog</a></nav>
-      <div class="header-actions tool-actions">
+      <div class="header-actions">
         <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
       </div>
@@ -53,27 +53,29 @@
     </section>
 
     <section class="merge-workspace" aria-label="PDF merge workspace">
-      <div class="upload-panel">
+      <div class="upload-panel tool-panel">
         <label class="drop-zone" for="pdf-files" id="drop-zone">
           <span class="upload-icon" aria-hidden="true">＋</span>
           <strong>Select PDF files</strong>
           <span>Choose two or more PDF files, or drag them here</span>
-          <span class="file-limit">PDF files only · Select files in the order you want them merged</span>
+          <span class="file-limit">PDF files only · Files will be merged in the order selected</span>
         </label>
         <input id="pdf-files" type="file" accept="application/pdf,.pdf" multiple>
         <div class="selected-heading">
           <div><h2>Selected files</h2><span id="file-count">0 files</span></div>
           <button id="clear-files" class="button button-secondary tool-btn" type="button" disabled>Clear all</button>
         </div>
-        <ol id="file-list" class="file-list" aria-live="polite">
+        <ol id="file-list" class="file-list" aria-live="polite" aria-label="PDF files in merge order">
           <li class="empty-state">No files selected yet.</li>
         </ol>
-        <div class="merge-actions">
+        <div class="merge-actions tool-actions">
           <button id="merge-button" class="button button-primary tool-btn tool-btn-primary" type="button" disabled>Merge PDF files</button>
           <p id="status-message" role="status" aria-live="polite">Select at least two PDF files to begin.</p>
         </div>
       </div>
     </section>
+
+    <p class="privacy-note">Your files stay on your device. No PDF is uploaded to NoeloTools.</p>
 
     <section class="tool-info">
       <h2>How to merge PDF files</h2>
