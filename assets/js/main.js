@@ -3,6 +3,7 @@ import { initThemeToggle } from "./theme-toggle.js";
 import { initToolSearch } from "./search.js";
 import { initCookieConsent } from "./cookie-consent.js";
 import { initToolCatalog } from "./tool-catalog.js";
+import { initToolPageSearch } from "./tool-page-search.js";
 
 function initCategoryTheme() {
   const categoryMap = {
@@ -78,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
   safelyInit("category theme", initCategoryTheme);
   safelyInit("theme toggle", initThemeToggle);
   initToolCatalog().finally(() => safelyInit("tool search", initToolSearch));
+  safelyInit("tool page search", () => { void initToolPageSearch(); });
   safelyInit("cookie consent", initCookieConsent);
   safelyInit("mobile navigation", initMobileNavigation);
   safelyInit("sticky header", initStickyHeader);
