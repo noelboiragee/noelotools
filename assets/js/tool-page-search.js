@@ -12,9 +12,7 @@ function normalize(value) {
 }
 
 export async function initToolPageSearch() {
-  // বাংলা: শুধু টুলের পেজে সার্চ দেখানো হবে।
   if (!window.location.pathname.includes("/tools/")) return;
-
   const header = document.querySelector("[data-site-header]");
   const actions = header?.querySelector(".header-actions");
   if (!header || !actions || header.querySelector("[data-tool-page-search]")) return;
@@ -29,7 +27,20 @@ export async function initToolPageSearch() {
   toggle.type = "button";
   toggle.setAttribute("aria-label", "Search tools");
   toggle.setAttribute("aria-expanded", "false");
-  toggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg><span>Search</span>';
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "10.8");
+  circle.setAttribute("cy", "10.8");
+  circle.setAttribute("r", "6.8");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "m16 16 5 5");
+  svg.append(circle, path);
+  const toggleText = document.createElement("span");
+  toggleText.textContent = "Search";
+  toggle.append(svg, toggleText);
 
   const panel = document.createElement("section");
   panel.className = "tool-page-search";
@@ -62,7 +73,6 @@ export async function initToolPageSearch() {
   const hint = document.createElement("p");
   hint.className = "tool-page-search-hint";
   hint.textContent = "Search by tool name or keyword";
-
   panel.append(label, input, results, hint);
   actions.prepend(toggle);
   header.append(panel);
@@ -87,7 +97,6 @@ export async function initToolPageSearch() {
       input.setAttribute("aria-expanded", "false");
       return;
     }
-
     const matches = tools.filter((tool) =>
       normalize([tool.name, tool.description, tool.category, ...(tool.keywords || [])].join(" ")).includes(term)
     ).slice(0, 8);
@@ -104,12 +113,10 @@ export async function initToolPageSearch() {
         link.href = tool.url;
         link.setAttribute("role", "option");
         link.setAttribute("aria-selected", "false");
-
         const icon = document.createElement("span");
         icon.className = "tool-page-search-icon";
         icon.setAttribute("aria-hidden", "true");
         icon.textContent = tool.icon || "✦";
-
         const copy = document.createElement("span");
         copy.className = "tool-page-search-copy";
         const name = document.createElement("strong");
@@ -117,7 +124,6 @@ export async function initToolPageSearch() {
         const category = document.createElement("small");
         category.textContent = tool.category || "Tool";
         copy.append(name, category);
-
         const arrow = document.createElement("span");
         arrow.className = "tool-page-search-arrow";
         arrow.setAttribute("aria-hidden", "true");
@@ -142,7 +148,6 @@ export async function initToolPageSearch() {
     toggle.setAttribute("aria-expanded", String(!open));
     if (!open) input.focus();
   });
-
   input.addEventListener("input", () => render(input.value));
   input.addEventListener("keydown", (event) => {
     const links = [...results.querySelectorAll("a")];
@@ -157,7 +162,7 @@ export async function initToolPageSearch() {
       links.forEach((link, index) => link.setAttribute("aria-selected", String(index === next)));
     } else if (event.key === "Enter" && links.length) {
       event.preventDefault();
-      (links[current >= 0 ? current : 0]).click();
+      links[current >= 0 ? current : 0].click();
     } else if (event.key === "Escape") {
       input.value = "";
       results.replaceChildren();
@@ -165,7 +170,6 @@ export async function initToolPageSearch() {
       toggle.focus();
     }
   });
-
   document.addEventListener("click", (event) => {
     if (!panel.contains(event.target) && !toggle.contains(event.target)) close();
   });
