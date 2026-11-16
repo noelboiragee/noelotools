@@ -63,9 +63,9 @@ textInput.addEventListener("input", updateCounts);
 removeExtraSpacesButton.addEventListener("click", () => {
   // বাংলা: প্রতি লাইনের শুরু/শেষের ফাঁকা জায়গা বাদ দিয়ে একাধিক space/tab একটিতে নামিয়ে আনা হয়।
   textInput.value = textInput.value
-    .split("\\n")
-    .map((line) => line.replace(/[ \\t\\f\\v]+/gu, " ").trim())
-    .join("\\n");
+    .split("\n")
+    .map((line) => line.replace(/[ \t\f\v]+/gu, " ").trim())
+    .join("\n");
   updateCounts();
   textInput.focus();
 });
