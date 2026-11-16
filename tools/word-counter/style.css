@@ -453,3 +453,62 @@
     transition: none;
   }
 }
+
+
+/* বাংলা: action button-গুলোকে ছোট ও পাশাপাশি রাখা হয়, যাতে editor-এর জায়গা নষ্ট না হয়। */
+.editor-actions {
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.editor-actions .action-button {
+  width: auto;
+  min-height: 36px;
+  padding: 8px 12px;
+  gap: 7px;
+  border-radius: 9px;
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.editor-actions .action-button-icon {
+  width: 16px;
+  height: 16px;
+  flex-basis: 16px;
+}
+
+.editor-actions .action-button-primary {
+  box-shadow: 0 2px 6px rgb(37 99 235 / 15%);
+}
+
+.editor-actions .action-button-primary:hover,
+.editor-actions .action-button-danger:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 520px) {
+  .editor-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .editor-actions {
+    width: auto;
+    max-width: 100%;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .editor-actions .button,
+  .editor-actions .action-button {
+    width: auto;
+    min-height: 36px;
+    padding: 8px 11px;
+  }
+}
