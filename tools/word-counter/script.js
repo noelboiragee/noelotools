@@ -1,6 +1,7 @@
 // এই ফাইলে লাইভ ওয়ার্ড কাউন্ট এবং টেক্সট পরিসংখ্যানের লজিক রাখা হয়েছে।
 const textInput = document.querySelector("#text-input");
 const clearButton = document.querySelector("#clear-button");
+const removeExtraSpacesButton = document.querySelector("#remove-extra-spaces-button");
 const textStatus = document.querySelector("#text-status");
 
 const outputs = {
@@ -8,8 +9,7 @@ const outputs = {
   characters: document.querySelector("#character-count"),
   charactersNoSpaces: document.querySelector("#character-no-spaces-count"),
   sentences: document.querySelector("#sentence-count"),
-  paragraphs: document.querySelector("#paragraph-count"),
-  readingTime: document.querySelector("#reading-time")
+  paragraphs: document.querySelector("#paragraph-count")
 };
 
 const numberFormatter = new Intl.NumberFormat();
@@ -39,19 +39,6 @@ function countParagraphs(text) {
     .length;
 }
 
-function formatReadingTime(wordCount) {
-  if (wordCount === 0) return "0 min";
-
-  const totalSeconds = Math.ceil((wordCount / 200) * 60);
-  if (totalSeconds < 60) return "<1 min";
-
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-
-  if (seconds === 0) return `${minutes} min`;
-  return `${minutes} min ${seconds} sec`;
-}
-
 function updateCounts() {
   const text = textInput.value;
   const words = countWords(text);
@@ -65,7 +52,6 @@ function updateCounts() {
   outputs.charactersNoSpaces.textContent = numberFormatter.format(charactersNoSpaces);
   outputs.sentences.textContent = numberFormatter.format(sentences);
   outputs.paragraphs.textContent = numberFormatter.format(paragraphs);
-  outputs.readingTime.textContent = formatReadingTime(words);
 
   textStatus.textContent = text.length === 0
     ? "Ready to count"
@@ -73,6 +59,16 @@ function updateCounts() {
 }
 
 textInput.addEventListener("input", updateCounts);
+
+removeExtraSpacesButton.addEventListener("click", () => {
+  // বাংলা: প্রতি লাইনের শুরু/শেষের ফাঁকা জায়গা বাদ দিয়ে একাধিক space/tab একটিতে নামিয়ে আনা হয়।
+  textInput.value = textInput.value
+    .split("\\n")
+    .map((line) => line.replace(/[ \\t\\f\\v]+/gu, " ").trim())
+    .join("\\n");
+  updateCounts();
+  textInput.focus();
+});
 
 clearButton.addEventListener("click", () => {
   textInput.value = "";
