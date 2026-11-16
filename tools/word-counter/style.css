@@ -512,3 +512,40 @@
     padding: 8px 11px;
   }
 }
+
+
+/* বাংলা: বাটন দুটোকে কম rounded আয়তাকার আকারে পাশাপাশি রাখা হয়। */
+.editor-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.editor-actions .action-button {
+  width: auto;
+  min-height: 38px;
+  padding: 9px 13px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .editor-actions {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .editor-actions .button,
+  .editor-actions .action-button {
+    width: auto;
+    min-width: 0;
+    min-height: 38px;
+    padding: 9px 11px;
+    flex: 0 1 auto;
+  }
+}
