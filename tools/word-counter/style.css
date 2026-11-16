@@ -122,8 +122,14 @@
   line-height: 1.5;
 }
 
-.editor-footer .button {
+.editor-actions {
+  display: flex;
   flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.editor-actions .button {
   cursor: pointer;
 }
 
@@ -169,7 +175,7 @@
 .stat-card:nth-child(3) { --stat-accent: #7656bd; animation-delay: 90ms; }
 .stat-card:nth-child(4) { --stat-accent: #b77919; animation-delay: 135ms; }
 .stat-card:nth-child(5) { --stat-accent: #1685a8; animation-delay: 180ms; }
-.stat-card:nth-child(6) { --stat-accent: #59677d; animation-delay: 225ms; }
+.stat-card:nth-child(5) { grid-column: 1 / -1; animation-delay: 180ms; }
 
 .stat-card:hover {
   transform: translateY(-3px);
@@ -192,21 +198,6 @@
   font-weight: 800;
   letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
-}
-
-.stat-card-reading {
-  min-height: 96px;
-}
-
-.stat-card-reading .stat-value {
-  font-size: 1.4rem;
-}
-
-.stat-hint {
-  color: var(--text-muted);
-  font-size: 0.72rem;
-  line-height: 1.4;
-  font-weight: 550;
 }
 
 @keyframes stat-card-enter {
@@ -290,7 +281,12 @@
     flex-direction: column;
   }
 
-  .editor-footer .button {
+  .editor-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .editor-actions .button {
     width: 100%;
   }
 
