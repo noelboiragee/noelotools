@@ -286,3 +286,60 @@
     transition: none;
   }
 }
+/* বাংলা: SEO content, FAQ এবং related tools section-এর responsive style। */
+.seo-content, .faq-section, .related-tools {
+  max-width: 900px;
+  margin: 32px auto 0;
+  padding: 26px 28px;
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  line-height: 1.75;
+}
+.seo-content h2, .faq-section h2, .related-tools h2 {
+  margin: 26px 0 10px;
+  color: var(--text);
+  font-size: 1.45rem;
+  line-height: 1.3;
+}
+.seo-content h2:first-child, .faq-section h2:first-child, .related-tools h2:first-child { margin-top: 0; }
+.seo-content h3 {
+  margin: 20px 0 6px;
+  color: var(--text);
+  font-size: 1.08rem;
+}
+.seo-content p, .faq-section p, .related-tools p { margin: 0 0 14px; }
+.faq-section details {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+.faq-section details:last-child { border-bottom: 0; }
+.faq-section summary {
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+.faq-section details p { margin: 10px 0 0; }
+.related-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.related-tools-grid a {
+  display: block;
+  padding: 16px;
+  color: var(--text-muted);
+  text-decoration: none;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.related-tools-grid a:hover { border-color: var(--primary); }
+.related-tools-grid h3 { margin: 0 0 6px; color: var(--text); font-size: 1rem; }
+.related-tools-grid p { margin: 0; font-size: .9rem; }
+@media (max-width: 600px) {
+  .seo-content, .faq-section, .related-tools { padding: 20px 17px; }
+  .related-tools-grid { grid-template-columns: 1fr; }
+}
