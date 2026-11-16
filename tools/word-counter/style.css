@@ -129,6 +129,7 @@
 
 .stats-panel {
   padding: 22px;
+  background: linear-gradient(160deg, var(--bg), var(--bg-alt));
 }
 
 .stats-panel h2 {
@@ -139,52 +140,78 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 11px;
 }
 
 .stat-card {
-  min-height: 82px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-alt);
+  --stat-accent: #3978d4;
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 96px;
+  padding: 13px 12px 12px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--stat-accent) 23%, var(--border));
+  border-top: 3px solid var(--stat-accent);
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--stat-accent) 7%, var(--bg));
+  box-shadow: 0 3px 10px rgb(31 41 55 / 4%);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  animation: stat-card-enter 420ms both;
 }
 
-.stat-card-primary {
-  background: var(--primary-soft);
-  border-color: color-mix(in srgb, var(--primary) 22%, var(--border));
+.stat-card:nth-child(1) { --stat-accent: #3978d4; animation-delay: 0ms; }
+.stat-card:nth-child(2) { --stat-accent: #168779; animation-delay: 45ms; }
+.stat-card:nth-child(3) { --stat-accent: #7656bd; animation-delay: 90ms; }
+.stat-card:nth-child(4) { --stat-accent: #b77919; animation-delay: 135ms; }
+.stat-card:nth-child(5) { --stat-accent: #1685a8; animation-delay: 180ms; }
+.stat-card:nth-child(6) { --stat-accent: #59677d; animation-delay: 225ms; }
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--stat-accent) 48%, var(--border));
+  box-shadow: 0 9px 20px rgb(31 41 55 / 9%);
 }
 
-.stat-label,
-.stat-hint {
-  color: var(--text-muted);
-  font-size: 0.7rem;
+.stat-label {
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 650;
   line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .stat-value {
   color: var(--text);
-  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
-  line-height: 1.1;
-  font-weight: 750;
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
 }
 
-.stat-card-primary .stat-value {
-  color: var(--primary-dark);
-}
-
 .stat-card-reading {
-  grid-column: 1 / -1;
-  min-height: 88px;
+  min-height: 96px;
 }
 
 .stat-card-reading .stat-value {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+}
+
+.stat-hint {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  font-weight: 550;
+}
+
+@keyframes stat-card-enter {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .tool-info {
@@ -272,8 +299,8 @@
   }
 
   .stat-card {
-    min-height: 76px;
-    padding: 9px 10px;
+    min-height: 90px;
+    padding: 11px 10px;
   }
 
   .tool-info {
@@ -282,8 +309,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #text-input {
+  #text-input, .stat-card {
     transition: none;
+  }
+  .stat-card {
+    animation: none;
   }
 }
 /* বাংলা: SEO content, FAQ এবং related tools section-এর responsive style। */
