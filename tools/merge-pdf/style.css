@@ -146,3 +146,41 @@ html[data-theme="dark"] .merge-pdf-page #status-message {
   border-color: #477b5d;
   color: #e3f5e9;
 }
+
+
+/* Keep the Quick Guide readable in both colour themes. */
+.merge-pdf-page .tool-info .info-heading h2 {
+  color: #173b2a !important;
+  -webkit-text-fill-color: #173b2a;
+  font-weight: 850;
+}
+.merge-pdf-page .tool-info .guide-grid article,
+.merge-pdf-page .tool-info .info-footnote {
+  background: #f0fbf5;
+  border-color: #bce8d2;
+}
+.merge-pdf-page .tool-info .guide-grid h3,
+.merge-pdf-page .tool-info .info-footnote strong {
+  color: #176b43;
+}
+.merge-pdf-page .tool-info .guide-grid p,
+.merge-pdf-page .tool-info .info-footnote p {
+  color: #294b39;
+}
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .info-heading h2 {
+  color: #f0fff5 !important;
+  -webkit-text-fill-color: #f0fff5;
+}
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .guide-grid article,
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .info-footnote {
+  background: #172b22;
+  border-color: #426d55;
+}
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .guide-grid h3,
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .info-footnote strong {
+  color: #b9f0cc;
+}
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .guide-grid p,
+html[data-theme="dark"] body[data-category="pdf"] .merge-pdf-page .tool-info .info-footnote p {
+  color: #e0eee5;
+}
