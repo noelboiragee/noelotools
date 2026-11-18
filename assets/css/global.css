@@ -272,3 +272,8 @@ p {
     scroll-behavior: auto;
   }
 }
+
+/* Tool pages show the tool title directly without a category eyebrow. */
+.tool-page .tool-intro > .eyebrow {
+  display: none !important;
+}
