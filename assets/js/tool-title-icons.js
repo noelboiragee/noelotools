@@ -86,7 +86,7 @@ function createToolIcon(pathData, className = "tool-title-icon", toolId = "tool"
 
   // SVG path data is a fixed, developer-authored constant; no user content is parsed.
   const parser = new DOMParser();
-  const parsed = parser.parseFromString("<svg xmlns=\\"" + svgNS + "\\">" + pathData + "</svg>", "image/svg+xml");
+  const parsed = parser.parseFromString(`<svg xmlns="${svgNS}">${pathData}</svg>`, "image/svg+xml");
   const glyph = document.createElementNS(svgNS, "svg");
   glyph.setAttribute("x", "13");
   glyph.setAttribute("y", "13");
