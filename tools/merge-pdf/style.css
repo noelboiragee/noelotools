@@ -55,7 +55,7 @@
 .merge-pdf-page .merge-actions .button{width:100%;min-height:56px;border-radius:13px;font-weight:850;font-size:.98rem;cursor:pointer;box-shadow:0 8px 18px color-mix(in srgb,var(--primary) 20%,transparent)}
 .merge-pdf-page .merge-actions .button span{margin-right:8px;font-size:1.2rem}
 .merge-pdf-page .merge-actions .button:disabled,.merge-pdf-page .selected-heading button:disabled{opacity:.48;cursor:not-allowed;box-shadow:none}
-.merge-pdf-page #status-message{min-height:1.4em;margin:13px 0 0;color:var(--text-muted);font-size:.84rem}
+.merge-pdf-page #status-message{max-width:560px;min-height:1.4em;margin:14px auto 0;padding:12px 16px;border:1px solid #a9dfc2;border-radius:12px;background:#fff;color:#176b43;font-size:.94rem;font-weight:750;line-height:1.6;box-shadow:0 3px 10px rgba(23,107,67,.06)}
 .merge-pdf-page #status-message.is-error{color:#b42318;font-weight:650}
 .merge-pdf-page #status-message.is-success{padding:12px;border:1px solid #9bd7b0;border-radius:12px;background:#eaf8ef;color:#176b35;font-weight:700}
 .merge-pdf-page .privacy-note{max-width:850px;margin:18px auto 0;padding:15px 20px;display:flex;justify-content:center;align-items:center;gap:12px;text-align:left;border:1px solid #bce8d2;border-radius:15px;background:#f0fbf5;color:#176b43}
