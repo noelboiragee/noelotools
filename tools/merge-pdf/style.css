@@ -85,12 +85,6 @@
 @media(max-width:650px){.merge-pdf-page .breadcrumbs{margin:17px 0 22px}.merge-pdf-page .tool-intro{margin-bottom:25px}.merge-pdf-page .hero-icon{height:82px;transform:scale(.88);margin-bottom:8px}.merge-pdf-page .tool-intro h1{font-size:2.25rem}.merge-pdf-page .hero-benefits{gap:8px 13px}.merge-pdf-page .hero-benefits span{font-size:.75rem}.merge-pdf-page .upload-panel{padding:16px}.merge-pdf-page .drop-zone{min-height:205px;padding:22px 12px}.merge-pdf-page .selected-heading{align-items:flex-start}.merge-pdf-page .file-item{gap:8px;padding:10px}.merge-pdf-page .file-move{width:27px;height:29px}.merge-pdf-page .file-order{display:none}.merge-pdf-page .guide-grid{grid-template-columns:1fr}.merge-pdf-page .guide-grid article{display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:center;padding:13px}.merge-pdf-page .guide-grid h3{margin:0}.merge-pdf-page .guide-grid p{grid-column:2}.merge-pdf-page .privacy-note{padding:13px;text-align:left}.merge-pdf-page .tool-info{margin-top:27px}}
 @media(prefers-reduced-motion:reduce){.merge-pdf-page *{transition:none!important}}
 
-/* The PDF category theme adds this label globally; the page already has its own eyebrow. */
-body[data-category="pdf"] .merge-pdf-page .tool-intro::before{content:none;display:none}
 
-/* Keep the category label subtle and compact above the page title. */
-.merge-pdf-page .tool-intro .eyebrow{display:block;width:max-content;margin:0 auto 2px;padding:0;border:0;border-radius:0;background:transparent;color:var(--text-muted);font-size:.62rem;font-weight:750;letter-spacing:.16em;line-height:1.2}
-
-/* Show PDF WORKSPACE only once, as a small eyebrow above the title. */
+/* Prevent the PDF category theme from injecting its own workspace label. */
 body[data-category="pdf"] .merge-pdf-page .tool-intro::before{content:none!important;display:none!important}
-body[data-category="pdf"] .merge-pdf-page .tool-intro .eyebrow{display:block;width:max-content;margin:0 auto 4px;padding:0;border:0;border-radius:0;background:transparent;color:var(--text-muted);font-size:.62rem;font-weight:750;letter-spacing:.14em;line-height:1.2}
