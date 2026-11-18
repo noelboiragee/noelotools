@@ -1,5 +1,6 @@
 /* PDF category visual system: shared by every PDF tool page. */
 body[data-category="pdf"] {
+  --primary-foreground: #12352C;
   --primary: #26966A;
   --primary-dark: #19764F;
   --primary-soft: #E8F7EF;
@@ -158,42 +159,49 @@ body[data-category="pdf"] .tool-info {
 
 /* Category-specific visual systems for the remaining tool collections. */
 body[data-category="money-tax"] {
+  --primary-foreground: #17202a;
   --primary: #D4A72C;
   --primary-dark: #A9821F;
   --primary-soft: #FBF5E4;
   --shadow-glow: 0 0 30px rgba(212, 167, 44, .12);
 }
 body[data-category="media"] {
+  --primary-foreground: #101318;
   --primary: #2878D0;
   --primary-dark: #195DA8;
   --primary-soft: #EAF3FF;
   --shadow-glow: 0 0 30px rgba(40, 120, 208, .13);
 }
 body[data-category="developer"] {
+  --primary-foreground: #ffffff;
   --primary: #8054C7;
   --primary-dark: #633AA8;
   --primary-soft: #F2EDFB;
   --shadow-glow: 0 0 30px rgba(128, 84, 199, .13);
 }
 body[data-category="writing"] {
+  --primary-foreground: #ffffff;
   --primary: #986344;
   --primary-dark: #75492F;
   --primary-soft: #F7EFEA;
   --shadow-glow: 0 0 30px rgba(152, 99, 68, .12);
 }
 body[data-category="health"] {
+  --primary-foreground: #17202a;
   --primary: #D34D91;
   --primary-dark: #AD3472;
   --primary-soft: #FFF0F7;
   --shadow-glow: 0 0 30px rgba(211, 77, 145, .12);
 }
 body[data-category="math"] {
+  --primary-foreground: #17202a;
   --primary: #D97726;
   --primary-dark: #B65B16;
   --primary-soft: #FFF2E6;
   --shadow-glow: 0 0 30px rgba(217, 119, 38, .12);
 }
 body[data-category="everyday"] {
+  --primary-foreground: #12352C;
   --primary: #00BFCB;
   --primary-dark: #009A8C;
   --primary-soft: #E8FFF5;
@@ -307,7 +315,7 @@ body[data-category] .primary-button,
 body[data-category] .stat-card-primary {
   background: var(--primary);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--primary-foreground, #17202a);
 }
 body[data-category] .primary-button:hover {
   background: var(--primary-dark);
@@ -327,3 +335,9 @@ html[data-theme="dark"] body[data-category] .primary-button,
 html[data-theme="dark"] body[data-category] .stat-card-primary {
   color: #101318;
 }
+
+/* Category button labels use foreground colours with sufficient contrast. */
+body[data-category] .tool-workspace .button-primary,
+body[data-category] .primary-button,
+body[data-category] .stat-card-primary { color: var(--primary-foreground, #17202a); }
+html[data-theme="dark"] body[data-category] { --primary-foreground: #101318; }
