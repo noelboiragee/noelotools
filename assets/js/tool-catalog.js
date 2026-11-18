@@ -1,4 +1,6 @@
 // বাংলা: tools.json থেকে টুল, Orbit Card ও Category তালিকা স্বয়ংক্রিয়ভাবে তৈরি হয়।
+import { createToolIconForId } from "./tool-title-icons.js";
+
 const iconLabels = {
   "file-plus-2": "PDF+", "file-archive": "PDF↓", calculator: "€",
   receipt: "%", globe: "EU", "arrow-left-right": "↔",
@@ -33,10 +35,14 @@ function createToolCard(tool, popular = false) {
   card.dataset.description = [tool.description, card.dataset.categoryLabel, ...(tool.keywords || [])].join(" ");
   if (!popular) card.dataset.toolCard = "";
 
-  const icon = document.createElement("span");
-  icon.className = "tool-card-icon";
-  icon.setAttribute("aria-hidden", "true");
-  icon.textContent = iconLabels[tool.icon] || "✦";
+  const icon = createToolIconForId(tool.id, "tool-card-icon-svg");
+  if (!icon) {
+    const fallbackIcon = document.createElement("span");
+    fallbackIcon.className = "tool-card-icon";
+    fallbackIcon.setAttribute("aria-hidden", "true");
+    fallbackIcon.textContent = iconLabels[tool.icon] || "✦";
+    card.append(fallbackIcon);
+  }
 
   const title = document.createElement("span");
   title.className = "tool-card-title";
@@ -46,7 +52,8 @@ function createToolCard(tool, popular = false) {
   description.className = "tool-card-description";
   description.textContent = tool.description;
 
-  card.append(icon, title, description);
+  if (icon) card.append(icon);
+  card.append(title, description);
   return card;
 }
 
