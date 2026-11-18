@@ -1,15 +1,15 @@
 /* PDF category visual system: shared by every PDF tool page. */
 body[data-category="pdf"] {
-  --primary: #dc3545;
-  --primary-dark: #b42332;
-  --primary-soft: #fff0f1;
-  --shadow-glow: 0 0 30px rgba(220, 53, 69, .12);
+  --primary: #26966A;
+  --primary-dark: #19764F;
+  --primary-soft: #E8F7EF;
+  --shadow-glow: 0 0 30px rgba(38, 150, 106, .12);
 }
 [data-theme="dark"] body[data-category="pdf"] {
-  --primary: #ff7b86;
-  --primary-dark: #ff9aa2;
-  --primary-soft: #3a2027;
-  --shadow-glow: 0 0 34px rgba(255, 123, 134, .15);
+  --primary: #70D6A5;
+  --primary-dark: #91E4B9;
+  --primary-soft: #1D352B;
+  --shadow-glow: 0 0 34px rgba(112, 214, 165, .15);
 }
 body[data-category="pdf"] .tool-intro,
 body[data-category="pdf"] .pdf-tool-page > h1,
@@ -158,67 +158,81 @@ body[data-category="pdf"] .tool-info {
 
 /* Category-specific visual systems for the remaining tool collections. */
 body[data-category="money-tax"] {
-  --primary: #b58a25;
-  --primary-dark: #8e6816;
-  --primary-soft: #fbf4df;
-  --shadow-glow: 0 0 30px rgba(181, 138, 37, .12);
+  --primary: #D4A72C;
+  --primary-dark: #A9821F;
+  --primary-soft: #FBF5E4;
+  --shadow-glow: 0 0 30px rgba(212, 167, 44, .12);
 }
 body[data-category="media"] {
-  --primary: #2878d0;
-  --primary-dark: #195da8;
-  --primary-soft: #eaf3ff;
+  --primary: #2878D0;
+  --primary-dark: #195DA8;
+  --primary-soft: #EAF3FF;
   --shadow-glow: 0 0 30px rgba(40, 120, 208, .13);
 }
 body[data-category="developer"] {
-  --primary: #8054c7;
-  --primary-dark: #633aa8;
-  --primary-soft: #f2edfb;
+  --primary: #8054C7;
+  --primary-dark: #633AA8;
+  --primary-soft: #F2EDFB;
   --shadow-glow: 0 0 30px rgba(128, 84, 199, .13);
 }
 body[data-category="writing"] {
-  --primary: #d34d91;
-  --primary-dark: #ad3472;
-  --primary-soft: #fff0f7;
-  --shadow-glow: 0 0 30px rgba(211, 77, 145, .12);
+  --primary: #986344;
+  --primary-dark: #75492F;
+  --primary-soft: #F7EFEA;
+  --shadow-glow: 0 0 30px rgba(152, 99, 68, .12);
 }
 body[data-category="health"] {
-  --primary: #26966a;
-  --primary-dark: #19764f;
-  --primary-soft: #e8f7ef;
-  --shadow-glow: 0 0 30px rgba(38, 150, 106, .12);
+  --primary: #D34D91;
+  --primary-dark: #AD3472;
+  --primary-soft: #FFF0F7;
+  --shadow-glow: 0 0 30px rgba(211, 77, 145, .12);
 }
 body[data-category="math"] {
-  --primary: #d97726;
-  --primary-dark: #b65b16;
-  --primary-soft: #fff2e6;
+  --primary: #D97726;
+  --primary-dark: #B65B16;
+  --primary-soft: #FFF2E6;
   --shadow-glow: 0 0 30px rgba(217, 119, 38, .12);
 }
 body[data-category="everyday"] {
-  --primary: #168f91;
-  --primary-dark: #0e7072;
-  --primary-soft: #e7f7f6;
+  --primary: #168F91;
+  --primary-dark: #0E7072;
+  --primary-soft: #E7F7F6;
   --shadow-glow: 0 0 30px rgba(22, 143, 145, .12);
 }
 html[data-theme="dark"] body[data-category="money-tax"] {
-  --primary: #e5bd59; --primary-dark: #f0ce78; --primary-soft: #352d1b;
+  --primary: #E5BD59;
+  --primary-dark: #F0CE78;
+  --primary-soft: #352D1B;
 }
 html[data-theme="dark"] body[data-category="media"] {
-  --primary: #78b8ff; --primary-dark: #9acaff; --primary-soft: #1d2d42;
+  --primary: #78B8FF;
+  --primary-dark: #9ACAFF;
+  --primary-soft: #1D2D42;
 }
 html[data-theme="dark"] body[data-category="developer"] {
-  --primary: #b89aef; --primary-dark: #cbb4f5; --primary-soft: #2d2440;
+  --primary: #B89AEF;
+  --primary-dark: #CBB4F5;
+  --primary-soft: #2D2440;
 }
 html[data-theme="dark"] body[data-category="writing"] {
-  --primary: #f08cbd; --primary-dark: #f5a9ce; --primary-soft: #3b2432;
+  --primary: #D4A98D;
+  --primary-dark: #E4BFA9;
+  --primary-soft: #382A23;
 }
 html[data-theme="dark"] body[data-category="health"] {
-  --primary: #69d4a3; --primary-dark: #8be2b9; --primary-soft: #1d352b;
+  --primary: #F08CBD;
+  --primary-dark: #F5A9CE;
+  --primary-soft: #3B2432;
 }
 html[data-theme="dark"] body[data-category="math"] {
-  --primary: #ffad70; --primary-dark: #ffc092; --primary-soft: #3b2a20;
+  --primary: #FFAD70;
+  --primary-dark: #FFC092;
+  --primary-soft: #3B2A20;
 }
 html[data-theme="dark"] body[data-category="everyday"] {
-  --primary: #69d0cf; --primary-dark: #8ae0df; --primary-soft: #1d3636;
+  --primary: #69D0CF;
+  --primary-dark: #8AE0DF;
+  --primary-soft: #1D3636;
 }
 
 /* Shared category treatment: keep tool controls and behaviour unchanged. */
