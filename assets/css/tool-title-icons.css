@@ -1,0 +1,31 @@
+/* বাংলা: প্রতিটি টুলের H1 শিরোনামের পাশে আলাদা SVG আইকন। */
+.tool-intro h1.tool-title-with-icon,
+.page-heading h1.tool-title-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.tool-title-icon {
+  display: block;
+  width: clamp(2.25rem, 5vw, 3rem);
+  height: clamp(2.25rem, 5vw, 3rem);
+  flex: 0 0 auto;
+  padding: 0.48rem;
+  overflow: visible;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+@media (max-width: 520px) {
+  .tool-intro h1.tool-title-with-icon,
+  .page-heading h1.tool-title-with-icon {
+    gap: 0.55rem;
+  }
+  .tool-title-icon {
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0.38rem;
+    border-radius: 11px;
+  }
+}
