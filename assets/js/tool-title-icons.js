@@ -8,7 +8,7 @@ const TOOL_ICON_PATHS = {
   "currency-converter": '<path d="M7 7h13l-3-3m3 3-3 3M17 17H4l3 3m-3-3 3-3"/><path d="M12 9v6m2-4c0-1-4-1-4 0s4 1 4 2-4 1-4 0"/>',
   "bmi-calculator": '<path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11z"/><path d="M8 12h2l1-2 2 4 1-2h2"/>',
   "word-counter": '<path d="M4 5h16M4 10h16M4 15h10M4 20h7"/><path d="m17 15 3 5 3-5"/>',
-  "qr-generator": '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zm5 0h2m-7 5h3m2-2v4"/>',
+  "qr-code-generator": '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zm5 0h2m-7 5h3m2-2v4"/>',
   "password-generator": '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/>',
   "percentage-calculator": '<circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/><path d="m19 5-14 14"/>',
   "unit-converter": '<path d="M4 7h16M4 17h16M7 4 4 7l3 3m10 4 3 3-3 3"/>',
