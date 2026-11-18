@@ -87,3 +87,6 @@
 
 /* The PDF category theme adds this label globally; the page already has its own eyebrow. */
 body[data-category="pdf"] .merge-pdf-page .tool-intro::before{content:none;display:none}
+
+/* Keep the category label subtle and compact above the page title. */
+.merge-pdf-page .tool-intro .eyebrow{display:block;width:max-content;margin:0 auto 2px;padding:0;border:0;border-radius:0;background:transparent;color:var(--text-muted);font-size:.62rem;font-weight:750;letter-spacing:.16em;line-height:1.2}
