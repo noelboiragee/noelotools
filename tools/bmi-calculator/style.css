@@ -1,6 +1,6 @@
 /* এই স্টাইলশিটে BMI ক্যালকুলেটরের রেসপনসিভ ডিজাইন রাখা হয়েছে। */
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --primary: #7c3aed;
   --primary-dark: #6d28d9;
   --primary-soft: #f3e8ff;
@@ -64,3 +64,9 @@ button:hover { transform: translateY(-1px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+/* Respect the site theme and keep form/result text readable in dark mode. */
+html[data-theme="dark"] body { --bg:#111827; --bg-alt:#182235; --text:#edf2f7; --text-muted:#c0cad8; --border:#3a4658; --primary-soft:#302447; }
+html[data-theme="dark"] .notice { background:#302447; border-color:#5b4380; }
+html[data-theme="dark"] .notice strong, html[data-theme="dark"] .notice p { color:#f0e7ff; }
+html[data-theme="dark"] .input-wrap, html[data-theme="dark"] input, html[data-theme="dark"] .secondary-button { background:#202c3e; color:var(--text); }
+html[data-theme="dark"] .result-panel { background:#202c3e; border-color:#5b4b78; }
