@@ -435,6 +435,7 @@
       let lastX = 0;
       let startX = 0;
       let startY = 0;
+      let pointerId = null;
       let dragMoved = false;
       let suppressClickUntil = 0;
       let animationFrame = 0;
@@ -455,14 +456,18 @@
         dragMoved = false;
         startX = lastX = event.clientX;
         startY = event.clientY;
-        ring.setPointerCapture(event.pointerId);
+        pointerId = event.pointerId;
       });
 
       ring.addEventListener("pointermove", (event) => {
         if (!isDragging) return;
         const deltaX = event.clientX - lastX;
-        if (Math.hypot(event.clientX - startX, event.clientY - startY) > dragThreshold) {
+        if (Math.hypot(event.clientX - startX, event.clientY - startY) > dragThreshold && !dragMoved) {
           dragMoved = true;
+          // Capture only after a real drag begins; ordinary clicks must reach card links.
+          if (pointerId !== null && ring.hasPointerCapture && !ring.hasPointerCapture(pointerId)) {
+            try { ring.setPointerCapture(pointerId); } catch (_) {}
+          }
         }
         rotation += deltaX * 0.6;
         lastX = event.clientX;
