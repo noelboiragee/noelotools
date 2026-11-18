@@ -71,10 +71,11 @@
 .merge-pdf-page .guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .merge-pdf-page .guide-grid article{padding:17px;border:1px solid var(--border);border-radius:15px;background:var(--surface-soft,#f8f9fc)}
 .merge-pdf-page .guide-number{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--primary-soft,#eaf1ff);color:var(--primary);font-weight:900;font-size:.8rem}
-.merge-pdf-page .guide-grid h3{margin:12px 0 5px;font-size:.92rem;color:var(--text)}
-.merge-pdf-page .guide-grid p,.merge-pdf-page .info-footnote p{margin:0;color:var(--text-muted);font-size:.8rem;line-height:1.6}
-.merge-pdf-page .info-footnote{margin-top:17px;padding:15px 17px;border-radius:13px;background:var(--surface-soft,#f7f9fc)}
-.merge-pdf-page .info-footnote strong{display:block;margin-bottom:4px;color:var(--text);font-size:.82rem}
+.merge-pdf-page .guide-grid h3{margin:12px 0 7px;font-size:1.02rem;line-height:1.4;color:var(--text);font-weight:800}
+.merge-pdf-page .guide-grid p{margin:0;color:var(--text);font-size:.94rem;line-height:1.75}
+.merge-pdf-page .info-footnote{margin-top:17px;padding:17px 19px;border-radius:13px;background:var(--surface-soft,#f7f9fc)}
+.merge-pdf-page .info-footnote p{margin:0;color:var(--text);font-size:.92rem;line-height:1.75}
+.merge-pdf-page .info-footnote strong{display:block;margin-bottom:6px;color:var(--text);font-size:.9rem;font-weight:800}
 @media(max-width:650px){.merge-pdf-page .breadcrumbs{margin:17px 0 22px}.merge-pdf-page .tool-intro{margin-bottom:25px}.merge-pdf-page .tool-intro h1{font-size:2.25rem}.merge-pdf-page .hero-benefits{gap:8px 13px}.merge-pdf-page .hero-benefits span{font-size:.75rem}.merge-pdf-page .upload-panel{padding:16px}.merge-pdf-page .drop-zone{min-height:205px;padding:22px 12px}.merge-pdf-page .selected-heading{align-items:flex-start}.merge-pdf-page .file-item{gap:8px;padding:10px}.merge-pdf-page .file-move{width:27px;height:29px}.merge-pdf-page .file-order{display:none}.merge-pdf-page .guide-grid{grid-template-columns:1fr}.merge-pdf-page .guide-grid article{display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:center;padding:13px}.merge-pdf-page .guide-grid h3{margin:0}.merge-pdf-page .guide-grid p{grid-column:2}.merge-pdf-page .privacy-note{padding:13px;text-align:left}.merge-pdf-page .tool-info{margin-top:27px}}
 @media(prefers-reduced-motion:reduce){.merge-pdf-page *{transition:none!important}}
 
