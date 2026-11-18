@@ -82,3 +82,67 @@
 
 /* Prevent the PDF category theme from injecting its own workspace label. */
 body[data-category="pdf"] .merge-pdf-page .tool-intro::before{content:none!important;display:none!important}
+
+
+/* Stronger text contrast for the Merge PDF workspace. */
+.merge-pdf-page .tool-intro h1,
+.merge-pdf-page .workspace-heading h2,
+.merge-pdf-page .selected-heading h2,
+.merge-pdf-page .tool-info h2,
+.merge-pdf-page .guide-grid h3 {
+  color: #172b22;
+  font-weight: 850;
+}
+.merge-pdf-page .tool-intro > p:last-of-type,
+.merge-pdf-page .workspace-heading p,
+.merge-pdf-page .order-hint,
+.merge-pdf-page .guide-grid p,
+.merge-pdf-page .info-footnote p {
+  color: #334d40;
+}
+.merge-pdf-page .merge-actions .button.button-primary {
+  background: #176b43;
+  border: 2px solid #125536;
+  color: #fff;
+  font-weight: 900;
+  text-shadow: none;
+  box-shadow: 0 5px 0 #0e472c, 0 9px 18px rgba(12, 70, 42, .2);
+}
+.merge-pdf-page .merge-actions .button.button-primary:hover:not(:disabled) {
+  background: #125536;
+  border-color: #0e472c;
+}
+.merge-pdf-page .merge-actions .button.button-primary:disabled {
+  opacity: .78;
+  background: #397d5b;
+  border-color: #286747;
+  color: #fff;
+  box-shadow: none;
+}
+.merge-pdf-page #status-message {
+  color: #174d34;
+  font-weight: 800;
+}
+html[data-theme="dark"] .merge-pdf-page .tool-intro h1,
+html[data-theme="dark"] .merge-pdf-page .workspace-heading h2,
+html[data-theme="dark"] .merge-pdf-page .selected-heading h2,
+html[data-theme="dark"] .merge-pdf-page .tool-info h2,
+html[data-theme="dark"] .merge-pdf-page .guide-grid h3 {
+  color: #e7f4ec;
+}
+html[data-theme="dark"] .merge-pdf-page .tool-intro > p:last-of-type,
+html[data-theme="dark"] .merge-pdf-page .workspace-heading p,
+html[data-theme="dark"] .merge-pdf-page .order-hint,
+html[data-theme="dark"] .merge-pdf-page .guide-grid p,
+html[data-theme="dark"] .merge-pdf-page .info-footnote p {
+  color: #c5d9cd;
+}
+html[data-theme="dark"] .merge-pdf-page .merge-actions {
+  background: #172b22;
+  border-color: #37694f;
+}
+html[data-theme="dark"] .merge-pdf-page #status-message {
+  background: #203b2d;
+  border-color: #477b5d;
+  color: #e3f5e9;
+}
