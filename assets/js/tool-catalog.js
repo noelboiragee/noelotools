@@ -105,11 +105,73 @@ function createOrbitCard(category, index, total, categoryTools) {
   return card;
 }
 
+function createCategoryIcon(slug) {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 64 64");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+
+  const addPath = (d, fill = "none", stroke = "currentColor", width = "4") => {
+    const path = document.createElementNS(ns, "path");
+    path.setAttribute("d", d);
+    path.setAttribute("fill", fill);
+    path.setAttribute("stroke", stroke);
+    path.setAttribute("stroke-width", width);
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+    svg.append(path);
+  };
+
+  if (slug === "pdf") {
+    addPath("M18 7h19l11 11v39H18z", "none", "currentColor", "4");
+    addPath("M37 7v12h11M25 34h16M25 42h16M25 50h10", "none", "currentColor", "3.5");
+  } else if (slug === "money-tax") {
+    const symbol = document.createElementNS(ns, "text");
+    symbol.setAttribute("x", "32");
+    symbol.setAttribute("y", "49");
+    symbol.setAttribute("text-anchor", "middle");
+    symbol.setAttribute("font-size", "48");
+    symbol.setAttribute("font-weight", "800");
+    symbol.setAttribute("fill", "currentColor");
+    symbol.textContent = "€";
+    svg.append(symbol);
+  } else if (slug === "media") {
+    addPath("M9 13h46v38H9zM10 43l13-13 11 10 8-8 12 12", "none", "currentColor", "4");
+    const circle = document.createElementNS(ns, "circle");
+    circle.setAttribute("cx", "42");
+    circle.setAttribute("cy", "24");
+    circle.setAttribute("r", "4");
+    circle.setAttribute("fill", "currentColor");
+    svg.append(circle);
+  } else if (slug === "developer") {
+    addPath("M24 18L10 32l14 14M40 18l14 14-14 14M36 13l-8 38", "none", "currentColor", "5");
+  } else if (slug === "writing") {
+    addPath("M15 46l3-12L43 9a6 6 0 0 1 9 9L27 43zM18 34l9 9M15 46l-2 6 6-2", "none", "currentColor", "4");
+  } else if (slug === "health") {
+    addPath("M32 53S8 39 8 23a12 12 0 0 1 24-3 12 12 0 0 1 24 3c0 16-24 30-24 30z", "none", "currentColor", "3.5");
+    addPath("M15 32h10l5-9 7 17 5-8h7", "none", "currentColor", "3.5");
+  } else if (slug === "math") {
+    const symbol = document.createElementNS(ns, "text");
+    symbol.setAttribute("x", "32");
+    symbol.setAttribute("y", "47");
+    symbol.setAttribute("text-anchor", "middle");
+    symbol.setAttribute("font-size", "48");
+    symbol.setAttribute("font-weight", "700");
+    symbol.setAttribute("fill", "currentColor");
+    symbol.textContent = "∑";
+    svg.append(symbol);
+  } else {
+    addPath("M32 7a25 25 0 1 0 0 50a25 25 0 1 0 0-50z", "none", "currentColor", "3.5");
+    addPath("M19 32l9 9 18-19", "none", "currentColor", "5");
+  }
+  return svg;
+}
+
 function createCategoryCard(category) {
   const slug = categorySlug(category);
   const meta = categoryMeta[slug] || {
     title: category,
-    icon: "✦",
     description: `Explore ${category} tools`
   };
   const card = document.createElement("a");
@@ -118,8 +180,8 @@ function createCategoryCard(category) {
   card.dataset.categoryFilter = slug;
 
   const icon = document.createElement("span");
-  icon.className = "category-card-icon";
-  icon.textContent = meta.icon;
+  icon.className = `category-card-icon category-icon--${slug}`;
+  icon.append(createCategoryIcon(slug));
 
   const title = document.createElement("span");
   title.className = "category-card-title";
