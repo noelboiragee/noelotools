@@ -1,6 +1,6 @@
 /* এই স্টাইলশিটে QR Code Generator-এর রেসপনসিভ ডিজাইন রাখা হয়েছে। */
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --primary: #7c3aed;
   --primary-dark: #6d28d9;
   --primary-soft: #f3e8ff;
@@ -57,3 +57,8 @@ button:hover:not(:disabled) { transform: translateY(-1px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+/* Respect the site theme while keeping generated QR artwork on white. */
+html[data-theme="dark"] body { --bg:#111827; --bg-alt:#182235; --text:#edf2f7; --text-muted:#c0cad8; --border:#3a4658; --primary-soft:#302447; }
+html[data-theme="dark"] textarea, html[data-theme="dark"] select { background:#202c3e; color:#edf2f7; }
+html[data-theme="dark"] .qr-output { background:#fff; }
+html[data-theme="dark"] .download-button { background:#302447; color:#eadcff; border-color:#5b4380; }
