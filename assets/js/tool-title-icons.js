@@ -31,10 +31,10 @@ const TOOL_ICON_PATHS = {
   "pdf-table-to-excel": '<path d="M4 3h11l5 5v13H4z"/><path d="M15 3v5h5M7 12h10M7 16h10M11 12v8m4-8v8"/>'
 };
 
-function createToolIcon(pathData) {
+function createToolIcon(pathData, className = "tool-title-icon") {
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("class", "tool-title-icon");
+  svg.setAttribute("class", className);
   svg.setAttribute("viewBox", "0 0 24 24");
   svg.setAttribute("fill", "none");
   svg.setAttribute("stroke", "currentColor");
@@ -53,6 +53,12 @@ function createToolIcon(pathData) {
   return svg;
 }
 
+function createToolIconForId(toolId, className = "tool-title-icon") {
+  const normalizedId = toolId === "qr-generator" ? "qr-code-generator" : toolId;
+  const pathData = TOOL_ICON_PATHS[normalizedId];
+  return pathData ? createToolIcon(pathData, className) : null;
+}
+
 async function initToolTitleIcons() {
   if (!document.querySelector('link[href*="tool-title-icons.css"]')) {
     const stylesheet = document.createElement("link");
@@ -64,10 +70,10 @@ async function initToolTitleIcons() {
   if (!heading) return;
   const path = window.location.pathname.replace(/\/$/, "");
   const toolId = path.split("/").pop();
-  const icon = TOOL_ICON_PATHS[toolId];
+  const icon = createToolIconForId(toolId);
   if (!icon || heading.querySelector(".tool-title-icon")) return;
   heading.classList.add("tool-title-with-icon");
-  heading.prepend(createToolIcon(icon));
+  heading.prepend(icon);
 }
 
-export { initToolTitleIcons };
+export { createToolIconForId, initToolTitleIcons };
