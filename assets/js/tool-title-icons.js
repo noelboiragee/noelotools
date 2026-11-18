@@ -42,8 +42,6 @@ function createToolIcon(pathData) {
   svg.setAttribute("stroke-linecap", "round");
   svg.setAttribute("stroke-linejoin", "round");
   svg.setAttribute("aria-hidden", "true");
-  const template = document.createElement("template");
-  template.innerHTML = "";
   // SVG path data is a fixed, developer-authored constant; no user content is parsed.
   const wrapper = document.createElementNS(svgNS, "g");
   const parser = new DOMParser();
@@ -56,6 +54,12 @@ function createToolIcon(pathData) {
 }
 
 async function initToolTitleIcons() {
+  if (!document.querySelector('link[href*="tool-title-icons.css"]')) {
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = "/noelotools/assets/css/tool-title-icons.css";
+    document.head.appendChild(stylesheet);
+  }
   const heading = document.querySelector(".tool-intro h1, .page-heading h1");
   if (!heading) return;
   const path = window.location.pathname.replace(/\/$/, "");
