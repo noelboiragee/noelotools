@@ -4,6 +4,7 @@ import { initToolSearch } from "./search.js";
 import { initCookieConsent } from "./cookie-consent.js";
 import { initToolCatalog } from "./tool-catalog.js";
 import { initToolPageSearch } from "./tool-page-search.js";
+import { initToolTitleIcons } from "./tool-title-icons.js";
 
 function initCategoryTheme() {
   const categoryMap = {
@@ -80,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   safelyInit("theme toggle", initThemeToggle);
   initToolCatalog().finally(() => safelyInit("tool search", initToolSearch));
   safelyInit("tool page search", () => { void initToolPageSearch(); });
+  safelyInit("tool title icons", () => { void initToolTitleIcons(); });
   safelyInit("cookie consent", initCookieConsent);
   safelyInit("mobile navigation", initMobileNavigation);
   safelyInit("sticky header", initStickyHeader);
