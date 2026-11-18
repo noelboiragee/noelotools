@@ -1,53 +1,48 @@
 <!doctype html>
-<!-- এই ফাইলে PDF মার্জ টুলের মূল HTML কাঠামো রাখা হয়েছে। -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Combine multiple PDF documents into one file directly in your browser. Arrange files before merging and download the combined PDF without uploading documents.">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Merge PDF files online for free. Combine and reorder multiple PDF documents in your browser, then download one file. No upload required.">
+  <meta name="theme-color" content="#f5f7ff">
   <title>Merge PDF Files Online – Free PDF Combiner | NoeloTools</title>
   <link rel="stylesheet" href="/noelotools/assets/css/theme.css">
   <link rel="stylesheet" href="/noelotools/assets/css/global.css">
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
   <link rel="stylesheet" href="/noelotools/tools/style.css">
   <link rel="stylesheet" href="/noelotools/assets/css/category-themes.css">
-<link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
-<script defer src="/noelotools/assets/js/tool-theme.js"></script>
+  <link rel="stylesheet" href="/noelotools/assets/css/tool-theme.css">
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="/noelotools/assets/js/tool-theme.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <script defer src="./script.js"></script>
   <script type="module" src="../../assets/js/main.js"></script>
   <link rel="icon" href="/noelotools/assets/img/favicon.svg" type="image/svg+xml">
-
   <link rel="canonical" href="https://noelboiragee.github.io/noelotools/tools/merge-pdf/">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="NoeloTools">
   <meta property="og:title" content="Merge PDF Files Online – Free PDF Combiner | NoeloTools">
-  <meta property="og:description" content="Combine multiple PDF documents into one file directly in your browser. Arrange files before merging and download the combined PDF without uploading documents.">
+  <meta property="og:description" content="Merge PDF files online for free. Combine and reorder multiple PDF documents in your browser, then download one file. No upload required.">
   <meta property="og:url" content="https://noelboiragee.github.io/noelotools/tools/merge-pdf/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Merge PDF Files Online – Free PDF Combiner | NoeloTools">
-  <meta name="twitter:description" content="Combine multiple PDF documents into one file directly in your browser. Arrange files before merging and download the combined PDF without uploading documents.">
+  <meta name="twitter:description" content="Merge PDF files online for free. Combine and reorder multiple PDF documents in your browser, then download one file. No upload required.">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebApplication","name":"Merge PDF","url":"https://noelboiragee.github.io/noelotools/tools/merge-pdf/","description":"Merge multiple PDF files into one PDF directly in your browser. No upload required.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@type":"Organization","name":"NoeloTools","url":"https://noelboiragee.github.io/noelotools/"}}
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://noelboiragee.github.io/noelotools/"},{"@type":"ListItem","position":2,"name":"PDF","item":"https://noelboiragee.github.io/noelotools/#categories"},{"@type":"ListItem","position":3,"name":"Merge PDF Files Online","item":"https://noelboiragee.github.io/noelotools/tools/merge-pdf/"}]}
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://noelboiragee.github.io/noelotools/"},{"@type":"ListItem","position":2,"name":"PDF","item":"https://noelboiragee.github.io/noelotools/#categories"},{"@type":"ListItem","position":3,"name":"Merge PDF","item":"https://noelboiragee.github.io/noelotools/tools/merge-pdf/"}]}
   </script>
 </head>
 <body data-category="pdf">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header" data-site-header>
     <div class="header-inner container">
-      <a class="site-brand" href="/noelotools/" aria-label="NoeloTools home">
-        <span class="site-brand-mark" aria-hidden="true">N</span><span>NoeloTools</span>
-      </a>
+      <a class="site-brand" href="/noelotools/" aria-label="NoeloTools home"><span class="site-brand-mark" aria-hidden="true">N</span><span>NoeloTools</span></a>
       <nav class="primary-nav" data-primary-nav aria-label="Main navigation">
-        <a href="/noelotools/#tools">All tools</a>
-        <a href="/noelotools/#categories">Categories</a>
-        <a href="/noelotools/pages/about/">About</a>
-      <a href="/noelotools/blog/">Blog</a></nav>
+        <a href="/noelotools/#tools">All tools</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/pages/about/">About</a><a href="/noelotools/blog/">Blog</a>
+      </nav>
       <div class="header-actions">
         <button class="icon-button" type="button" data-theme-toggle aria-label="Switch colour theme">◐</button>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation" data-menu-toggle>☰</button>
@@ -57,55 +52,56 @@
 
   <main id="main-content" class="container merge-pdf-page">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="/noelotools/">Home</a><span aria-hidden="true">/</span>
-      <a href="/noelotools/#tools">Tools</a><span aria-hidden="true">/</span>
-      <span aria-current="page">Merge PDF</span>
+      <a href="/noelotools/">Home</a><span aria-hidden="true">/</span><a href="/noelotools/#tools">Tools</a><span aria-hidden="true">/</span><span aria-current="page">Merge PDF</span>
     </nav>
 
     <section class="tool-intro">
-      <p class="eyebrow">PDF TOOL</p>
-      <h1>Merge PDF</h1>
-      <p>Combine multiple PDF files into one document. Files are processed locally in your browser.</p>
+      <div class="hero-icon" aria-hidden="true"><span class="hero-sheet hero-sheet-back"></span><span class="hero-sheet hero-sheet-front"><i></i><i></i><i></i><b>PDF</b></span><span class="hero-join">＋</span></div>
+      <p class="eyebrow">PDF WORKSPACE</p>
+      <h1>Merge PDF files</h1>
+      <p>Bring your documents together in seconds. Add PDFs, arrange their order, and download one clean file.</p>
+      <div class="hero-benefits"><span><b>✓</b> 100% free</span><span><b>✓</b> No file uploads</span><span><b>✓</b> Easy to use</span></div>
     </section>
 
     <section class="merge-workspace" aria-label="PDF merge workspace">
       <div class="upload-panel tool-panel">
+        <div class="workspace-heading"><div><span class="workspace-kicker">STEP 1</span><h2>Add your PDF files</h2><p>Select at least two documents to get started.</p></div><span class="workspace-file-icon" aria-hidden="true">PDF</span></div>
         <label class="drop-zone" for="pdf-files" id="drop-zone">
-          <span class="upload-icon" aria-hidden="true">＋</span>
-          <strong>Select PDF files</strong>
-          <span>Choose two or more PDF files, or drag them here</span>
-          <span class="file-limit">PDF files only · Files will be merged in the order selected</span>
+          <span class="upload-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 31V7m0 0-9 9m9-9 9 9M9 29v10h30V29" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <strong>Drop your PDF files here</strong>
+          <span>or <em>browse files</em> from your device</span>
+          <span class="file-limit">PDF format only · Multiple files supported</span>
         </label>
         <input id="pdf-files" type="file" accept="application/pdf,.pdf" multiple>
         <div class="selected-heading">
-          <div><h2>Selected files</h2><span id="file-count">0 files</span></div>
+          <div><span class="workspace-kicker">STEP 2</span><h2>File order</h2><span id="file-count">0 files added</span></div>
           <button id="clear-files" class="button button-secondary tool-btn" type="button" disabled>Clear all</button>
         </div>
+        <p class="order-hint">Your merged PDF follows this order. Use the arrows to rearrange files.</p>
         <ol id="file-list" class="file-list" aria-live="polite" aria-label="PDF files in merge order">
-          <li class="empty-state">No files selected yet.</li>
+          <li class="empty-state"><span class="empty-file-icon" aria-hidden="true">PDF</span><strong>Your files will appear here</strong><span>Add two or more PDFs to create your combined document.</span></li>
         </ol>
         <div class="merge-actions tool-actions">
-          <button id="merge-button" class="button button-primary tool-btn tool-btn-primary" type="button" disabled>Merge PDF files</button>
-          <p id="status-message" role="status" aria-live="polite">Select at least two PDF files to begin.</p>
+          <div class="merge-button-wrap"><span class="workspace-kicker">STEP 3</span><button id="merge-button" class="button button-primary tool-btn tool-btn-primary" type="button" disabled><span aria-hidden="true">⇩</span> Merge &amp; download PDF</button></div>
+          <p id="status-message" role="status" aria-live="polite">Add at least two PDF files to begin.</p>
         </div>
       </div>
     </section>
 
-    <p class="privacy-note">Your files stay on your device. No PDF is uploaded to NoeloTools.</p>
+    <div class="privacy-note"><span class="privacy-lock" aria-hidden="true">✓</span><span><strong>Your documents stay private</strong><small>Files are processed on your device and are never uploaded to NoeloTools.</small></span></div>
 
     <section class="tool-info">
-      <h2>How to merge PDF files</h2>
-      <ol>
-        <li>Select at least two PDF files from your device.</li>
-        <li>Check the list. Files will be merged in the displayed order.</li>
-        <li>Select <strong>Merge PDF files</strong> and download the combined PDF.</li>
-      </ol>
-      <p><strong>Privacy:</strong> PDF contents are processed in your browser and are not uploaded to NoeloTools. Avoid closing this page while the merge is running. Your browser needs an internet connection to load the PDF processing library.</p>
+      <div class="info-heading"><span class="info-step">01</span><div><p class="workspace-kicker">QUICK GUIDE</p><h2>How to merge PDF files</h2></div></div>
+      <div class="guide-grid">
+        <article><span class="guide-number">1</span><h3>Choose PDFs</h3><p>Select or drag two or more PDF documents into the upload area.</p></article>
+        <article><span class="guide-number">2</span><h3>Arrange files</h3><p>Use the up and down arrows to set the order of your combined document.</p></article>
+        <article><span class="guide-number">3</span><h3>Merge &amp; save</h3><p>Press the merge button and your combined PDF will download.</p></article>
+      </div>
+      <div class="info-footnote"><strong>Privacy note</strong><p>PDF contents are processed locally in your browser. No documents are sent to NoeloTools. An internet connection is needed to load the PDF processing library.</p></div>
     </section>
   </main>
 
   <footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a class="site-brand" href="/noelotools/"><span class="site-brand-mark">N</span><span>NoeloTools</span></a><p class="footer-description">Free online tools for everything. All in one place.</p></div><div class="footer-column"><h2>Explore</h2><ul class="footer-links"><li><a href="/noelotools/#tools">All tools</a></li><li><a href="/noelotools/#categories">Categories</a></li><li><a href="/noelotools/blog/">Blog</a></li></ul></div><div class="footer-column"><h2>Company</h2><ul class="footer-links"><li><a href="/noelotools/pages/about/">About</a></li><li><a href="/noelotools/pages/contact/">Contact</a></li></ul></div><div class="footer-column"><h2>Legal</h2><ul class="footer-links"><li><a href="/noelotools/pages/privacy-policy/">Privacy policy</a></li><li><a href="/noelotools/pages/cookie-policy/">Cookie policy</a></li><li><a href="/noelotools/pages/terms/">Terms</a></li></ul></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com</span><span>Made for a simpler web.</span></div></div></footer>
-<!-- বাংলা: ঐচ্ছিক কুকি চালু করার আগে ব্যবহারকারীর সম্মতি নেওয়া হয়। -->
 <section class="cookie-banner" data-cookie-banner role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
 <h2 id="cookie-title">Your privacy matters</h2><p id="cookie-description">Necessary storage keeps this site working. Optional analytics and advertising require your permission.</p><div class="cookie-actions"><button class="button button-primary" type="button" data-cookie-accept>Accept all</button><button class="button button-secondary" type="button" data-cookie-reject>Reject optional</button><button class="button button-ghost" type="button" data-cookie-customise>Customise</button></div><div class="cookie-settings" data-cookie-settings hidden><label><input type="checkbox" checked disabled> Necessary (always active)</label><br><label><input type="checkbox" name="cookie-analytics"> Analytics</label><br><label><input type="checkbox" name="cookie-advertising"> Advertising</label><br><button class="button button-primary" type="button" data-cookie-save>Save preferences</button></div></section>
 </body>
