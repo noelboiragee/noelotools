@@ -90,3 +90,7 @@ body[data-category="pdf"] .merge-pdf-page .tool-intro::before{content:none;displ
 
 /* Keep the category label subtle and compact above the page title. */
 .merge-pdf-page .tool-intro .eyebrow{display:block;width:max-content;margin:0 auto 2px;padding:0;border:0;border-radius:0;background:transparent;color:var(--text-muted);font-size:.62rem;font-weight:750;letter-spacing:.16em;line-height:1.2}
+
+/* Show PDF WORKSPACE only once, as a small eyebrow above the title. */
+body[data-category="pdf"] .merge-pdf-page .tool-intro::before{content:none!important;display:none!important}
+body[data-category="pdf"] .merge-pdf-page .tool-intro .eyebrow{display:block;width:max-content;margin:0 auto 4px;padding:0;border:0;border-radius:0;background:transparent;color:var(--text-muted);font-size:.62rem;font-weight:750;letter-spacing:.14em;line-height:1.2}
