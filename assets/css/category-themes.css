@@ -194,10 +194,11 @@ body[data-category="math"] {
   --shadow-glow: 0 0 30px rgba(217, 119, 38, .12);
 }
 body[data-category="everyday"] {
-  --primary: #168F91;
-  --primary-dark: #0E7072;
-  --primary-soft: #E7F7F6;
-  --shadow-glow: 0 0 30px rgba(22, 143, 145, .12);
+  --primary: #00BFCB;
+  --primary-dark: #009A8C;
+  --primary-soft: #E8FFF5;
+  --category-gradient: linear-gradient(120deg, #00D4FF 0%, #00E676 52%, #FFEB3B 100%);
+  --shadow-glow: 0 0 30px rgba(0, 210, 160, .16);
 }
 html[data-theme="dark"] body[data-category="money-tax"] {
   --primary: #E5BD59;
@@ -230,9 +231,21 @@ html[data-theme="dark"] body[data-category="math"] {
   --primary-soft: #3B2A20;
 }
 html[data-theme="dark"] body[data-category="everyday"] {
-  --primary: #69D0CF;
-  --primary-dark: #8AE0DF;
-  --primary-soft: #1D3636;
+  --primary: #55E8C0;
+  --primary-dark: #8CF3D5;
+  --primary-soft: #173A32;
+  --category-gradient: linear-gradient(120deg, #00BDEB 0%, #00C96B 52%, #D9C92F 100%);
+}
+body[data-category="everyday"] .tool-intro .eyebrow,
+body[data-category="everyday"] .tool-workspace .button-primary,
+body[data-category="everyday"] .primary-button {
+  background: var(--category-gradient);
+  border-color: transparent;
+  color: #12352C;
+}
+body[data-category="everyday"] .tool-workspace .button-primary:hover,
+body[data-category="everyday"] .primary-button:hover {
+  filter: saturate(1.12) brightness(.96);
 }
 
 /* Shared category treatment: keep tool controls and behaviour unchanged. */
