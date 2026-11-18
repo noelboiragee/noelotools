@@ -31,32 +31,83 @@ const TOOL_ICON_PATHS = {
   "pdf-table-to-excel": '<path d="M4 3h11l5 5v13H4z"/><path d="M15 3v5h5M7 12h10M7 16h10M11 12v8m4-8v8"/>'
 };
 
-function createToolIcon(pathData, className = "tool-title-icon") {
+const TOOL_ICON_GRADIENTS = {
+  "merge-pdf": ["#2563eb", "#60a5fa"], "compress-pdf": ["#1d4ed8", "#38bdf8"],
+  "loan-calculator": ["#047857", "#34d399"], "vat-calculator": ["#0f766e", "#2dd4bf"],
+  "europe-salary-calculator": ["#15803d", "#84cc16"], "currency-converter": ["#059669", "#6ee7b7"],
+  "bmi-calculator": ["#e11d48", "#fb7185"], "word-counter": ["#ea580c", "#fb923c"],
+  "qr-code-generator": ["#0f766e", "#5eead4"], "password-generator": ["#4338ca", "#818cf8"],
+  "percentage-calculator": ["#6d28d9", "#a78bfa"], "unit-converter": ["#7c3aed", "#c4b5fd"],
+  "age-calculator": ["#0d9488", "#5eead4"], "date-difference-calculator": ["#0891b2", "#67e8f9"],
+  "json-formatter": ["#4338ca", "#a5b4fc"], "base64-encoder-decoder": ["#4f46e5", "#818cf8"],
+  "text-case-converter": ["#c2410c", "#fdba74"], "image-compressor": ["#7c3aed", "#c084fc"],
+  "image-resizer": ["#9333ea", "#d8b4fe"], "iban-validator": ["#047857", "#6ee7b7"],
+  "stopwatch": ["#0e7490", "#67e8f9"], "random-number-generator": ["#6d28d9", "#c4b5fd"],
+  "color-picker": ["#be185d", "#f9a8d4"], "typing-speed-test": ["#0f766e", "#5eead4"],
+  "unit-price-calculator": ["#15803d", "#86efac"], "sales-tax-calculator": ["#047857", "#6ee7b7"],
+  "time-zone-converter": ["#0369a1", "#7dd3fc"], "scientific-calculator": ["#6d28d9", "#c4b5fd"],
+  "pdf-table-to-excel": ["#1d4ed8", "#93c5fd"]
+};
+
+function createToolIcon(pathData, className = "tool-title-icon", toolId = "tool") {
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
   svg.setAttribute("class", className);
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "1.8");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("viewBox", "0 0 64 64");
   svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+
+  const gradientId = `tool-icon-gradient-${toolId.replace(/[^a-z0-9-]/gi, "")}`;
+  const defs = document.createElementNS(svgNS, "defs");
+  const gradient = document.createElementNS(svgNS, "linearGradient");
+  gradient.setAttribute("id", gradientId);
+  gradient.setAttribute("x1", "0%");
+  gradient.setAttribute("y1", "0%");
+  gradient.setAttribute("x2", "100%");
+  gradient.setAttribute("y2", "100%");
+  const colors = TOOL_ICON_GRADIENTS[toolId] || ["#475569", "#94a3b8"];
+  colors.forEach((color, index) => {
+    const stop = document.createElementNS(svgNS, "stop");
+    stop.setAttribute("offset", index === 0 ? "0%" : "100%");
+    stop.setAttribute("stop-color", color);
+    gradient.append(stop);
+  });
+  defs.append(gradient);
+  svg.append(defs);
+
+  const background = document.createElementNS(svgNS, "rect");
+  background.setAttribute("x", "1");
+  background.setAttribute("y", "1");
+  background.setAttribute("width", "62");
+  background.setAttribute("height", "62");
+  background.setAttribute("rx", "18");
+  background.setAttribute("fill", `url(#${gradientId})`);
+  svg.append(background);
+
   // SVG path data is a fixed, developer-authored constant; no user content is parsed.
-  const wrapper = document.createElementNS(svgNS, "g");
   const parser = new DOMParser();
-  const parsed = parser.parseFromString("<svg xmlns=\"" + svgNS + "\">" + pathData + "</svg>", "image/svg+xml");
+  const parsed = parser.parseFromString("<svg xmlns=\\"" + svgNS + "\\">" + pathData + "</svg>", "image/svg+xml");
+  const glyph = document.createElementNS(svgNS, "svg");
+  glyph.setAttribute("x", "13");
+  glyph.setAttribute("y", "13");
+  glyph.setAttribute("width", "38");
+  glyph.setAttribute("height", "38");
+  glyph.setAttribute("viewBox", "0 0 24 24");
+  glyph.setAttribute("fill", "none");
+  glyph.setAttribute("stroke", "#ffffff");
+  glyph.setAttribute("stroke-width", "1.9");
+  glyph.setAttribute("stroke-linecap", "round");
+  glyph.setAttribute("stroke-linejoin", "round");
   for (const node of Array.from(parsed.documentElement.children)) {
-    wrapper.appendChild(document.importNode(node, true));
+    glyph.appendChild(document.importNode(node, true));
   }
-  svg.appendChild(wrapper);
+  svg.append(glyph);
   return svg;
 }
-
 function createToolIconForId(toolId, className = "tool-title-icon") {
   const normalizedId = toolId === "qr-generator" ? "qr-code-generator" : toolId;
   const pathData = TOOL_ICON_PATHS[normalizedId];
-  return pathData ? createToolIcon(pathData, className) : null;
+  return pathData ? createToolIcon(pathData, className, normalizedId) : null;
 }
 
 async function initToolTitleIcons() {
