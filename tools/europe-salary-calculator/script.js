@@ -18,7 +18,7 @@ const countryInfo = {
   NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
   PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€", currency: "EUR", available: true }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr" },
-  DK: { name: "Denmark", symbol: "kr" },
+  DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
@@ -47,7 +47,7 @@ const LIMITS = {
 function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }
 
 function formatCurrency(value, currency = "EUR") {
-  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : "en";
+  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : "en";
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -90,7 +90,8 @@ function updateCountry() {
   const isPortugal = countryInput.value === "PT";
   const isAustria = countryInput.value === "AT";
   const isNorway = countryInput.value === "NO";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway;
+  const isDenmark = countryInput.value === "DK";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -136,6 +137,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isDenmark) {
+    countryStatus.innerHTML = "<strong>Denmark model available</strong><span>2026 estimate for a full-time employee, single, no church tax or personal pension deduction.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Labour market contribution (AM)", "State income taxes", "Average municipal tax", "Employment and job allowances", "ATP employee contribution"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "AM contribution + ATP per month";
+    document.querySelector(".model-link").textContent = "The estimate uses the 2026 national tax reform and average municipal tax of 25.049%. Municipality, church membership, pension contributions and individual deductions can change the result.";
+    calculateDenmark();
   } else if (isNorway) {
     countryStatus.innerHTML = "<strong>Norway model available</strong><span>2026 estimate for a single resident employee outside the northern Action Zone, no dependants.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -227,6 +237,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "PT") calculatePortugal();
   else if (countryInput.value === "AT") calculateAustria();
   else if (countryInput.value === "NO") calculateNorway();
+  else if (countryInput.value === "DK") calculateDenmark();
 }
 
 function progressiveContribution(income, bands) {
@@ -241,6 +252,48 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateDenmark() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const annualATP = Math.min(annualGross, 1188);
+  const amBase = Math.max(0, annualGross - annualATP);
+  const annualAM = amBase * 0.08;
+  const personalIncomeAfterAM = Math.max(0, amBase - annualAM);
+  const employmentAllowance = Math.min(annualGross * 0.1275, 63471);
+  const jobAllowance = Math.min(Math.max(0, annualGross - 235200) * 0.045, 3100);
+  const personalAllowance = Math.min(personalIncomeAfterAM, 54100);
+
+  const municipalTaxableIncome = Math.max(0, personalIncomeAfterAM - personalAllowance - employmentAllowance - jobAllowance);
+  const municipalTax = municipalTaxableIncome * 0.25049;
+  const bottomTax = Math.max(0, personalIncomeAfterAM - personalAllowance) * 0.1201;
+  const middleTax = Math.max(0, personalIncomeAfterAM - 641200) * 0.075;
+  const topTax = Math.max(0, personalIncomeAfterAM - 777900) * 0.075;
+  const topTopTax = Math.max(0, personalIncomeAfterAM - 2592700) * 0.05;
+  const taxBeforeCeiling = municipalTax + bottomTax + middleTax + topTax;
+  const taxCeiling = Math.max(0, personalIncomeAfterAM - personalAllowance) * 0.4457;
+  const ordinaryTax = Math.min(taxBeforeCeiling, taxCeiling);
+  const annualTax = ordinaryTax + topTopTax;
+
+  const monthlyAM = annualAM / 12;
+  const monthlyTax = annualTax / 12;
+  const monthlyATP = annualATP / 12;
+  const netMonthly = grossMonthly - monthlyAM - monthlyTax - monthlyATP;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "DKK");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "DKK");
+  outputs.social.textContent = formatCurrency(monthlyAM + monthlyATP, "DKK");
+  outputs.pension.textContent = formatCurrency(monthlyAM, "DKK");
+  outputs.unemployment.textContent = formatCurrency((bottomTax + middleTax + topTax + topTopTax) / 12, "DKK");
+  outputs.health.textContent = formatCurrency(municipalTax / 12, "DKK");
+  outputs.care.textContent = formatCurrency((employmentAllowance + jobAllowance) / 12, "DKK");
+  outputs.church.textContent = formatCurrency(monthlyATP, "DKK");
 }
 
 function calculateNorway() {
