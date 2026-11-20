@@ -117,7 +117,7 @@ function updateCountry() {
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 1; });
     resultLabels[1].textContent = "Monthly income tax (IRPF)";
     resultLabels[2].textContent = "INSS contribution";
-    document.querySelector(".model-link").textContent = "The Brazil 2026 estimate is available. Germany and UK models are also available.";
+    document.querySelector(".model-link").textContent = "The Brazil 2026 estimate is available. Germany, Italy and UK models are also available.";
     calculateBrazil();
   } else if (isItaly) {
     countryStatus.innerHTML = "<strong>Italy model available</strong><span>2026 estimate. Standard private-sector employee, one employment income, no dependants; regional and municipal surcharges excluded.</span>";
