@@ -768,3 +768,31 @@ html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
     min-height: 40px;
   }
 }
+
+
+/* Category icons: remove the colored tile; keep only the category-colored symbol. */
+.categories-section .category-card-icon {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  color: var(--category-icon-color, var(--text)) !important;
+}
+.categories-section .category-card-icon svg {
+  background: transparent !important;
+  color: inherit !important;
+  overflow: visible;
+}
+.categories-section .category-card:hover .category-card-icon {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.categories-section .category-icon--pdf { --category-icon-color: #26966A; }
+.categories-section .category-icon--money-tax { --category-icon-color: #D4A72C; }
+.categories-section .category-icon--media { --category-icon-color: #2878D0; }
+.categories-section .category-icon--developer { --category-icon-color: #8054C7; }
+.categories-section .category-icon--writing { --category-icon-color: #986344; }
+.categories-section .category-icon--health { --category-icon-color: #D34D91; }
+.categories-section .category-icon--math { --category-icon-color: #D97726; }
+.categories-section .category-icon--everyday { --category-icon-color: #168F91; }
