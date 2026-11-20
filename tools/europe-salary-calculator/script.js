@@ -22,7 +22,7 @@ const countryInfo = {
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "COP$", currency: "COP", available: true },
   CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "US$", currency: "USD", available: true },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
-  MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
+  MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩", currency: "KRW", available: true },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
@@ -93,7 +93,7 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -324,6 +324,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "PE") calculatePeru();
   else if (countryInput.value === "EC") calculateEcuador();
   else if (countryInput.value === "CO") calculateColombia();
+  else if (countryInput.value === "KR") calculateSouthKorea();
 }
 
 function progressiveContribution(income, bands) {
@@ -338,6 +339,48 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateSouthKorea() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 1000000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const annualGross=grossMonthly*12;
+  const pensionBase=Math.min(grossMonthly,6590000);
+  const pension=pensionBase*0.0475;
+  const health=grossMonthly*0.03595;
+  const longTermCare=grossMonthly*0.004724;
+  const employment=grossMonthly*0.009;
+  let earnedDeduction=0;
+  if(annualGross<=5000000) earnedDeduction=annualGross*0.70;
+  else if(annualGross<=15000000) earnedDeduction=3500000+(annualGross-5000000)*0.40;
+  else if(annualGross<=45000000) earnedDeduction=7500000+(annualGross-15000000)*0.15;
+  else if(annualGross<=100000000) earnedDeduction=12000000+(annualGross-45000000)*0.05;
+  else earnedDeduction=14750000+(annualGross-100000000)*0.02;
+  earnedDeduction=Math.min(earnedDeduction,20000000,annualGross);
+  const taxable=Math.max(0,annualGross-earnedDeduction-1500000-pension*12);
+  const bands=[
+    {limit:14000000,base:0,rate:0.06},{limit:50000000,base:840000,rate:0.15},
+    {limit:88000000,base:6240000,rate:0.24},{limit:150000000,base:15360000,rate:0.35},
+    {limit:300000000,base:37060000,rate:0.38},{limit:500000000,base:94060000,rate:0.40},
+    {limit:1000000000,base:174060000,rate:0.42},{limit:Infinity,base:384060000,rate:0.45}
+  ];
+  let annualIncomeTax=0,previous=0;
+  for(const band of bands){if(taxable<=band.limit){annualIncomeTax=band.base+Math.max(0,taxable-previous)*band.rate;break;}previous=band.limit;}
+  const localTax=annualIncomeTax*0.10;
+  const monthlyTax=(annualIncomeTax+localTax)/12;
+  const monthlySocial=pension+health+longTermCare+employment;
+  const netMonthly=grossMonthly-monthlySocial-monthlyTax;
+  outputs.net.textContent=formatCurrency(netMonthly,"KRW");
+  outputs.tax.textContent=formatCurrency(monthlyTax,"KRW");
+  outputs.social.textContent=formatCurrency(monthlySocial,"KRW");
+  outputs.pension.textContent=formatCurrency(pension,"KRW");
+  outputs.unemployment.textContent=formatCurrency(employment,"KRW");
+  outputs.health.textContent=formatCurrency(health+longTermCare,"KRW");
+  outputs.care.textContent=formatCurrency(earnedDeduction/12,"KRW");
+  outputs.church.textContent="Basic personal deduction included";
 }
 
 function calculateColombia() {
