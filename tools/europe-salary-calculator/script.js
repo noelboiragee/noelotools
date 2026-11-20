@@ -15,7 +15,7 @@ const churchTaxInput = document.querySelector("#church-tax");
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
-  NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€" },
+  NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
@@ -85,7 +85,8 @@ function updateCountry() {
   const isSpain = countryInput.value === "ES";
   const isNetherlands = countryInput.value === "NL";
   const isBelgium = countryInput.value === "BE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium;
+  const isIreland = countryInput.value === "IE";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -131,6 +132,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isIreland) {
+    countryStatus.innerHTML = "<strong>Ireland model available</strong><span>2026 estimate for a single PAYE employee, standard-rate band €44,000, standard tax credits and Class A PRSI.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Income tax after PAYE credits", "Universal Social Charge (USC)", "Employee PRSI", "Single Person Tax Credit", "PAYE Employee Tax Credit"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "USC + employee PRSI per month";
+    document.querySelector(".model-link").textContent = "Ireland combines income tax, USC and employee PRSI. This estimate assumes one PAYE job, single tax status, no pension deduction and no additional credits or reliefs.";
+    calculateIreland();
   } else if (isBelgium) {
     countryStatus.innerHTML = "<strong>Belgium model available</strong><span>2026 estimate for a single white-collar employee with no dependants; municipal tax and special social-security contribution excluded.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -182,6 +192,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "ES") calculateSpain();
   else if (countryInput.value === "NL") calculateNetherlands();
   else if (countryInput.value === "BE") calculateBelgium();
+  else if (countryInput.value === "IE") calculateIreland();
 }
 
 function progressiveContribution(income, bands) {
@@ -196,6 +207,53 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateIreland() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  // 2026 single PAYE employee: €44,000 standard-rate band and €2,000 + €2,000 tax credits.
+  const grossIncomeTax = Math.min(annualGross, 44000) * 0.20 + Math.max(0, annualGross - 44000) * 0.40;
+  const singleTaxCredit = 2000;
+  const payeTaxCredit = 2000;
+  const annualIncomeTax = Math.max(0, grossIncomeTax - singleTaxCredit - payeTaxCredit);
+
+  // 2026 USC: if annual income exceeds €13,000, USC applies to the full income.
+  let annualUSC = 0;
+  if (annualGross > 13000) {
+    annualUSC = Math.min(annualGross, 12012) * 0.005 +
+      Math.max(0, Math.min(annualGross, 28700) - 12012) * 0.02 +
+      Math.max(0, Math.min(annualGross, 70044) - 28700) * 0.03 +
+      Math.max(0, annualGross - 70044) * 0.08;
+  }
+
+  // Class A PRSI: 4.20% through 30 Sep 2026, then 4.35% from 1 Oct 2026.
+  // Convert monthly pay to an equivalent weekly amount for the PRSI threshold and credit.
+  const weeklyGross = annualGross / 52;
+  const prsiCredit = weeklyGross <= 352 ? 0 : weeklyGross <= 424
+    ? Math.max(0, 12 - (weeklyGross - 352.01) / 6) : 0;
+  const weeklyPrsiBeforeOct = weeklyGross <= 352 ? 0 : weeklyGross * 0.042 - prsiCredit;
+  const weeklyPrsiFromOct = weeklyGross <= 352 ? 0 : weeklyGross * 0.0435 - prsiCredit;
+  const annualPRSI = Math.max(0, weeklyPrsiBeforeOct) * 39 + Math.max(0, weeklyPrsiFromOct) * 13;
+
+  const monthlyTax = annualIncomeTax / 12;
+  const monthlyUSC = annualUSC / 12;
+  const monthlyPRSI = annualPRSI / 12;
+  const netMonthly = grossMonthly - monthlyTax - monthlyUSC - monthlyPRSI;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.social.textContent = formatCurrency(monthlyUSC + monthlyPRSI, "EUR");
+  outputs.pension.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.unemployment.textContent = formatCurrency(monthlyUSC, "EUR");
+  outputs.health.textContent = formatCurrency(monthlyPRSI, "EUR");
+  outputs.care.textContent = formatCurrency(singleTaxCredit / 12, "EUR");
+  outputs.church.textContent = formatCurrency(payeTaxCredit / 12, "EUR");
 }
 
 function calculateBelgium() {
