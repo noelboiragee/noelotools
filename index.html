@@ -793,7 +793,6 @@
         activePointer = event.pointerId;
         startX = lastX = event.clientX;
         startY = event.clientY;
-        try { scene.setPointerCapture(event.pointerId); } catch (_) {}
       });
 
       scene.addEventListener("pointermove", (event) => {
@@ -803,6 +802,7 @@
         if (!moved && Math.hypot(dx, dy) >= threshold) {
           if (Math.abs(dy) > Math.abs(dx)) return;
           moved = true;
+          try { scene.setPointerCapture(event.pointerId); } catch (_) {}
         }
         if (!moved) return;
         rotation += (event.clientX - lastX) * 0.8;
