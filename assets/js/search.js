@@ -29,6 +29,13 @@ export function initToolSearch() {
   let activeCategory = "";
   const toolsHeading = document.querySelector("#all-tools-title");
   const toolsDescription = toolsHeading?.parentElement?.querySelector("p");
+  const toolsSection = document.querySelector("#tools");
+  const popularSection = document.querySelector('[aria-labelledby="popular-tools-title"]');
+  const placePopularSection = (belowCategoryTools) => {
+    if (!toolsSection || !popularSection || !toolsSection.parentNode) return;
+    if (belowCategoryTools) toolsSection.parentNode.insertBefore(popularSection, toolsSection.nextSibling);
+    else toolsSection.parentNode.insertBefore(popularSection, toolsSection);
+  };
 
   if (!toolCards.length) {
     console.warn("NoeloTools: search initialised without tool cards.");
@@ -131,6 +138,7 @@ export function initToolSearch() {
       if (event.target.closest(".orbit-tool-link")) return;
 
       activeCategory = filter.dataset.categoryFilter || "";
+      placePopularSection(true);
       if (toolsHeading) {
         const selectedTitle = filter.querySelector(".card-title, .category-card-title")?.textContent?.trim() || filter.getAttribute("aria-label")?.replace(/^Browse\s+|\s+tools$/gi, "") || "Category";
         toolsHeading.textContent = `${selectedTitle} tools`;
@@ -147,6 +155,7 @@ export function initToolSearch() {
   searchInputs.forEach((input) => {
     const handleSearch = () => {
       activeCategory = "";
+      placePopularSection(false);
       if (toolsHeading) toolsHeading.textContent = "All tools";
       if (toolsDescription) toolsDescription.textContent = "Browse every available tool or filter by category.";
       filterTools(input.value);
@@ -163,6 +172,7 @@ export function initToolSearch() {
       if (event.key === "Escape") {
         input.value = "";
         activeCategory = "";
+        placePopularSection(false);
         if (toolsHeading) toolsHeading.textContent = "All tools";
         if (toolsDescription) toolsDescription.textContent = "Browse every available tool or filter by category.";
         filterTools("");
