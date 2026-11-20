@@ -14,17 +14,17 @@ const churchTaxInput = document.querySelector("#church-tax");
 
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
-  GB: { name: "United Kingdom", symbol: "£" },
-  FR: { name: "France", symbol: "€" },
-  NL: { name: "Netherlands", symbol: "€" },
-  BE: { name: "Belgium", symbol: "€" },
-  ES: { name: "Spain", symbol: "€" },
-  IT: { name: "Italy", symbol: "€" },
-  PL: { name: "Poland", symbol: "zł" },
-  PT: { name: "Portugal", symbol: "€" },
-  AT: { name: "Austria", symbol: "€" },
-  IE: { name: "Ireland", symbol: "€" },
-  CH: { name: "Switzerland", symbol: "CHF" }
+  FR: { name: "France", symbol: "€" }, IT: { name: "Italy", symbol: "€" }, ES: { name: "Spain", symbol: "€" },
+  NL: { name: "Netherlands", symbol: "€" }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
+  PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£" },
+  CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
+  DK: { name: "Denmark", symbol: "kr" }, PL: { name: "Poland", symbol: "zł" },
+  BR: { name: "Brazil", symbol: "R$" }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
+  CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
+  UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
+  MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
+  IN: { name: "India", symbol: "₹" }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$" },
+  NZ: { name: "New Zealand", symbol: "NZ$" }
 };
 
 const outputs = {
@@ -84,7 +84,7 @@ function updateCountry() {
   countryStatus.hidden = !isGermany;
 
   if (isGermany) {
-    countryStatus.innerHTML = "<strong>Germany model available</strong><span>2026 simplified estimate. Select the additional details below.</span>";
+    countryStatus.innerHTML = "<strong>Germany model available</strong><span>2026 simplified estimate. Other 29 country models are being verified and are not enabled yet.</span>";
     calculateGermany();
   } else {
     comingTitle.textContent = selected.name + " salary model is being prepared";
