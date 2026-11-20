@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#101827">
+<title>NoeloTools Admin</title>
+<link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+<div id="login-screen" class="login-wrap">
+  <form id="login-form" class="login-card">
+    <div class="brand"><span class="brand-mark">N</span><span>NoeloTools <small>ADMIN</small></span></div>
+    <h1>Sign in</h1><p>Access is restricted to authorised administrators.</p>
+    <label>Email<input id="email" type="email" autocomplete="username" required></label>
+    <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+    <button class="primary" type="submit">Sign in</button><p id="login-message" class="message" role="status"></p>
+  </form>
+</div>
+<div id="admin-app" class="app-shell" hidden>
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">N</span><span>NoeloTools <small>ADMIN</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav id="main-nav">
+      <button class="nav-item active" data-view="overview">▦ <span>Overview</span></button>
+      <button class="nav-item" data-view="tools">▣ <span>Tools</span></button>
+      <button class="nav-item" data-view="posts">▤ <span>Blog posts</span></button>
+      <button class="nav-item" data-view="pages">▧ <span>Pages</span></button>
+      <button class="nav-item" data-view="publishing">⇧ <span>Publishing</span></button>
+      <button class="nav-item" data-view="activity">◷ <span>Audit log</span></button>
+      <button class="nav-item" data-view="settings">⚙ <span>Settings</span></button>
+    </nav>
+    <div class="sidebar-bottom"><span class="status-dot"></span> Secure admin workspace</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">NOELOTOOLS / ADMIN</span><h1 id="view-title">Overview</h1></div><div class="user-area"><span id="user-email"></span><button id="logout" class="quiet">Sign out</button></div></header>
+    <section id="view-overview" class="view">
+      <div class="welcome"><div><span class="eyebrow light">CONTROL CENTRE</span><h2>Website management</h2><p>Manage content and prepare safe updates for NoeloTools.</p></div><span class="welcome-mark">N</span></div>
+      <div class="stat-grid">
+        <article class="stat-card"><span>Tools in catalogue</span><strong id="stat-tools">—</strong><small>Synced from admin database</small></article>
+        <article class="stat-card"><span>Blog posts</span><strong id="stat-posts">—</strong><small>All saved posts</small></article>
+        <article class="stat-card"><span>Pages</span><strong id="stat-pages">—</strong><small>Managed pages</small></article>
+        <article class="stat-card"><span>Publishing</span><strong class="pending">Not connected</strong><small>Requires server configuration</small></article>
+      </div>
+      <div class="panel"><div class="panel-heading"><div><h3>System status</h3><p>Connection and deployment readiness</p></div></div><div id="system-status" class="status-list"><p>Checking database connection…</p></div></div>
+    </section>
+    <section id="view-tools" class="view" hidden><div class="panel"><div class="panel-heading"><div><h3>Tools catalogue</h3><p>Edit tool details stored in the admin database.</p></div><button id="refresh-tools" class="quiet">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>Tool</th><th>Category</th><th>URL</th><th>Status</th></tr></thead><tbody id="tools-body"><tr><td colspan="4">Loading…</td></tr></tbody></table></div></div></section>
+    <section id="view-posts" class="view" hidden><div class="panel"><div class="panel-heading"><div><h3>Blog posts</h3><p>Draft and published content.</p></div></div><div id="posts-list" class="empty-state">No posts loaded.</div></div></section>
+    <section id="view-pages" class="view" hidden><div class="panel"><div class="panel-heading"><div><h3>Pages</h3><p>Manage static website page records.</p></div></div><div id="pages-list" class="empty-state">No pages loaded.</div></div></section>
+    <section id="view-publishing" class="view" hidden><div class="panel"><div class="panel-heading"><div><h3>Automatic publishing</h3><span class="pill warning">Not configured</span></div></div><p>Publishing stays disabled until Supabase Edge Function secrets and GitHub access are configured and verified.</p><ol class="steps"><li>Configure Supabase project URL and anon key.</li><li>Deploy the <code>publish-to-github</code> Edge Function.</li><li>Set <code>GITHUB_TOKEN</code> as a server-side secret.</li><li>Run a test publish on a dedicated test path.</li></ol><p class="notice">No changes will be pushed to the live website from this screen until the publishing service is configured.</p></div></section>
+    <section id="view-activity" class="view" hidden><div class="panel"><div class="panel-heading"><div><h3>Audit log</h3><p>Administrative actions recorded by the database.</p></div></div><div id="activity-list" class="empty-state">No activity loaded.</div></div></section>
+    <section id="view-settings" class="view" hidden><div class="panel"><h3>Connection settings</h3><p>Supabase connection values are configured in <code>admin/config.js</code>. Never put a GitHub token or service-role key in browser code.</p><div id="connection-settings" class="status-list"></div></div></section>
+    <div id="app-message" class="toast" role="status" aria-live="polite"></div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script><script src="./admin.js"></script>
+</body></html>
