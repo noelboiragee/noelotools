@@ -350,6 +350,26 @@
     .tool-card-title { margin:0 0 .35rem;font-size:.88rem; }
     .tool-card-description { font-size:.75rem;line-height:1.45; }
     .trust-strip { justify-content:space-around;gap:1rem;padding:1.15rem;border:1px solid #e6eaf6;border-radius:17px;background:#fff;color:#35425f;box-shadow:0 7px 22px rgba(30,50,100,.04); }
+    .site-footer{position:relative;isolation:isolate;overflow:hidden;margin-top:4.5rem;padding:2.8rem 0 1.25rem;background:radial-gradient(ellipse at 14% 0%,rgba(64,91,190,.22),transparent 42%),linear-gradient(135deg,#0a1022 0%,#101a34 52%,#0b1429 100%);color:#eef3ff;border-top:1px solid rgba(130,157,255,.22)}
+    .site-footer:before{content:"";position:absolute;z-index:-1;width:420px;height:420px;right:-150px;top:-230px;border-radius:50%;border:1px solid rgba(138,160,255,.12);box-shadow:0 0 0 35px rgba(138,160,255,.025),0 0 0 75px rgba(138,160,255,.02)}
+    .footer-topline{display:flex;align-items:center;gap:.65rem;width:max-content;max-width:100%;margin:0 0 2.2rem;padding:.55rem .9rem;border:1px solid rgba(139,163,255,.2);border-radius:999px;background:rgba(255,255,255,.045);color:#c8d5f5;font-size:.78rem;letter-spacing:.01em}
+    .footer-live-dot{width:7px;height:7px;border-radius:50%;background:#42d6ae;box-shadow:0 0 12px rgba(66,214,174,.8)}
+    .footer-grid{display:grid;grid-template-columns:1.65fr 1fr 1fr 1.15fr;gap:2.2rem;padding-bottom:2.4rem}
+    .footer-logo{display:inline-flex;align-items:center;gap:.7rem;color:#fff;text-decoration:none;font-size:1.35rem;font-weight:800;letter-spacing:-.045em}
+    .footer-logo-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#6d8cff,#7656e8);box-shadow:0 8px 24px rgba(91,112,255,.34);color:#fff;font-size:1.35rem}
+    .footer-logo-dot{color:#8ba3ff}
+    .footer-description{max-width:290px;margin:1rem 0;color:#aebbd8;font-size:.88rem;line-height:1.75}
+    .footer-tag{display:inline-flex;padding:.45rem .7rem;border:1px solid rgba(141,161,220,.18);border-radius:8px;color:#c7d3ef;font-size:.72rem}
+    .footer-column h3{margin:.35rem 0 1rem;color:#fff;font-size:.84rem;font-weight:750;letter-spacing:.04em}
+    .footer-links{display:grid;gap:.78rem;margin:0;padding:0;list-style:none}
+    .footer-links a{display:inline-flex;gap:.35rem;color:#aebbd8;text-decoration:none;font-size:.82rem;transition:color .2s,transform .2s}
+    .footer-links a:hover,.footer-links a:focus-visible{color:#fff;transform:translateX(3px)}
+    .footer-links a span{color:#849bff}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-top:1.15rem;border-top:1px solid rgba(153,172,224,.16);color:#8998b8;font-size:.75rem}
+    .footer-bottom-note{color:#aebbd8}.footer-bottom-note span{color:#8da4ff;margin-left:.25rem}
+    [data-theme="dark"] .site-footer{background:radial-gradient(ellipse at 14% 0%,rgba(64,91,190,.22),transparent 42%),linear-gradient(135deg,#070c19 0%,#0d162c 52%,#080f20 100%)}
+    @media(max-width:760px){.site-footer{margin-top:3rem;padding-top:2.1rem}.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.8rem 1.2rem}.footer-brand{grid-column:1/-1}.footer-description{max-width:420px}.footer-bottom{align-items:flex-start;flex-direction:column;gap:.45rem}}
+    @media(max-width:420px){.footer-grid{gap:1.5rem 1rem}.footer-column h3{font-size:.8rem}.footer-links a{font-size:.76rem}.footer-topline{font-size:.7rem}}
     .site-footer { margin-top:3.5rem; }
     @media(max-width:900px) {
       .hero-layout { grid-template-columns:1fr 0.8fr;gap:1.5rem; }
@@ -694,16 +714,18 @@
   <!-- বাংলা: প্রয়োজনীয় লিংক ও নীতিমালার ফুটার। -->
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-topline"><span class="footer-live-dot"></span> Free tools. No sign-up. Built for a simpler web.</div>
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="site-brand" href="/noelotools/"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
-          <p class="footer-description">Free online tools for everything. All in one place.</p>
+          <a class="footer-logo" href="/noelotools/"><span class="footer-logo-mark">N</span><span>NoeloTools<span class="footer-logo-dot">.</span></span></a>
+          <p class="footer-description">A smarter collection of free online tools for your everyday work. Fast, simple and privacy-first.</p>
+          <span class="footer-tag">✦ Made to make digital work easier</span>
         </div>
-        <div class="footer-column"><h3>Explore</h3><ul class="footer-links"><li><a href="#tools">All tools</a></li><li><a href="#categories">Categories</a></li><li><a href="/noelotools/blog/">Blog</a></li></ul></div>
-        <div class="footer-column"><h3>Company</h3><ul class="footer-links"><li><a href="/noelotools/pages/about/">About</a></li><li><a href="/noelotools/pages/contact/">Contact</a></li></ul></div>
-        <div class="footer-column"><h3>Legal</h3><ul class="footer-links"><li><a href="/noelotools/pages/privacy-policy/">Privacy policy</a></li><li><a href="/noelotools/pages/cookie-policy/">Cookie policy</a></li><li><a href="/noelotools/pages/terms/">Terms of use</a></li></ul></div>
+        <div class="footer-column"><h3>Explore</h3><ul class="footer-links"><li><a href="#tools">All tools <span>↗</span></a></li><li><a href="#categories">Categories <span>↗</span></a></li><li><a href="/noelotools/blog/">Latest articles <span>↗</span></a></li></ul></div>
+        <div class="footer-column"><h3>Company</h3><ul class="footer-links"><li><a href="/noelotools/pages/about/">About NoeloTools</a></li><li><a href="/noelotools/pages/contact/">Contact us</a></li></ul></div>
+        <div class="footer-column"><h3>Legal &amp; Privacy</h3><ul class="footer-links"><li><a href="/noelotools/pages/privacy-policy/">Privacy policy</a></li><li><a href="/noelotools/pages/cookie-policy/">Cookie policy</a></li><li><a href="/noelotools/pages/terms/">Terms of use</a></li></ul></div>
       </div>
-      <div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com</span><span>Made for a simpler web.</span></div>
+      <div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com. All rights reserved.</span><span class="footer-bottom-note">Simple tools for a simpler web <span>✦</span></span></div>
     </div>
   </footer>
 
