@@ -1,7 +1,6 @@
 // বাংলা: প্রতিটি সাধারণ ফিচার আলাদাভাবে চালু হবে, যাতে একটি ত্রুটি অন্য ফিচার বন্ধ না করে।
 import { initThemeToggle } from "./theme-toggle.js";
 import { initToolSearch } from "./search.js";
-import { initCookieConsent } from "./cookie-consent.js";
 import { initToolCatalog } from "./tool-catalog.js";
 import { initToolPageSearch } from "./tool-page-search.js";
 import { initToolTitleIcons } from "./tool-title-icons.js";
@@ -102,7 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initToolCatalog().finally(() => safelyInit("tool search", initToolSearch));
   safelyInit("tool page search", () => { void initToolPageSearch(); });
   safelyInit("tool title icons", () => { void initToolTitleIcons(); });
-  safelyInit("cookie consent", initCookieConsent);
+  import("./cookie-consent.js")
+    .then(({ initCookieConsent }) => safelyInit("cookie consent", initCookieConsent))
+    .catch((error) => console.warn("NoeloTools: cookie consent could not load.", error));
   safelyInit("mobile navigation", initMobileNavigation);
   safelyInit("sticky header", initStickyHeader);
   safelyInit("current year", initCurrentYear);
