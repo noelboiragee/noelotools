@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="theme-color" content="#ffffff">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Estimate monthly take-home salary from gross pay for supported European country models. Review estimated deductions and net pay; results are indicative, not official tax advice.">
-  <title>Europe Salary Calculator – Estimate Take-Home Pay | NoeloTools</title>
+  <meta name="description" content="Estimate take-home salary with country-specific tax and social contribution models. Germany is currently supported; other country models are being verified before release.">
+  <title>International Salary Calculator – Estimate Take-Home Pay | NoeloTools</title>
   <link rel="stylesheet" href="/noelotools/assets/css/theme.css">
   <link rel="stylesheet" href="/noelotools/assets/css/global.css">
   <link rel="stylesheet" href="/noelotools/assets/css/components.css">
@@ -20,17 +20,17 @@
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="NoeloTools">
-  <meta property="og:title" content="Europe Salary Calculator – Estimate Take-Home Pay | NoeloTools">
-  <meta property="og:description" content="Estimate monthly take-home salary from gross pay for supported European country models. Review estimated deductions and net pay; results are indicative, not official tax advice.">
+  <meta property="og:title" content="International Salary Calculator – Estimate Take-Home Pay | NoeloTools">
+  <meta property="og:description" content="Estimate monthly take-home salary from gross pay for country-specific models. Review estimated deductions and net pay; results are indicative, not official tax advice.">
   <meta property="og:url" content="https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Europe Salary Calculator - NoeloTools">
-  <meta name="twitter:description" content="Estimate monthly take-home salary from gross pay for supported European country models. Review estimated deductions and net pay; results are indicative, not official tax advice.">
+  <meta name="twitter:title" content="International Salary Calculator - NoeloTools">
+  <meta name="twitter:description" content="Estimate monthly take-home salary from gross pay for country-specific models. Review estimated deductions and net pay; results are indicative, not official tax advice.">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Europe Salary Calculator","url":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/","description":"Estimate take-home salary across selected European countries. Country-specific tax models are being released in verified stages.","applicationCategory":"FinanceApplication","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@type":"Organization","name":"NoeloTools","url":"https://noelboiragee.github.io/noelotools/"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"International Salary Calculator","url":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/","description":"Estimate take-home salary across 30 planned country models. Germany is currently supported; other country models will be released after verification.","applicationCategory":"FinanceApplication","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@type":"Organization","name":"NoeloTools","url":"https://noelboiragee.github.io/noelotools/"}}
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://noelboiragee.github.io/noelotools/"},{"@type":"ListItem","position":2,"name":"Money & Tax","item":"https://noelboiragee.github.io/noelotools/#categories"},{"@type":"ListItem","position":3,"name":"Europe Salary Calculator","item":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/"}]}
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://noelboiragee.github.io/noelotools/"},{"@type":"ListItem","position":2,"name":"Money & Tax","item":"https://noelboiragee.github.io/noelotools/#categories"},{"@type":"ListItem","position":3,"name":"International Salary Calculator","item":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/"}]}
   </script>
   <script src="../../assets/js/site-config.js"></script>
 </head>
@@ -40,10 +40,10 @@
   <header class="site-header" data-site-header><div class="container header-inner"><a class="site-brand" href="/noelotools/" aria-label="NoeloTools home"><span class="site-brand-mark" aria-hidden="true">N</span><span>NoeloTools</span></a><nav class="primary-nav" data-primary-nav aria-label="Main navigation"><a href="/noelotools/#tools">All tools</a><a href="/noelotools/#categories">Categories</a><a href="/noelotools/blog/">Blog</a><a href="/noelotools/pages/about/">About</a></nav><div class="header-actions"><button class="button button-ghost" type="button" data-theme-toggle aria-label="Toggle dark mode" aria-pressed="false"><span data-theme-label>Dark mode</span></button><button class="menu-toggle" type="button" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">☰</button></div></div></header>
 
   <main class="tool-page">
-    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/noelotools/">Home</a><span aria-hidden="true">/</span><a href="/noelotools/#tools">Tools</a><span aria-hidden="true">/</span><span aria-current="page">Europe Salary Calculator</span></nav>
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/noelotools/">Home</a><span aria-hidden="true">/</span><a href="/noelotools/#tools">Tools</a><span aria-hidden="true">/</span><span aria-current="page">International Salary Calculator</span></nav>
     <section class="tool-intro">
-      <p class="eyebrow">Money &amp; Tax · EUROPE</p>
-      <h1>Europe Salary Calculator</h1>
+      <p class="eyebrow">Money &amp; Tax · 30 COUNTRIES</p>
+      <h1>International Salary Calculator</h1>
       <p>Estimate take-home pay with country-specific tax and social contribution rules.</p>
     </section>
 
@@ -53,18 +53,22 @@
         <div class="field">
           <label for="country">Country</label>
           <select id="country">
-            <option value="DE">Germany · EUR</option>
-            <option value="GB">United Kingdom · GBP</option>
-            <option value="FR">France · EUR</option>
-            <option value="NL">Netherlands · EUR</option>
-            <option value="BE">Belgium · EUR</option>
-            <option value="ES">Spain · EUR</option>
-            <option value="IT">Italy · EUR</option>
-            <option value="PL">Poland · PLN</option>
-            <option value="PT">Portugal · EUR</option>
-            <option value="AT">Austria · EUR</option>
-            <option value="IE">Ireland · EUR</option>
-            <option value="CH">Switzerland · CHF</option>
+            <optgroup label="Europe">
+              <option value="DE">Germany · EUR (Available)</option>
+              <option value="FR">France · EUR</option><option value="IT">Italy · EUR</option><option value="ES">Spain · EUR</option><option value="NL">Netherlands · EUR</option><option value="BE">Belgium · EUR</option><option value="IE">Ireland · EUR</option><option value="PT">Portugal · EUR</option><option value="AT">Austria · EUR</option><option value="GB">United Kingdom · GBP</option><option value="CH">Switzerland · CHF</option><option value="NO">Norway · NOK</option><option value="SE">Sweden · SEK</option><option value="DK">Denmark · DKK</option><option value="PL">Poland · PLN</option>
+            </optgroup>
+            <optgroup label="South America">
+              <option value="BR">Brazil · BRL</option><option value="AR">Argentina · ARS</option><option value="CO">Colombia · COP</option><option value="CL">Chile · CLP</option><option value="PE">Peru · PEN</option><option value="EC">Ecuador · USD</option><option value="UY">Uruguay · UYU</option>
+            </optgroup>
+            <optgroup label="North America">
+              <option value="US">United States · USD</option><option value="CA">Canada · CAD</option><option value="MX">Mexico · MXN</option>
+            </optgroup>
+            <optgroup label="Asia">
+              <option value="JP">Japan · JPY</option><option value="KR">South Korea · KRW</option><option value="IN">India · INR</option><option value="CN">China · CNY</option>
+            </optgroup>
+            <optgroup label="Oceania">
+              <option value="AU">Australia · AUD</option><option value="NZ">New Zealand · NZD</option>
+            </optgroup>
           </select>
         </div>
         <div class="field">
@@ -121,7 +125,7 @@
           <div><span>Church tax</span><strong id="church-result">€—</strong></div>
         </div>
         <p class="input-error" id="error-message" role="alert" hidden>Enter a valid gross salary and health rate.</p>
-        <p class="model-link">The Germany 2026 estimate is available in this Europe Salary Calculator. Other country models are being validated before release.</p>
+        <p class="model-link">The Germany 2026 estimate is available in this International Salary Calculator. The other 29 country models are being validated before release.</p>
       </div>
 
       <div class="coming-soon" id="coming-soon" hidden>
@@ -134,10 +138,14 @@
     </section>
 
     <section class="tool-info">
-      <h2>Countries planned for this calculator</h2>
+      <h2>30 countries planned for this calculator</h2>
       <div class="country-list">
         <span class="available">Germany <b>Available</b></span>
-        <span>United Kingdom</span><span>France</span><span>Netherlands</span><span>Belgium</span><span>Spain</span><span>Italy</span><span>Poland</span><span>Portugal</span><span>Austria</span><span>Ireland</span><span>Switzerland</span>
+        <span>France</span><span>Italy</span><span>Spain</span><span>Netherlands</span><span>Belgium</span><span>Ireland</span><span>Portugal</span><span>Austria</span><span>United Kingdom</span><span>Switzerland</span><span>Norway</span><span>Sweden</span><span>Denmark</span><span>Poland</span>
+        <span>Brazil</span><span>Argentina</span><span>Colombia</span><span>Chile</span><span>Peru</span><span>Ecuador</span><span>Uruguay</span>
+        <span>United States</span><span>Canada</span><span>Mexico</span>
+        <span>Japan</span><span>South Korea</span><span>India</span><span>China</span>
+        <span>Australia</span><span>New Zealand</span>
       </div>
       
       <h2>Germany model: tax year 2026</h2>
@@ -146,10 +154,10 @@
       <p>The estimated taxable income subtracts the work-expense allowance and estimated employee pension, health and care contributions. It does not reproduce every official tax, allowance, surcharge, special case or payroll rule. Treat the output as an indicative estimate, not a payslip or tax filing calculation.</p>
       <h2>Important information</h2>
       <p>Net salary depends on more than the country: tax year, tax class or filing status, region, age, children, health insurance, pension scheme and other deductions can all affect the result.</p>
-      <p class="disclaimer">The available Germany model is a simplified 2026 estimate, not an official payroll calculation. Other country models are not yet enabled. Do not use this tool as tax, payroll or legal advice.</p>
+      <p class="disclaimer">The available Germany model is a simplified 2026 estimate, not an official payroll calculation. The other 29 country models are not yet enabled. Do not use this tool as tax, payroll or legal advice.</p>
       <p class="source-links">Cross-country methodology reference: <a href="https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html" target="_blank" rel="noopener noreferrer">OECD Taxing Wages 2026</a>. Country-specific rules will be documented individually as each model is released.</p>
     </section>
-  <section class="related-tools" aria-labelledby="related-tools-title"><h2 id="related-tools-title">Related tools</h2><ul><li><a href="/noelotools/tools/vat-calculator/">VAT Calculator</a></li><li><a href="/noelotools/tools/sales-tax-calculator/">Sales Tax Calculator</a></li><li><a href="/noelotools/tools/loan-calculator/">Loan EMI Calculator</a></li></ul></section>
+  <section class="related-tools" aria-labelledby="related-tools-title"><h2 id="related-tools-title">Related tools</h2><ul><li><a href="/noelotools/tools/vat-calculator/">VAT Calculator</a></li><li><a href="/noelotools/tools/sales-tax-calculator/">Sales Tax Calculator</a></li><li><a href="/noelotools/tools/loan-calculator/">Loan Calculator</a></li></ul></section>
 </main>
 
   <!-- পাদদেশ -->
