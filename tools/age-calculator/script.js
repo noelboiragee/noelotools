@@ -22,6 +22,7 @@ $("#calculate").addEventListener("click", () => {
   let next = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
   if (next < today) next = new Date(today.getFullYear() + 1, birth.getMonth(), birth.getDate());
   const days = Math.round((Date.UTC(next.getFullYear(), next.getMonth(), next.getDate()) - Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
-  const leapNote = birth.getMonth() === 1 && birth.getDate() === 29 ? " For 29 February births, the next birthday is treated as 1 March in non-leap years." : "";\n  show(`${y} years, ${m} months, ${d} days. ${days} days until the next birthday.${leapNote}`);
+  const leapNote = birth.getMonth() === 1 && birth.getDate() === 29 ? " For 29 February births, the next birthday is treated as 1 March in non-leap years." : "";
+  show(`${y} years, ${m} months, ${d} days. ${days} days until the next birthday.${leapNote}`);
 });
 $("#reset").addEventListener("click", () => { dob.value = ""; asof.value = ""; out.hidden = true; });
