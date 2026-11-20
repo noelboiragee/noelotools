@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="theme-color" content="#ffffff">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Estimate take-home salary with country-specific tax and social contribution models. Germany, France, Italy, Spain, Netherlands, Brazil and the United Kingdom are currently supported; other country models are being verified before release.">
+  <meta name="description" content="Estimate take-home salary with country-specific tax and social contribution models. Germany, France, Italy, Spain, Netherlands, Belgium, Brazil and the United Kingdom are currently supported; other country models are being verified before release.">
   <title>International Salary Calculator – Estimate Take-Home Pay | NoeloTools</title>
   <link rel="stylesheet" href="/noelotools/assets/css/theme.css">
   <link rel="stylesheet" href="/noelotools/assets/css/global.css">
@@ -27,7 +27,7 @@
   <meta name="twitter:title" content="International Salary Calculator - NoeloTools">
   <meta name="twitter:description" content="Estimate monthly take-home salary from gross pay for country-specific models. Review estimated deductions and net pay; results are indicative, not official tax advice.">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"International Salary Calculator","url":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/","description":"Estimate take-home salary across 30 planned country models. Germany, France, Italy, Spain, Netherlands, Brazil and the United Kingdom are currently supported; other country models will be released after verification.","applicationCategory":"FinanceApplication","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0"},"publisher":{"@type":"Organization","name":"NoeloTools","url":"https://noelboiragee.github.io/noelotools/"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"International Salary Calculator","url":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/","description":"Estimate take-home salary across 30 planned country models. Germany, France, Italy, Spain, Netherlands, Belgium, Brazil and the United Kingdom are currently supported; other country models will be released after verification.","applicationCategory":"FinanceApplication","operatingSystem":"Any","browserRequirements":"Requires a modern web browser with JavaScript enabled.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0"},"publisher":{"@type":"Organization","name":"NoeloTools","url":"https://noelboiragee.github.io/noelotools/"}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://noelboiragee.github.io/noelotools/"},{"@type":"ListItem","position":2,"name":"Money & Tax","item":"https://noelboiragee.github.io/noelotools/#categories"},{"@type":"ListItem","position":3,"name":"International Salary Calculator","item":"https://noelboiragee.github.io/noelotools/tools/europe-salary-calculator/"}]}
@@ -42,9 +42,9 @@
   <main class="tool-page">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/noelotools/">Home</a><span aria-hidden="true">/</span><a href="/noelotools/#tools">Tools</a><span aria-hidden="true">/</span><span aria-current="page">International Salary Calculator</span></nav>
     <section class="tool-intro">
-      <p class="eyebrow">MONEY &amp; TAX · 7 COUNTRIES SUPPORTED</p>
+      <p class="eyebrow">MONEY &amp; TAX · 8 COUNTRIES SUPPORTED</p>
       <h1>International Salary Calculator</h1>
-      <p>Estimate monthly take-home salary for Germany, France, Italy, Spain, Netherlands, Brazil and the United Kingdom using country-specific employee tax and social contribution estimates. Other country models will be enabled after verification.</p>
+      <p>Estimate monthly take-home salary for Germany, France, Italy, Spain, Netherlands, Belgium, Brazil and the United Kingdom using country-specific employee tax and social contribution estimates. Other country models will be enabled after verification.</p>
     </section>
 
     <section class="calculator-card" aria-labelledby="calculator-title">
@@ -55,7 +55,7 @@
           <select id="country">
             <optgroup label="Europe">
               <option value="DE">Germany · EUR (Available)</option>
-              <option value="FR">France · EUR (Available)</option><option value="IT">Italy · EUR (Available)</option><option value="ES">Spain · EUR (Available)</option><option value="NL">Netherlands · EUR (Available)</option><option value="BE">Belgium · EUR — Coming soon</option><option value="IE">Ireland · EUR — Coming soon</option><option value="PT">Portugal · EUR — Coming soon</option><option value="AT">Austria · EUR — Coming soon</option><option value="GB">United Kingdom · GBP (Available)</option><option value="CH">Switzerland · CHF — Coming soon</option><option value="NO">Norway · NOK — Coming soon</option><option value="SE">Sweden · SEK — Coming soon</option><option value="DK">Denmark · DKK — Coming soon</option>
+              <option value="FR">France · EUR (Available)</option><option value="IT">Italy · EUR (Available)</option><option value="ES">Spain · EUR (Available)</option><option value="NL">Netherlands · EUR (Available)</option><option value="BE">Belgium · EUR (Available)</option><option value="IE">Ireland · EUR — Coming soon</option><option value="PT">Portugal · EUR — Coming soon</option><option value="AT">Austria · EUR — Coming soon</option><option value="GB">United Kingdom · GBP (Available)</option><option value="CH">Switzerland · CHF — Coming soon</option><option value="NO">Norway · NOK — Coming soon</option><option value="SE">Sweden · SEK — Coming soon</option><option value="DK">Denmark · DKK — Coming soon</option>
             </optgroup>
             <optgroup label="South America">
               <option value="BR">Brazil · BRL (Available)</option><option value="AR">Argentina · ARS — Coming soon</option><option value="CO">Colombia · COP — Coming soon</option><option value="CL">Chile · CLP — Coming soon</option><option value="PE">Peru · PEN — Coming soon</option><option value="EC">Ecuador · USD — Coming soon</option><option value="UY">Uruguay · UYU — Coming soon</option>
@@ -125,7 +125,7 @@
           <div><span>Church tax</span><strong id="church-result">€—</strong></div>
         </div>
         <p class="input-error" id="error-message" role="alert" hidden aria-live="polite">Enter a valid gross salary and health rate.</p>
-        <p class="model-link">Country-specific estimates are available for Germany, France, Italy, Spain, Netherlands, Brazil and the United Kingdom.</p>
+        <p class="model-link">Country-specific estimates are available for Germany, France, Italy, Spain, Netherlands, Belgium, Brazil and the United Kingdom.</p>
       </div>
 
       <div class="coming-soon" id="coming-soon" hidden>
@@ -141,7 +141,7 @@
       <h2>30 countries planned for this calculator</h2>
       <div class="country-list">
         <span class="available">Germany <b>Available</b></span>
-        <span class="available">France <b>Available</b></span><span class="available">Italy <b>Available</b></span><span class="available">Spain <b>Available</b></span><span class="available">Netherlands <b>Available</b></span><span>Belgium</span><span>Ireland</span><span>Portugal</span><span>Austria</span><span class="available">United Kingdom <b>Available</b></span><span>Switzerland</span><span>Norway</span><span>Sweden</span><span>Denmark</span>
+        <span class="available">France <b>Available</b></span><span class="available">Italy <b>Available</b></span><span class="available">Spain <b>Available</b></span><span class="available">Netherlands <b>Available</b></span><span class="available">Belgium <b>Available</b></span><span>Ireland</span><span>Portugal</span><span>Austria</span><span class="available">United Kingdom <b>Available</b></span><span>Switzerland</span><span>Norway</span><span>Sweden</span><span>Denmark</span>
         <span class="available">Brazil <b>Available</b></span><span>Argentina</span><span>Colombia</span><span>Chile</span><span>Peru</span><span>Ecuador</span><span>Uruguay</span>
         <span>United States</span><span>Canada</span><span>Mexico</span>
         <span>Japan</span><span>South Korea</span><span>India</span><span>China</span>
@@ -167,12 +167,15 @@
       <h2>United Kingdom model: tax year 2026–27</h2>
       <p>The UK estimate uses the 2026–27 standard Personal Allowance of £12,570, tapered by £1 for every £2 of adjusted income above £100,000, and the England, Wales and Northern Ireland income-tax bands: 20%, 40% and 45%. Employee Class 1 National Insurance uses the standard category A monthly thresholds of £1,048 and £4,189, at 8% and 2% respectively. The default region is England, Wales and Northern Ireland; Scottish income-tax bands are not included.</p>
       <p>This is an annualised estimate from monthly gross salary. Actual PAYE can vary with tax code, pay frequency, pension contributions, benefits, student loans and cumulative payroll rounding. Official sources: <a href="https://www.gov.uk/income-tax-rates" target="_blank" rel="noopener noreferrer">HMRC Income Tax rates and Personal Allowances</a>, <a href="https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027" target="_blank" rel="noopener noreferrer">HMRC 2026–27 rates and thresholds</a> and <a href="https://www.gov.uk/national-insurance-rates-letters" target="_blank" rel="noopener noreferrer">HMRC employee National Insurance rates</a>.</p>
+      <h2>Belgium model: 2026 white-collar employee estimate</h2>
+      <p>The Belgium estimate assumes a single resident white-collar employee with no dependants. Monthly gross salary is annualised over 12 months; holiday pay and year-end bonus are excluded. Employee ONSS is calculated at 13.07%, reduced by the 2026 work bonus using the indexed September 2026 non-manual employee thresholds. Taxable employment income is reduced by the standard professional-expense allowance of 30%, capped at €6,070. The federal tax calculation applies the 2026 income-tax brackets (25%, 40%, 45% and 50%) and the basic personal tax allowance of €11,550. The model excludes the municipality-specific local tax surcharge, special social-security contribution, regional tax reductions, family allowances and any sector-specific payroll variations; actual net pay can therefore differ.</p>
+      <p>Official sources: <a href="https://finances.belgium.be/en/private-individuals/tax-return/income/tax-rates" target="_blank" rel="noopener noreferrer">FPS Finance — 2026 income-tax brackets and personal allowance</a>, <a href="https://financien.belgium.be/nl/particulieren/belastingaangifte/inkomsten/beroepsinkomen" target="_blank" rel="noopener noreferrer">FPS Finance — employee professional-expense deduction</a>, <a href="https://www.partena-professional.be/en/work-bonus-1-july-and-1-september-2026" target="_blank" rel="noopener noreferrer">2026 work-bonus thresholds for non-manual employees</a>.</p>
       <h2>Netherlands model: 2026 employee estimate</h2>
       <p>The Netherlands estimate assumes an employee below the AOW age, resident in the Netherlands for the full year, with one employment income and both the general tax credit and labour tax credit applied. It annualises monthly gross salary over 12 months and applies the 2026 Box 1 rates: 35.75% up to €38,883, 37.56% from €38,883 to €78,426, and 49.50% above €78,426. The first bracket combines income tax with national insurance premiums; these are included in the payroll-tax result rather than shown as a separate employee social-insurance deduction. The 2026 general tax credit and labour tax credit are calculated using the published income thresholds and phase-out rates. For a standard employee, the employer normally pays the income-related Zvw contribution (6.10% in 2026), so it is not deducted from take-home pay. Private basic health-insurance premiums are paid separately and are excluded.</p>
       <p>Official sources: <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/voorlopige-aanslag/content/voorlopige-aanslag-tarieven-en-heffingskortingen" target="_blank" rel="noopener noreferrer">Belastingdienst — 2026 tax rates and tax credits</a>, <a href="https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/werk_en_inkomen/zorgverzekeringen/zorgverzekeringswet/veranderingen-bijdrage-zvw/" target="_blank" rel="noopener noreferrer">Belastingdienst — 2026 Zvw contribution rates</a>.</p>
       <h2>Important information</h2>
       <p>Net salary depends on more than the country: tax year, tax class or filing status, region, age, children, health insurance, pension scheme and other deductions can all affect the result.</p>
-      <p class="disclaimer">The available Germany, France, Italy, Spain, Netherlands, Brazil and UK models are simplified estimates, not official payroll calculations. The other 23 country models are not yet enabled. Do not use this tool as tax, payroll or legal advice.</p>
+      <p class="disclaimer">The available Germany, France, Italy, Spain, Netherlands, Belgium, Brazil and UK models are simplified estimates, not official payroll calculations. The other 22 country models are not yet enabled. Do not use this tool as tax, payroll or legal advice.</p>
       <p class="source-links">Cross-country methodology reference: <a href="https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html" target="_blank" rel="noopener noreferrer">OECD Taxing Wages 2026</a>. Country-specific rules will be documented individually as each model is released.</p>
     </section>
   <section class="related-tools" aria-labelledby="related-tools-title"><h2 id="related-tools-title">Related tools</h2><ul><li><a href="/noelotools/tools/vat-calculator/">VAT Calculator</a></li><li><a href="/noelotools/tools/sales-tax-calculator/">Sales Tax Calculator</a></li><li><a href="/noelotools/tools/loan-calculator/">Loan Calculator</a></li></ul></section>
