@@ -57,7 +57,7 @@ const currencyLocales = {
 
 function parseDecimal(value) {
   const normalized = String(value).trim().replace(/,/g, ".");
-  return /^[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?$/i.test(normalized) ? Number(normalized) : NaN;
+  return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN;
 }
 function formatMoney(value) {
   const currency = currencyInput.value;
