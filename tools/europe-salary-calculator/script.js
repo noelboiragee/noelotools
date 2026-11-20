@@ -17,7 +17,7 @@ const countryInfo = {
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
   NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
   PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€", currency: "EUR", available: true }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
-  CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr" },
+  CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
@@ -47,7 +47,7 @@ const LIMITS = {
 function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }
 
 function formatCurrency(value, currency = "EUR") {
-  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : "en";
+  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : currency === "SEK" ? "sv-SE" : "en";
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -91,7 +91,8 @@ function updateCountry() {
   const isAustria = countryInput.value === "AT";
   const isNorway = countryInput.value === "NO";
   const isDenmark = countryInput.value === "DK";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark;
+  const isSweden = countryInput.value === "SE";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -137,6 +138,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isSweden) {
+    countryStatus.innerHTML = "<strong>Sweden model available</strong><span>2026 estimate for a working-age resident employee using the national-average municipal tax rate.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee tax breakdown";
+    const labels = ["Municipal income tax after credits", "National income tax", "Funeral fee", "Basic allowance", "Earned-income tax credit"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "Separate employee social contributions";
+    document.querySelector(".model-link").textContent = "Sweden has no separate employee payroll social contribution in this estimate: the 7% public pension fee is fully offset by an equal tax reduction in ordinary cases. The 32.38% municipal tax is the national average; your municipality and church membership can change the final result.";
+    calculateSweden();
   } else if (isDenmark) {
     countryStatus.innerHTML = "<strong>Denmark model available</strong><span>2026 estimate for a full-time employee, single, no church tax or personal pension deduction.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -238,6 +248,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "AT") calculateAustria();
   else if (countryInput.value === "NO") calculateNorway();
   else if (countryInput.value === "DK") calculateDenmark();
+  else if (countryInput.value === "SE") calculateSweden();
 }
 
 function progressiveContribution(income, bands) {
@@ -252,6 +263,59 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateSweden() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  // 2026 basic allowance table for a working-age employee.
+  let basicAllowance;
+  if (annualGross <= 25000) basicAllowance = annualGross;
+  else if (annualGross <= 58900) basicAllowance = 25100;
+  else if (annualGross <= 160900) basicAllowance = 25200 + Math.floor((annualGross - 59000) / 500) * 100;
+  else if (annualGross <= 184900) basicAllowance = 45600;
+  else if (annualGross <= 466000) basicAllowance = 45500 - Math.floor((annualGross - 185000) / 1000) * 100;
+  else basicAllowance = 17400;
+  basicAllowance = Math.max(0, basicAllowance);
+
+  const taxableIncome = Math.max(0, annualGross - basicAllowance);
+  const municipalRate = 0.3238;
+  const municipalTax = taxableIncome * municipalRate;
+  const funeralFee = taxableIncome * 0.00292;
+  const stateTax = Math.max(0, taxableIncome - 643000) * 0.20;
+
+  // 2026 earned-income tax credit, using the 2026 price base amount (SEK 59,200).
+  const baseAmount = 59200;
+  let earnedIncomeCredit;
+  if (annualGross <= 0.91 * baseAmount) {
+    earnedIncomeCredit = Math.max(0, annualGross - basicAllowance) * municipalRate;
+  } else if (annualGross <= 3.24 * baseAmount) {
+    earnedIncomeCredit = Math.max(0, 0.91 * baseAmount + 0.3874 * (annualGross - 0.91 * baseAmount) - basicAllowance) * municipalRate;
+  } else if (annualGross <= 8.08 * baseAmount) {
+    earnedIncomeCredit = Math.max(0, 1.813 * baseAmount + 0.199 * (annualGross - 3.24 * baseAmount) - basicAllowance) * municipalRate;
+  } else {
+    earnedIncomeCredit = Math.max(0, 2.776 * baseAmount - basicAllowance) * municipalRate;
+  }
+  const generalTaxReduction = Math.min(1500, Math.max(0, taxableIncome - 40000) * 0.0075);
+  const totalTaxCredits = Math.min(municipalTax, earnedIncomeCredit + generalTaxReduction);
+  const netMunicipalTax = Math.max(0, municipalTax - totalTaxCredits);
+  const annualTax = netMunicipalTax + stateTax + funeralFee;
+  const monthlyTax = annualTax / 12;
+  const netMonthly = grossMonthly - monthlyTax;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "SEK");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "SEK");
+  outputs.social.textContent = "Offset by tax credit";
+  outputs.pension.textContent = formatCurrency(netMunicipalTax / 12, "SEK");
+  outputs.unemployment.textContent = formatCurrency(stateTax / 12, "SEK");
+  outputs.health.textContent = formatCurrency(funeralFee / 12, "SEK");
+  outputs.care.textContent = formatCurrency(basicAllowance / 12, "SEK");
+  outputs.church.textContent = formatCurrency(totalTaxCredits / 12, "SEK");
 }
 
 function calculateDenmark() {
