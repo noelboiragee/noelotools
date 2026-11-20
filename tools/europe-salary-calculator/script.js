@@ -23,7 +23,7 @@ const countryInfo = {
   CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "US$", currency: "USD", available: true },
   UY: { name: "Uruguay", symbol: "UYU$", currency: "UYU", available: true }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
   MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥", currency: "JPY", available: true }, KR: { name: "South Korea", symbol: "₩", currency: "KRW", available: true },
-  IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
+  IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥", currency: "CNY", available: true }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
 
@@ -94,7 +94,7 @@ function updateCountry() {
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
   const isArgentina = countryInput.value === "AR";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || isArgentina || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR" || countryInput.value === "UY" || countryInput.value === "JP";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || isArgentina || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR" || countryInput.value === "UY" || countryInput.value === "JP" || countryInput.value === "CN";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -338,6 +338,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "KR") calculateSouthKorea();
   else if (countryInput.value === "UY") calculateUruguay();
   else if (countryInput.value === "JP") calculateJapan();
+  else if (countryInput.value === "CN") calculateChina();
 }
 
 function progressiveContribution(income, bands) {
@@ -352,6 +353,42 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateChina() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 1000000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  // Shanghai 2026/27 social-insurance base: CNY 7,546–37,731 (July 2026 to June 2027).
+  const contributionBase=Math.min(Math.max(grossMonthly,7546),37731);
+  const pension=contributionBase*0.08;
+  const medical=contributionBase*0.02+3;
+  const unemployment=contributionBase*0.005;
+  const housingFund=contributionBase*0.07;
+  const annualGross=grossMonthly*12;
+  const annualSpecialDeductions=(pension+medical+unemployment+housingFund)*12;
+  const taxable=Math.max(0,annualGross-60000-annualSpecialDeductions);
+  const bands=[
+    {limit:36000,rate:0.03,quick:0},{limit:144000,rate:0.10,quick:2520},
+    {limit:300000,rate:0.20,quick:16920},{limit:420000,rate:0.25,quick:31920},
+    {limit:660000,rate:0.30,quick:52920},{limit:960000,rate:0.35,quick:85920},
+    {limit:Infinity,rate:0.45,quick:181920}
+  ];
+  let annualTax=0;
+  for(const band of bands){if(taxable<=band.limit){annualTax=Math.max(0,taxable*band.rate-band.quick);break;}}
+  const monthlyTax=annualTax/12;
+  const monthlySocial=pension+medical+unemployment+housingFund;
+  const netMonthly=grossMonthly-monthlySocial-monthlyTax;
+  outputs.net.textContent=formatCurrency(netMonthly,"CNY");
+  outputs.tax.textContent=formatCurrency(monthlyTax,"CNY");
+  outputs.social.textContent=formatCurrency(monthlySocial,"CNY");
+  outputs.pension.textContent=formatCurrency(pension,"CNY");
+  outputs.unemployment.textContent=formatCurrency(unemployment,"CNY");
+  outputs.health.textContent=formatCurrency(medical,"CNY");
+  outputs.care.textContent=formatCurrency(housingFund,"CNY");
+  outputs.church.textContent="Shanghai, 7% housing fund";
 }
 
 function calculateJapan() {
