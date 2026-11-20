@@ -23,7 +23,7 @@ const countryInfo = {
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
   MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
-  IN: { name: "India", symbol: "₹" }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
+  IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
 
@@ -92,7 +92,7 @@ function updateCountry() {
   const isNorway = countryInput.value === "NO";
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ" || countryInput.value === "AU";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -174,6 +174,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social insurance per month";
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
+  } else if (countryInput.value === "IN") {
+    countryStatus.innerHTML = "<strong>India model available</strong><span>Tax Year 2026–27, resident salaried individual, default new tax regime, ₹75,000 standard deduction.</span>";
+    document.querySelector(".breakdown h3").textContent = "Annualised monthly deduction breakdown";
+    const labels = ["Income tax after Section 87A rebate", "Health and Education Cess", "Standard deduction", "Section 87A rebate / marginal relief", "Surcharge (where applicable)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax + cess per month";
+    resultLabels[2].textContent = "Employee social contributions";
+    document.querySelector(".model-link").textContent = "India Tax Year 2026–27. Uses the default new tax regime, ₹75,000 salary standard deduction, Section 87A rebate and marginal relief, surcharge where applicable and 4% Health and Education Cess. Employee provident fund, state professional tax, allowances, deductions and other income are excluded.";
+    calculateIndia();
   } else if (countryInput.value === "AU") {
     countryStatus.innerHTML = "<strong>Australia model available</strong><span>2026/27 resident employee estimate, single taxpayer, full tax-free threshold, no Medicare levy surcharge.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -269,6 +278,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "SE") calculateSweden();
   else if (countryInput.value === "NZ") calculateNewZealand();
   else if (countryInput.value === "AU") calculateAustralia();
+  else if (countryInput.value === "IN") calculateIndia();
 }
 
 function progressiveContribution(income, bands) {
@@ -283,6 +293,53 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateIndia() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const annualGross = grossMonthly * 12;
+  const standardDeduction = Math.min(annualGross, 75000);
+  const taxableIncome = Math.max(0, annualGross - standardDeduction);
+  const slabs = [{limit:400000,rate:0},{limit:800000,rate:0.05},{limit:1200000,rate:0.10},{limit:1600000,rate:0.15},{limit:2000000,rate:0.20},{limit:2400000,rate:0.25},{limit:Infinity,rate:0.30}];
+  let previous = 0, taxBeforeRebate = 0;
+  for (const slab of slabs) { taxBeforeRebate += Math.max(0, Math.min(taxableIncome, slab.limit) - previous) * slab.rate; previous = slab.limit; if (taxableIncome <= slab.limit) break; }
+  let rebate = 0;
+  if (taxableIncome <= 1200000) rebate = Math.min(taxBeforeRebate, 60000);
+  else rebate = Math.min(60000, Math.max(0, taxBeforeRebate - (taxableIncome - 1200000)));
+  const taxAfterRebate = Math.max(0, taxBeforeRebate - rebate);
+  let surchargeRate = taxableIncome > 20000000 ? 0.25 : taxableIncome > 10000000 ? 0.15 : taxableIncome > 5000000 ? 0.10 : 0;
+  let surcharge = taxAfterRebate * surchargeRate;
+  if (taxableIncome > 5000000 && taxableIncome <= 10000000) {
+    const cap = Math.max(0, slabsTax(5000000) + (taxableIncome - 5000000) - taxAfterRebate);
+    surcharge = Math.min(surcharge, cap);
+  } else if (taxableIncome > 10000000 && taxableIncome <= 20000000) {
+    const cap = Math.max(0, slabsTax(10000000) * 1.10 + (taxableIncome - 10000000) - taxAfterRebate);
+    surcharge = Math.min(surcharge, cap);
+  }
+  const cess = (taxAfterRebate + surcharge) * 0.04;
+  const annualTotalTax = taxAfterRebate + surcharge + cess;
+  const monthlyTax = annualTotalTax / 12;
+  const monthlySurcharge = surcharge / 12;
+  const monthlyRebate = rebate / 12;
+  const netMonthly = grossMonthly - monthlyTax;
+  outputs.net.textContent = formatCurrency(netMonthly, "INR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "INR");
+  outputs.social.textContent = "Not modelled";
+  outputs.pension.textContent = formatCurrency(standardDeduction / 12, "INR");
+  outputs.unemployment.textContent = formatCurrency(monthlyRebate, "INR");
+  outputs.health.textContent = formatCurrency(cess / 12, "INR");
+  outputs.care.textContent = formatCurrency(monthlySurcharge, "INR");
+  outputs.church.textContent = "Excluded";
+
+  function slabsTax(income) {
+    let prev = 0, total = 0;
+    for (const slab of slabs) { total += Math.max(0, Math.min(income, slab.limit) - prev) * slab.rate; prev = slab.limit; if (income <= slab.limit) break; }
+    return total;
+  }
 }
 
 function calculateAustralia() {
