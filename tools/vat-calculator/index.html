@@ -58,14 +58,29 @@
           </select>
         </div>
         <div class="field">
+          <label for="country">Country</label>
+          <select id="country">
+            <optgroup label="Europe">
+              <option value="DE">Germany</option><option value="FR">France</option><option value="IT">Italy</option><option value="ES">Spain</option><option value="NL">Netherlands</option><option value="BE">Belgium</option><option value="IE">Ireland</option><option value="PT">Portugal</option><option value="AT">Austria</option><option value="GB">United Kingdom</option><option value="CH">Switzerland</option><option value="NO">Norway</option><option value="SE">Sweden</option><option value="DK">Denmark</option>
+            </optgroup>
+            <optgroup label="South America">
+              <option value="BR">Brazil</option><option value="AR">Argentina</option><option value="CO">Colombia</option><option value="CL">Chile</option><option value="PE">Peru</option><option value="EC">Ecuador</option><option value="UY">Uruguay</option>
+            </optgroup>
+            <optgroup label="North America">
+              <option value="US">United States</option><option value="CA">Canada</option><option value="MX">Mexico</option>
+            </optgroup>
+            <optgroup label="Asia">
+              <option value="JP">Japan</option><option value="KR">South Korea</option><option value="IN">India</option><option value="CN">China</option>
+            </optgroup>
+            <optgroup label="Oceania">
+              <option value="AU">Australia</option><option value="NZ">New Zealand</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
           <label for="currency">Currency</label>
           <select id="currency">
-            <option value="EUR">EUR (€)</option>
-            <option value="GBP">GBP (£)</option>
-            <option value="USD">USD ($)</option>
-            <option value="PLN">PLN (zł)</option>
-            <option value="CHF">CHF</option>
-            <option value="BDT">BDT (৳)</option>
+            <option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option><option value="CHF">CHF</option><option value="NOK">NOK (kr)</option><option value="SEK">SEK (kr)</option><option value="DKK">DKK (kr)</option><option value="BRL">BRL (R$)</option><option value="ARS">ARS ($)</option><option value="COP">COP ($)</option><option value="CLP">CLP ($)</option><option value="PEN">PEN (S/)</option><option value="USD">USD ($)</option><option value="UYU">UYU ($U)</option><option value="JPY">JPY (¥)</option><option value="KRW">KRW (₩)</option><option value="INR">INR (₹)</option><option value="CNY">CNY (¥)</option><option value="AUD">AUD ($)</option><option value="NZD">NZD ($)</option><option value="CAD">CAD ($)</option><option value="MXN">MXN ($)</option>
           </select>
         </div>
         <div class="field">
@@ -73,16 +88,17 @@
           <input id="amount" type="text" min="0" step="0.01" value="100" inputmode="decimal">
         </div>
         <div class="field">
-          <label for="vat-rate">VAT rate (%)</label>
+          <label for="vat-rate"><span id="tax-rate-label">VAT rate (%)</span></label>
           <input id="vat-rate" type="text" min="0" max="100" step="0.01" value="20" inputmode="decimal">
         </div>
       </div>
 
       <div class="results" aria-live="polite" aria-atomic="true">
         <div class="result-item"><span>Net price</span><strong id="net-result">€100.00</strong></div>
-        <div class="result-item"><span>VAT amount</span><strong id="vat-result">€20.00</strong></div>
+        <div class="result-item"><span id="tax-amount-label">VAT amount</span><strong id="vat-result">€20.00</strong></div>
         <div class="result-item result-total"><span>Gross price</span><strong id="gross-result">€120.00</strong></div>
       </div>
+      <p class="tax-source-note" id="tax-source-note" aria-live="polite">Choose a country to load its standard tax rate and official tax authority.</p>
       <p class="input-error" id="error-message" role="alert" hidden>Please enter a valid amount and VAT rate between 0 and 100.</p>
       <button class="button button-secondary reset-button" id="reset-button" type="button">Reset calculator</button>
     </section>
@@ -94,7 +110,7 @@
         <li>Select a currency and enter the amount.</li>
         <li>Enter the applicable VAT rate to see the net price, VAT amount and gross price.</li>
       </ol>
-      <p class="disclaimer">VAT rates vary by country, product and service. Check the rate that applies to your situation; this calculator provides estimates and is not tax advice.</p>
+      <p class="disclaimer">Standard rates are indicative. Reduced rates, product categories, regional taxes and exemptions may apply. Some countries do not have one nationwide rate; enter the applicable local rate manually. Check the linked tax authority before using the result.</p>
     </section>
   <section class="related-tools" aria-labelledby="related-tools-title"><h2 id="related-tools-title">Related tools</h2><ul><li><a href="/noelotools/tools/sales-tax-calculator/">Sales Tax Calculator</a></li><li><a href="/noelotools/tools/unit-price-calculator/">Unit Price Calculator</a></li><li><a href="/noelotools/tools/loan-calculator/">Loan EMI Calculator</a></li></ul></section>
 </main>
