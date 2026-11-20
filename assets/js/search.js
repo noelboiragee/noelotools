@@ -27,6 +27,8 @@ export function initToolSearch() {
   const categoryFilters = document.querySelectorAll("[data-category-filter]");
   const resultPanels = document.querySelectorAll("[data-search-results]");
   let activeCategory = "";
+  const toolsHeading = document.querySelector("#all-tools-title");
+  const toolsDescription = toolsHeading?.parentElement?.querySelector("p");
 
   if (!toolCards.length) {
     console.warn("NoeloTools: search initialised without tool cards.");
@@ -129,6 +131,11 @@ export function initToolSearch() {
       if (event.target.closest(".orbit-tool-link")) return;
 
       activeCategory = filter.dataset.categoryFilter || "";
+      if (toolsHeading) {
+        const selectedTitle = filter.querySelector(".card-title, .category-card-title")?.textContent?.trim() || filter.getAttribute("aria-label")?.replace(/^Browse\s+|\s+tools$/gi, "") || "Category";
+        toolsHeading.textContent = `${selectedTitle} tools`;
+      }
+      if (toolsDescription) toolsDescription.textContent = "Browse the tools available in this category.";
       filterTools(searchInputs[0]?.value || "");
       if (filter.classList.contains("orbit-card")) {
         document.getElementById("tools")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -140,6 +147,8 @@ export function initToolSearch() {
   searchInputs.forEach((input) => {
     const handleSearch = () => {
       activeCategory = "";
+      if (toolsHeading) toolsHeading.textContent = "All tools";
+      if (toolsDescription) toolsDescription.textContent = "Browse every available tool or filter by category.";
       filterTools(input.value);
       searchInputs.forEach((otherInput) => {
         if (otherInput !== input && otherInput.value !== input.value) otherInput.value = input.value;
@@ -154,6 +163,8 @@ export function initToolSearch() {
       if (event.key === "Escape") {
         input.value = "";
         activeCategory = "";
+        if (toolsHeading) toolsHeading.textContent = "All tools";
+        if (toolsDescription) toolsDescription.textContent = "Browse every available tool or filter by category.";
         filterTools("");
         searchInputs.forEach((otherInput) => {
           if (otherInput !== input) otherInput.value = "";
