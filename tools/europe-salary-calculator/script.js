@@ -193,10 +193,10 @@ function calculateItaly() {
   if (annualGross <= 20000) {
     const rate = annualGross <= 8500 ? 0.071 : annualGross <= 15000 ? 0.053 : 0.048;
     nonTaxableBonus = annualGross * rate;
-  } else if (annualGross <= 32000) {
+  } else if (taxableAnnual <= 32000) {
     taxWedgeRelief = 1000;
-  } else if (annualGross <= 40000) {
-    taxWedgeRelief = 1000 * (40000 - annualGross) / 8000;
+  } else if (taxableAnnual <= 40000) {
+    taxWedgeRelief = 1000 * (40000 - taxableAnnual) / 8000;
   }
 
   const annualIncomeTax = Math.max(0, grossIrpef - employmentCredit - taxWedgeRelief);
