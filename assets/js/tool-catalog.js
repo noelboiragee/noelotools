@@ -35,14 +35,12 @@ function createToolCard(tool, popular = false) {
   card.dataset.description = [tool.description, card.dataset.categoryLabel, ...(tool.keywords || [])].join(" ");
   if (!popular) card.dataset.toolCard = "";
 
-  // Popular Tools use the catalogue's own icons for all six cards.
-  // This keeps their icon rendering consistent and independent of SVG title-icon styles.
-  const icon = popular ? null : createToolIconForId(tool.id, "tool-card-icon-svg");
+  const icon = createToolIconForId(tool.id, "tool-card-icon-svg");
   if (!icon) {
     const fallbackIcon = document.createElement("span");
     fallbackIcon.className = "tool-card-icon";
     fallbackIcon.setAttribute("aria-hidden", "true");
-    fallbackIcon.textContent = tool.icon || iconLabels[tool.icon] || "✦";
+    fallbackIcon.textContent = iconLabels[tool.icon] || "✦";
     card.append(fallbackIcon);
   }
 
