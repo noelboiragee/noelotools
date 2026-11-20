@@ -20,7 +20,7 @@ const countryInfo = {
   CH: { name: "Switzerland", symbol: "CHF", currency: "CHF", available: true }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
-  CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "$" },
+  CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "US$", currency: "USD", available: true },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
   MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
@@ -93,7 +93,7 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -322,6 +322,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "MX") calculateMexico();
   else if (countryInput.value === "CL") calculateChile();
   else if (countryInput.value === "PE") calculatePeru();
+  else if (countryInput.value === "EC") calculateEcuador();
 }
 
 function progressiveContribution(income, bands) {
@@ -336,6 +337,35 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateEcuador() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const monthlyIESS = grossMonthly * 0.0945;
+  const annualTaxable = Math.max(0,(grossMonthly-monthlyIESS)*12);
+  const bands = [
+    {limit:12208,base:0,rate:0},{limit:15549,base:0,rate:0.05},
+    {limit:20188,base:167,rate:0.10},{limit:26700,base:631,rate:0.12},
+    {limit:35136,base:1412,rate:0.15},{limit:46575,base:2678,rate:0.20},
+    {limit:62005,base:4965,rate:0.25},{limit:82679,base:8823,rate:0.30},
+    {limit:109956,base:15025,rate:0.35},{limit:Infinity,base:24572,rate:0.37}
+  ];
+  let annualTax=0, previous=0;
+  for(const band of bands){if(annualTaxable<=band.limit){annualTax=band.base+Math.max(0,annualTaxable-previous)*band.rate;break;}previous=band.limit;}
+  const monthlyTax=annualTax/12;
+  const netMonthly=grossMonthly-monthlyIESS-monthlyTax;
+  outputs.net.textContent=formatCurrency(netMonthly,"USD");
+  outputs.tax.textContent=formatCurrency(monthlyTax,"USD");
+  outputs.social.textContent=formatCurrency(monthlyIESS,"USD");
+  outputs.pension.textContent=formatCurrency(monthlyIESS,"USD");
+  outputs.unemployment.textContent=formatCurrency(annualTax/12,"USD");
+  outputs.health.textContent=formatCurrency(annualTaxable/12,"USD");
+  outputs.care.textContent="Personal-expense deduction excluded";
+  outputs.church.textContent="Employer IESS share excluded";
 }
 
 function calculatePeru() {
