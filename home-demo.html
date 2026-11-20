@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- বাংলা: NoeloTools-এর মূল হোমপেজের মেটাডেটা ও স্টাইল। -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore 29 free online tools for PDF, money, writing, health and everyday tasks. No sign-up required. Browser-based processing where supported.">
+  <meta name="theme-color" content="#ffffff">
+  <title>NoeloTools — Free Online Tools for Everything</title>
+  <link rel="canonical" href="https://noelboiragee.github.io/noelotools/">
+  <meta name="google-site-verification" content="ggKYCvNU5KmwmfLhZgRAZkj-pvulkrYITzIg09apMyQ">
+  <link rel="icon" href="/noelotools/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/noelotools/assets/css/theme.css">
+  <link rel="stylesheet" href="/noelotools/assets/css/global.css">
+  <link rel="stylesheet" href="/noelotools/assets/css/components.css">
+  <script type="module" src="/noelotools/assets/js/main.js"></script>
+  <style>
+    /* বাংলা: হোমপেজের নির্দিষ্ট অংশের বিন্যাস। */
+    .hero { padding: clamp(4rem, 9vw, 7rem) 0 4rem; text-align: center; background: radial-gradient(ellipse at 50% 0%, var(--primary-soft), transparent 68%); }
+    .hero-copy { max-width: 760px; margin: 0 auto; }
+    .hero h1 { max-width: 760px; margin: 0 auto 1rem; letter-spacing: -0.055em; }
+    .hero p { max-width: 650px; margin: 0 auto; color: var(--text-muted); }
+    .hero-search-wrap { max-width: 680px; margin: 2rem auto 1rem; position: relative; z-index: 5; }
+    .search-results { position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; right: 0; max-height: 340px; overflow-y: auto; padding: .5rem; border: 1px solid var(--border); border-radius: 14px; background: var(--bg); color: var(--text); box-shadow: 0 14px 36px rgb(0 0 0 / .18); text-align: left; }
+    .search-results[hidden] { display: none !important; }
+    .search-result { display: flex; flex-direction: column; gap: 2px; padding: .7rem .8rem; border-radius: 9px; color: var(--text); text-decoration: none; }
+    .search-result:hover, .search-result:focus-visible { background: var(--bg-alt); outline: none; }
+    .search-result-title { font-weight: 700; }
+    .search-result-meta, .search-result-more, .search-result-empty { color: var(--text-muted); font-size: .82rem; }
+    .search-result-more, .search-result-empty { margin: .6rem .8rem; }
+    .hero-search-wrap .search-field { width: 100%; min-height: 62px; }
+    .hero-note { font-size: .875rem; color: var(--text-muted); }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1.5rem; }
+    .section-heading p { margin: .35rem 0 0; color: var(--text-muted); }
+    .featured-section { padding: 3rem 0 4rem; overflow: hidden; }
+    .featured-carousel { perspective: 1100px; min-height: 260px; display: grid; place-items: center; }
+    .carousel-track { display: flex; justify-content: center; align-items: center; gap: 1rem; width: 100%; }
+    .carousel-card { flex: 0 1 29%; min-height: 210px; padding: 1.5rem; border: 1px solid var(--border); border-radius: 20px; background: var(--bg); box-shadow: 0 16px 42px rgb(31 41 55 / .08); text-decoration: none; color: var(--text); transition: transform 180ms ease; }
+    .carousel-card:nth-child(1) { transform: rotateY(18deg) scale(.88); opacity: .78; }
+    .carousel-card:nth-child(2) { transform: translateY(-8px) scale(1.04); border-color: var(--primary); box-shadow: 0 20px 55px rgb(124 58 237 / .16); z-index: 1; }
+    .carousel-card:nth-child(3) { transform: rotateY(-18deg) scale(.88); opacity: .78; }
+    .carousel-card:hover { transform: translateY(-8px) scale(1.04); opacity: 1; }
+    .carousel-card-kicker { color: var(--primary); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .carousel-card h3 { margin: 1rem 0 .5rem; font-size: 1.35rem; }
+    .carousel-card p { color: var(--text-muted); font-size: .92rem; }
+    .carousel-controls { display: flex; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
+    .carousel-dot { width: 8px; height: 8px; border: 0; border-radius: 99px; background: var(--border); }
+    .carousel-dot[aria-current="true"] { width: 24px; background: var(--primary); }
+    .tools-section, .categories-section { padding: 3.5rem 0; }
+    .tool-card { display: block; min-height: 190px; text-decoration: none; color: var(--text); }
+    .tool-card[hidden] { display: none; }
+    .tool-card-icon, .category-card-icon { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: var(--primary-soft); color: var(--primary); font-weight: 800; }
+    .tool-card-title, .category-card-title { display: block; margin: 1rem 0 .4rem; font-weight: 700; }
+    .tool-card-description, .category-card-description { display: block; color: var(--text-muted); font-size: .9rem; line-height: 1.5; }
+    .category-card { display: block; padding: 1.25rem; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); text-decoration: none; color: var(--text); transition: transform 180ms ease, border-color 180ms ease; }
+    .category-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+    .category-card-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 19px;
+      color: #fff;
+      background: linear-gradient(145deg, #64748b, #334155);
+      box-shadow: 0 8px 18px rgb(15 23 42 / .16), inset 0 1px 0 rgb(255 255 255 / .22);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+    .category-card-icon svg { display: block; width: 42px; height: 42px; }
+    .category-card:hover .category-card-icon { transform: translateY(-2px); box-shadow: 0 11px 22px rgb(15 23 42 / .2), inset 0 1px 0 rgb(255 255 255 / .24); }
+    .category-icon--pdf { background: linear-gradient(145deg, #2563eb, #60a5fa); }
+    .category-icon--money-tax { background: linear-gradient(145deg, #059669, #34d399); }
+    .category-icon--media { background: linear-gradient(145deg, #7c3aed, #c084fc); }
+    .category-icon--developer { background: linear-gradient(145deg, #3730a3, #818cf8); }
+    .category-icon--writing { background: linear-gradient(145deg, #ea580c, #fb923c); }
+    .category-icon--health { background: linear-gradient(145deg, #e11d48, #fb7185); }
+    .category-icon--math { background: linear-gradient(145deg, #6d28d9, #a78bfa); }
+    .category-icon--everyday { background: linear-gradient(120deg, #00D4FF 0%, #00E676 52%, #FFEB3B 100%); color: #173D35; box-shadow: 0 9px 22px rgba(0, 190, 130, .24), inset 0 1px 0 rgb(255 255 255 / .5); }
+    .category-card[aria-disabled="true"] { opacity: .58; cursor: not-allowed; }
+    .trust-strip { padding: 1.25rem; border: 1px solid var(--border); border-radius: 18px; background: var(--bg-alt); display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; color: var(--text-muted); font-size: .9rem; }
+    .cookie-banner { position: fixed; z-index: 200; left: 1rem; right: 1rem; bottom: 1rem; max-width: 760px; margin: auto; padding: 1.25rem; border: 1px solid var(--border); border-radius: 18px; background: var(--bg); color: var(--text); box-shadow: 0 16px 48px rgb(0 0 0 / .18); }
+    .cookie-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+    .cookie-banner p { color: var(--text-muted); margin: .5rem 0 0; }
+    .cookie-settings { margin-top: .9rem; padding-top: .9rem; border-top: 1px solid var(--border); }
+    @media (max-width: 760px) {
+      .carousel-track { gap: .25rem; }
+      .carousel-card { flex-basis: 42%; min-height: 190px; padding: 1rem; }
+      .carousel-card:nth-child(1), .carousel-card:nth-child(3) { transform: scale(.82); margin: 0 -1.2rem; }
+      .carousel-card:nth-child(2) { transform: scale(1); }
+      .section-heading { align-items: start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .carousel-card:nth-child(1), .carousel-card:nth-child(3) { display: none; }
+      .carousel-card { flex-basis: 90%; }
+    }
+    [data-cookie-banner][hidden], [data-cookie-settings][hidden] { display: none; }
+
+    /* বাংলা: নতুন 3D Orbit Carousel */
+    .orbit-section {
+      width: 100%;
+      height: 320px;
+      min-height: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      isolation: auto;
+      color: var(--text);
+      background: none !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+    .orbit-section::before,
+    .orbit-section::after {
+      content: none !important;
+      display: none !important;
+      background: none !important;
+      box-shadow: none !important;
+    }
+    .orbit-scene {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      background: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      perspective: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .orbit-ring {
+      width: 180px;
+      height: 180px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -90px 0 0 -90px;
+      transform-style: preserve-3d;
+      touch-action: pan-y;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .orbit-ring:active { cursor: grabbing; }
+    .orbit-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      position: absolute;
+      width: 155px;
+      height: 230px;
+      left: 50%;
+      top: 50%;
+      margin: -115px 0 0 -77.5px;
+      transform: rotateY(calc(var(--i) * var(--orbit-card-angle, 45deg))) translateZ(var(--orbit-radius-desktop, 330px));
+      border-radius: 14px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 18%, color-mix(in srgb, var(--glow) 38%, #101426), #101426 72%);
+      border: 2px solid var(--glow);
+      box-shadow: 0 0 15px var(--glow);
+      backface-visibility: hidden;
+      -webkit-user-drag: none;
+    }
+    .orbit-card img { display: none; }
+    .orbit-card[hidden], .tool-card[hidden] { display: none !important; }
+
+    /* Category-specific abstract backgrounds keep each card visually distinct. */
+    .orbit-card[data-category-filter="pdf"] {
+      background: repeating-linear-gradient(0deg, transparent 0 17px, rgba(255,93,115,.12) 18px 19px), linear-gradient(145deg, #5a172d, #171329 72%);
+    }
+    .orbit-card[data-category-filter="money-tax"] {
+      background: radial-gradient(circle at 75% 24%, rgba(251,191,36,.42), transparent 38%), linear-gradient(145deg, #4c3510, #111b24 75%);
+    }
+    .orbit-card[data-category-filter="media"] {
+      background: radial-gradient(circle at 25% 25%, rgba(56,189,248,.42), transparent 40%), linear-gradient(145deg, #123c62, #101426 76%);
+    }
+    .orbit-card[data-category-filter="developer"] {
+      background: repeating-linear-gradient(90deg, transparent 0 17px, rgba(167,139,250,.12) 18px 19px), repeating-linear-gradient(0deg, #251849 0 17px, #30205a 18px 19px);
+    }
+    .orbit-card[data-category-filter="writing"] {
+      background: repeating-linear-gradient(0deg, transparent 0 14px, rgba(251,113,133,.16) 15px 16px), linear-gradient(145deg, #542238, #171329 76%);
+    }
+    .orbit-card[data-category-filter="health"] {
+      background: radial-gradient(ellipse at 50% 30%, rgba(52,211,153,.4), transparent 46%), linear-gradient(145deg, #124a42, #101a29 78%);
+    }
+    .orbit-card[data-category-filter="math"] {
+      background: repeating-linear-gradient(90deg, transparent 0 19px, rgba(249,115,22,.14) 20px 21px), repeating-linear-gradient(0deg, #492311 0 19px, #5b2b13 20px 21px);
+    }
+    .orbit-card[data-category-filter="everyday"] {
+      background: radial-gradient(circle at 70% 30%, rgba(45,212,191,.4), transparent 40%), linear-gradient(145deg, #104b4d, #101426 76%);
+    }
+    .orbit-card .card-icon {
+      position: absolute;
+      z-index: 2;
+      top: 14px;
+      left: 50%;
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      transform: translateX(-50%);
+      border: 1px solid var(--glow);
+      border-radius: 14px;
+      background: rgba(5, 8, 23, .78);
+      box-shadow: 0 0 14px var(--glow);
+      color: #fff;
+      font-size: 25px;
+      font-weight: 800;
+      line-height: 1;
+      text-shadow: 0 0 10px var(--glow);
+      pointer-events: none;
+    }
+    .orbit-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 35%, rgba(0,0,0,.9));
+      pointer-events: none;
+    }
+    .orbit-card .orbit-tool-links {
+      position: absolute;
+      z-index: 3;
+      top: 72px;
+      left: 7px;
+      right: 7px;
+      display: grid;
+      gap: 5px;
+      pointer-events: auto;
+    }
+    .orbit-card .orbit-tool-link {
+      display: block;
+      overflow: hidden;
+      padding: 4px 5px;
+      border: 1px solid color-mix(in srgb, var(--glow) 75%, transparent);
+      border-radius: 6px;
+      background: rgba(5, 8, 23, .88);
+      color: #fff;
+      font-size: 10px;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-shadow: 0 0 7px color-mix(in srgb, var(--glow) 45%, transparent);
+    }
+    .orbit-card .orbit-tool-link:hover,
+    .orbit-card .orbit-tool-link:focus-visible {
+      background: var(--glow);
+      color: #080b18;
+      outline: none;
+    }
+    .orbit-card .orbit-tool-count {
+      position: absolute;
+      z-index: 3;
+      top: calc(72px + var(--orbit-link-count, 0) * 25px + 4px);
+      left: 4px;
+      right: 4px;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 1px 4px #000;
+      pointer-events: none;
+    }
+    .orbit-card[role="link"] { cursor: pointer; }
+    #tools { scroll-margin-top: 88px; }
+    .orbit-card .card-title {
+      position: absolute;
+      z-index: 2;
+      bottom: 12px;
+      left: 8px;
+      right: 8px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .orbit-section { height: 280px; min-height: 280px; }
+      .orbit-scene { height: 260px; perspective: 850px; }
+      .orbit-card {
+        width: 125px;
+        height: 190px;
+        margin: -95px 0 0 -62.5px;
+        transform: rotateY(calc(var(--i) * var(--orbit-card-angle, 45deg))) translateZ(var(--orbit-radius-mobile, 215px));
+      }
+      .orbit-card .orbit-tool-links { top: 66px; left: 5px; right: 5px; gap: 4px; }
+      .orbit-card .orbit-tool-link { padding: 3px 2px; font-size: 8px; }
+      .orbit-card .orbit-tool-count { top: calc(66px + var(--orbit-link-count, 0) * 20px + 4px); font-size: 8px; }
+      .orbit-card .card-title { font-size: 10px; }
+    }
+
+    /* Homepage visual refresh demo — preview only; existing pages remain untouched. */
+    body { background: #f7f9ff; }
+    .site-header { background: rgba(255,255,255,.94); border-bottom-color:#e8edfa; }
+    .header-inner { min-height:76px; }
+    .site-brand { font-size:1.35rem; }
+    .site-brand-mark { width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#7c3aed,#2563eb); }
+    .primary-nav { gap:clamp(1rem,2.2vw,2rem); }
+    .primary-nav a { color:#45516a;font-size:.9rem; }
+    .hero { padding:clamp(3.2rem,6vw,5.5rem) 0 2.5rem; text-align:left; background:radial-gradient(ellipse at 78% 35%,#e5eaff 0,transparent 42%),linear-gradient(180deg,#fff 0%,#f7f9ff 100%); }
+    .hero-layout { display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);align-items:center;gap:clamp(2rem,5vw,5rem); }
+    .hero-copy { max-width:660px;margin:0; }
+    .hero .eyebrow { display:inline-flex;align-items:center;margin:0 0 1.15rem;padding:.45rem .8rem;border:1px solid #dfe5ff;border-radius:999px;background:#f0f3ff;color:#5744c7;font-size:.72rem;font-weight:800;letter-spacing:.1em; }
+    .hero h1 { max-width:680px;margin:0 0 1rem;font-size:clamp(2.65rem,5.3vw,4.65rem);line-height:1.04;letter-spacing:-.065em;color:#10182d; }
+    .hero h1 .text-primary { color:#315eea; }
+    .hero-copy > p:not(.eyebrow):not(.hero-note) { max-width:590px;margin:0;color:#5d6880;font-size:1.08rem;line-height:1.75; }
+    .hero-search-wrap { max-width:680px;margin:1.8rem 0 .7rem; }
+    .hero-search-wrap .search-field { min-height:62px;border:1px solid #dfe5f1;border-radius:16px;padding:0 1.2rem;box-shadow:0 12px 34px rgba(35,55,100,.09); }
+    .hero-note { margin:.7rem 0 1.25rem;font-size:.82rem;color:#68748b; }
+    .hero-cta { min-height:48px;padding:0 1.3rem;border-radius:13px;background:linear-gradient(110deg,#315eea,#7542e8);box-shadow:0 10px 22px rgba(65,85,225,.22); }
+    .hero-visual { position:relative;display:grid;min-height:360px;place-items:center;isolation:isolate; }
+    .visual-glow { position:absolute;width:82%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#dbe5ff 0,#e9eaff 48%,transparent 72%);z-index:-2; }
+    .visual-orbit { position:absolute;width:88%;height:65%;border:1px dashed #b7c7ff;border-radius:50%;transform:rotate(-18deg);z-index:-1; }
+    .orbit-two { width:72%;height:88%;transform:rotate(35deg);border-color:#d4c6ff; }
+    .visual-window { position:relative;width:min(88%,390px);min-height:250px;padding:0 1.5rem 1.4rem;border:1px solid #e0e7fb;border-radius:25px;background:rgba(255,255,255,.88);box-shadow:0 28px 65px rgba(42,65,130,.16);transform:rotate(-4deg); }
+    .window-top { display:flex;align-items:center;gap:6px;height:48px;border-bottom:1px solid #edf0fa;color:#8a94a9;font-size:.68rem; }
+    .window-top i { width:8px;height:8px;border-radius:50%;background:#ff777e; }.window-top i:nth-child(2){background:#ffc45e}.window-top i:nth-child(3){background:#52c99b}.window-top span{margin-left:auto}
+    .window-mark { display:grid;width:104px;height:104px;place-items:center;margin:27px auto 17px;border-radius:28px;background:linear-gradient(145deg,#7d42f2,#275eea);color:#fff;font-size:4rem;font-weight:900;box-shadow:0 16px 30px rgba(83,73,230,.3); }
+    .window-lines { display:grid;gap:7px;width:60%;margin:auto; }.window-lines b{height:7px;border-radius:9px;background:#e8edfa}.window-lines b:nth-child(2){width:76%;margin:auto}.window-lines b:nth-child(3){width:48%;margin:auto}
+    .float-tool { position:absolute;display:grid;width:54px;height:54px;place-items:center;border:1px solid rgba(255,255,255,.9);border-radius:17px;background:linear-gradient(145deg,#fff,#edf1ff);color:#4b55db;font-weight:900;box-shadow:0 12px 25px rgba(48,67,135,.15); }
+    .float-pdf { top:27%;left:-5%;color:#e14d64; }.float-calc{right:-5%;top:45%;color:#0baf82;font-size:1.5rem}.float-code{bottom:9%;left:7%;color:#8054c7}
+    .visual-caption { position:absolute;right:0;bottom:2%;padding:.55rem .85rem;border:1px solid #e4e9fa;border-radius:999px;background:#fff;color:#53617e;font-size:.75rem;font-weight:700;box-shadow:0 8px 20px rgba(40,60,110,.08); }
+    .orbit-section { height:285px;min-height:285px;margin:0 auto;max-width:1200px; }
+    .orbit-scene { height:270px; }
+    .categories-section { padding:1.1rem 0 2.2rem; }
+    .categories-section .section-heading { margin-bottom:1rem; }
+    .categories-section .section-heading h2 { font-size:1.05rem; }
+    .category-grid { display:flex;flex-wrap:wrap;gap:.65rem; }
+    .category-card { display:flex;min-height:48px;flex-direction:row;align-items:center;gap:.55rem;padding:.45rem .85rem;border:1px solid #e6eaf4;border-radius:999px;background:#fff;box-shadow:0 3px 12px rgba(28,45,90,.04); }
+    .category-card:hover { transform:translateY(-2px); }
+    .category-card-icon { width:30px;height:30px;flex:0 0 30px;margin:0;border-radius:10px;box-shadow:none; }
+    .category-card-icon svg { width:20px;height:20px; }
+    .category-card-title { margin:0;font-size:.82rem;white-space:nowrap; }
+    .category-card-description { display:none; }
+    .tools-section { padding:2.3rem 0; }
+    .section-heading { align-items:center;margin-bottom:1.2rem; }
+    .section-heading h2 { margin:0;font-size:1.55rem;letter-spacing:-.04em; }
+    .section-heading p { margin:.35rem 0 0;font-size:.9rem; }
+    .tool-grid { grid-template-columns:repeat(5,minmax(0,1fr));gap:14px; }
+    .tool-card { position:relative;min-height:158px;padding:1.05rem .9rem;border:1px solid #e8edf7;border-radius:17px;background:#fff;text-align:center;box-shadow:0 5px 18px rgba(29,48,94,.045); }
+    .tool-card:hover { transform:translateY(-4px);border-color:#cbd7ff;box-shadow:0 14px 28px rgba(44,66,130,.1); }
+    .tool-card-icon { width:50px;height:50px;margin:0 auto .75rem;border-radius:15px;background:linear-gradient(145deg,#315eea,#8c5cf6);color:white;box-shadow:0 8px 17px rgba(67,79,205,.2); }
+    .tool-card-icon svg { width:26px;height:26px; }
+    .tool-card-title { margin:0 0 .35rem;font-size:.88rem; }
+    .tool-card-description { font-size:.75rem;line-height:1.45; }
+    .trust-strip { justify-content:space-around;gap:1rem;padding:1.15rem;border:1px solid #e6eaf6;border-radius:17px;background:#fff;color:#35425f;box-shadow:0 7px 22px rgba(30,50,100,.04); }
+    .site-footer { margin-top:3.5rem; }
+    @media(max-width:900px) {
+      .hero-layout { grid-template-columns:1fr 0.8fr;gap:1.5rem; }
+      .tool-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .hero-visual { min-height:300px; }
+    }
+    @media(max-width:680px) {
+      .hero { padding:3rem 0 1.5rem; }
+      .hero-layout { grid-template-columns:1fr;gap:1.25rem; }
+      .hero h1 { font-size:clamp(2.35rem,10vw,3.2rem); }
+      .hero-copy > p:not(.eyebrow):not(.hero-note) { font-size:.96rem; }
+      .hero-visual { min-height:255px; }
+      .visual-window { width:min(78%,330px);min-height:215px; }
+      .window-mark { width:82px;height:82px;font-size:3.2rem;margin:20px auto 12px; }
+      .orbit-section { height:250px;min-height:250px; }
+      .orbit-scene { height:240px; }
+      .category-grid { flex-wrap:nowrap;overflow-x:auto;padding:0 2px .7rem;scrollbar-width:thin; }
+      .category-card { flex:0 0 auto; }
+      .tool-grid { grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
+      .tool-card { min-height:150px;padding:.9rem .65rem; }
+      .tool-card-title { font-size:.8rem; }
+      .tool-card-description { font-size:.7rem; }
+      .trust-strip { justify-content:flex-start;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));font-size:.78rem; }
+      .section-heading h2 { font-size:1.3rem; }
+    }
+    @media(max-width:380px) {
+      .tool-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .visual-caption { right:3%;font-size:.65rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- বাংলা: স্ক্রিন রিডার ব্যবহারকারীদের জন্য মূল কনটেন্টে যাওয়ার লিংক। -->
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- বাংলা: স্টিকি হেডার, প্রধান নেভিগেশন ও থিম নিয়ন্ত্রণ। -->
+  <header class="site-header" data-site-header>
+    <div class="container header-inner">
+      <a class="site-brand" href="/noelotools/" aria-label="NoeloTools home">
+        <span class="site-brand-mark" aria-hidden="true">N</span>
+        <span>NoeloTools</span>
+      </a>
+      <nav class="primary-nav" data-primary-nav aria-label="Main navigation">
+        <a href="#tools" aria-current="page">All tools</a>
+        <a href="#categories">Categories</a>
+        <a href="/noelotools/blog/">Blog</a>
+        <a href="/noelotools/pages/about/">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark theme" title="Switch theme">
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg>
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        </button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- বাংলা: প্রধান পরিচিতি, সার্চ ও ওয়েবসাইটের মূল বার্তা। -->
+    <section class="hero">
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">ALL YOUR TOOLS. ONE SIMPLE PLACE.</p>
+          <h1>Everything you need.<br><span class="text-primary">All in one place.</span></h1>
+          <p>Work smarter with free online tools for PDFs, calculations, writing and everyday tasks. No sign-up required.</p>
+          <div class="hero-search-wrap">
+            <label class="sr-only" for="home-tool-search">Search all tools</label>
+            <input class="search-field" id="home-tool-search" type="search" placeholder="Search tools... (e.g. PDF, calculator, converter)" autocomplete="off" data-tool-search aria-controls="home-search-results" aria-expanded="false">
+            <div class="search-results" id="home-search-results" data-search-results hidden></div>
+          </div>
+          <p class="hero-note"><span data-total-tools>29</span> useful tools · Free to use · Privacy-first</p>
+          <a class="button button-primary hero-cta" href="#tools">Explore all tools <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="visual-glow"></div>
+          <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div>
+          <div class="visual-window">
+            <div class="window-top"><i></i><i></i><i></i><span>NoeloTools workspace</span></div>
+            <div class="window-mark">N</div>
+            <div class="window-lines"><b></b><b></b><b></b></div>
+            <div class="float-tool float-pdf">PDF</div><div class="float-tool float-calc">＋</div><div class="float-tool float-code">&lt;/&gt;</div>
+          </div>
+          <span class="visual-caption">29+ helpful tools, one place</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- বাংলা: 3D Orbit Carousel — আটটি ঘূর্ণায়মান কার্ড। -->
+    <section class="orbit-section" aria-labelledby="orbit-title">
+      <h2 class="sr-only" id="orbit-title">Explore featured topics</h2>
+      <div class="orbit-scene">
+        <div class="orbit-ring" id="orbitRing" data-orbit-ring aria-label="Drag horizontally to rotate the category cards"></div>
+
+      </div>
+    </section>
+
+    <!-- বাংলা: ক্যাটাগরি অনুযায়ী টুল খোঁজার প্রবেশপথ। -->
+    <section class="categories-section" id="categories">
+      <div class="container">
+        <div class="section-heading">
+          <div><h2>Browse by category</h2><p>Find the right tool for the task.</p></div>
+        </div>
+        <div class="category-grid" data-category-grid></div>
+      </div>
+    </section>
+
+    <!-- বাংলা: ছয়টি জনপ্রিয় টুল ও সম্পূর্ণ ক্যাটালগ আলাদা রাখা হয়েছে। -->
+    <section class="tools-section" aria-labelledby="popular-tools-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><h2 id="popular-tools-title">Popular tools</h2><p>Start with six useful utilities.</p></div>
+          <span class="text-muted"><span data-popular-count>6</span> popular tools</span>
+        </div>
+        <div class="tool-grid" data-popular-tools aria-label="Popular tools"></div>
+      </div>
+    </section>
+
+    <section class="tools-section" id="tools" aria-labelledby="all-tools-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><h2 id="all-tools-title">All tools</h2><p>Browse every available tool or filter by category.</p></div>
+          <span class="text-muted"><span data-search-count>29</span> tools shown</span>
+        </div>
+        <div class="tool-grid" data-all-tools></div>
+        <p class="search-empty" data-search-empty hidden>No tools found. Try another search.</p>
+      </div>
+    </section>
+
+    <!-- বাংলা: গোপনীয়তা ও সহজ ব্যবহারের মূল সুবিধাগুলো। -->
+    <section class="container" style="padding-bottom:4rem">
+      <div class="trust-strip">
+        <span>✓ No sign-up required</span><span>✓ Browser-based tools</span><span>✓ Browser-based processing where supported</span><span>✓ Privacy-first design</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- বাংলা: প্রয়োজনীয় লিংক ও নীতিমালার ফুটার। -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="site-brand" href="/noelotools/"><span class="site-brand-mark">N</span><span>NoeloTools</span></a>
+          <p class="footer-description">Free online tools for everything. All in one place.</p>
+        </div>
+        <div class="footer-column"><h3>Explore</h3><ul class="footer-links"><li><a href="#tools">All tools</a></li><li><a href="#categories">Categories</a></li><li><a href="/noelotools/blog/">Blog</a></li></ul></div>
+        <div class="footer-column"><h3>Company</h3><ul class="footer-links"><li><a href="/noelotools/pages/about/">About</a></li><li><a href="/noelotools/pages/contact/">Contact</a></li></ul></div>
+        <div class="footer-column"><h3>Legal</h3><ul class="footer-links"><li><a href="/noelotools/pages/privacy-policy/">Privacy policy</a></li><li><a href="/noelotools/pages/cookie-policy/">Cookie policy</a></li><li><a href="/noelotools/pages/terms/">Terms of use</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-current-year>2026</span> NoeloTools.com</span><span>Made for a simpler web.</span></div>
+    </div>
+  </footer>
+
+  <!-- বাংলা: কুকি সম্মতি না পাওয়া পর্যন্ত ঐচ্ছিক ট্র্যাকিং বন্ধ থাকবে। -->
+  <section class="cookie-banner" data-cookie-banner role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
+    <h2 id="cookie-title">Your privacy matters</h2>
+    <p id="cookie-description">We use necessary storage to make this site work. Optional analytics and advertising are only enabled with your permission.</p>
+    <div class="cookie-actions">
+      <button class="button button-primary" type="button" data-cookie-accept>Accept all</button>
+      <button class="button button-secondary" type="button" data-cookie-reject>Reject optional</button>
+      <button class="button button-ghost" type="button" data-cookie-customise>Customise</button>
+    </div>
+    <div class="cookie-settings" data-cookie-settings hidden>
+      <label><input type="checkbox" checked disabled> Necessary (always active)</label><br>
+      <label><input type="checkbox" name="cookie-analytics"> Analytics</label><br>
+      <label><input type="checkbox" name="cookie-advertising"> Advertising</label><br>
+      <button class="button button-primary" type="button" data-cookie-save style="margin-top:.75rem">Save preferences</button>
+    </div>
+  </section>
+
+  <!-- বাংলা: 3D Orbit Carousel-এর স্বয়ংক্রিয় ঘূর্ণন ও pointer drag নিয়ন্ত্রণ। -->
+  <script>
+    (() => {
+      const ring = document.getElementById("orbitRing");
+      if (!ring) return;
+
+      let rotation = 0;
+      let isDragging = false;
+      let lastX = 0;
+      let startX = 0;
+      let startY = 0;
+      let pointerId = null;
+      let dragMoved = false;
+      let suppressClickUntil = 0;
+      let animationFrame = 0;
+      let animationRunning = false;
+      const dragThreshold = 8;
+
+      function animate() {
+        if (!isDragging) rotation += 0.20;
+        ring.style.transform = `rotateY(${rotation}deg)`;
+        if (animationRunning && !document.hidden) {
+          animationFrame = requestAnimationFrame(animate);
+        }
+      }
+
+      ring.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        isDragging = true;
+        dragMoved = false;
+        startX = lastX = event.clientX;
+        startY = event.clientY;
+        pointerId = event.pointerId;
+      });
+
+      ring.addEventListener("pointermove", (event) => {
+        if (!isDragging) return;
+        const deltaX = event.clientX - lastX;
+        if (Math.hypot(event.clientX - startX, event.clientY - startY) > dragThreshold && !dragMoved) {
+          dragMoved = true;
+          // Capture only after a real drag begins; ordinary clicks must reach card links.
+          if (pointerId !== null && ring.hasPointerCapture && !ring.hasPointerCapture(pointerId)) {
+            try { ring.setPointerCapture(pointerId); } catch (_) {}
+          }
+        }
+        rotation += deltaX * 0.6;
+        lastX = event.clientX;
+      });
+
+      function stopDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        if (dragMoved) suppressClickUntil = performance.now() + 400;
+      }
+
+      ring.addEventListener("click", (event) => {
+        if (performance.now() > suppressClickUntil) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClickUntil = 0;
+      }, true);
+
+      ring.addEventListener("pointerup", stopDrag);
+      ring.addEventListener("pointercancel", stopDrag);
+      ring.addEventListener("lostpointercapture", stopDrag);
+
+      function startAnimation() {
+        if (animationRunning || document.hidden) return;
+        animationRunning = true;
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      function stopAnimation() {
+        animationRunning = false;
+        cancelAnimationFrame(animationFrame);
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopAnimation();
+        else startAnimation();
+      });
+      window.addEventListener("pageshow", startAnimation);
+      window.addEventListener("pagehide", stopAnimation);
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        ring.style.transform = "rotateY(0deg)";
+      } else {
+        startAnimation();
+      }
+    })();
+  </script>
+
+</body>
+</html>
