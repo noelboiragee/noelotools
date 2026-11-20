@@ -415,6 +415,84 @@
       .orbit-ring { transform:rotateY(0deg) !important; }
     }
 
+
+    /* Dark-mode overrides for this homepage demo. Theme is controlled by the site's existing toggle. */
+    [data-theme="dark"] body { background:#0b1020; color:#edf2ff; }
+    [data-theme="dark"] .site-header { background:rgba(11,16,32,.94); border-bottom-color:#27324b; }
+    [data-theme="dark"] .primary-nav a { color:#c4cce0; }
+    [data-theme="dark"] .hero {
+      background:radial-gradient(ellipse at 78% 35%,rgba(73,76,180,.28),transparent 43%),
+                 radial-gradient(ellipse at 10% 0%,rgba(35,92,190,.16),transparent 45%),
+                 linear-gradient(180deg,#10182b 0%,#0b1020 100%);
+    }
+    [data-theme="dark"] .hero h1,
+    [data-theme="dark"] .section-heading h2,
+    [data-theme="dark"] .tool-card-title,
+    [data-theme="dark"] .category-card-title { color:#f3f6ff !important; }
+    [data-theme="dark"] .hero-copy > p:not(.eyebrow):not(.hero-note),
+    [data-theme="dark"] .hero-note,
+    [data-theme="dark"] .section-heading p,
+    [data-theme="dark"] .tool-card-description,
+    [data-theme="dark"] .text-muted { color:#b8c4dc !important; }
+    [data-theme="dark"] .hero .eyebrow { background:#211d45;border-color:#403a79;color:#c5b8ff; }
+    [data-theme="dark"] .hero-search-wrap .search-field {
+      background:#151e33;color:#f4f6ff;border-color:#35415e;
+      box-shadow:0 12px 34px rgba(0,0,0,.28);
+    }
+    [data-theme="dark"] .hero-search-wrap .search-field::placeholder { color:#a5b1ca; }
+    [data-theme="dark"] .hero-visual .visual-glow {
+      background:radial-gradient(circle,rgba(75,99,210,.35) 0,rgba(75,68,160,.18) 48%,transparent 72%);
+    }
+    [data-theme="dark"] .visual-orbit { border-color:#5969bd; }
+    [data-theme="dark"] .orbit-two { border-color:#7657b5; }
+    [data-theme="dark"] .visual-window {
+      background:rgba(22,30,52,.94);border-color:#354365;
+      box-shadow:0 28px 65px rgba(0,0,0,.42);
+    }
+    [data-theme="dark"] .window-top { color:#b7c2da;border-bottom-color:#303c58; }
+    [data-theme="dark"] .window-lines b { background:#34415f; }
+    [data-theme="dark"] .float-tool {
+      background:linear-gradient(145deg,#263454,#18233c);
+      border-color:#52628d;color:#d9e2ff;
+    }
+    [data-theme="dark"] .visual-caption {
+      background:#202b46;border-color:#3b496a;color:#dce5ff;
+    }
+    [data-theme="dark"] .category-card {
+      background:#151e32;border-color:#2c3853;color:#f1f5ff !important;
+      box-shadow:0 5px 16px rgba(0,0,0,.2);
+    }
+    [data-theme="dark"] .category-card:hover { border-color:#8b7bff; }
+    [data-theme="dark"] .tool-card {
+      background:#151e32;border-color:#2c3853;color:#f1f5ff;
+      box-shadow:0 5px 18px rgba(0,0,0,.2);
+    }
+    [data-theme="dark"] .tool-card:hover {
+      background:#1b2741;border-color:#7185ef;
+      box-shadow:0 14px 28px rgba(0,0,0,.3);
+    }
+    [data-theme="dark"] .trust-strip {
+      background:#151e32;border-color:#2c3853;color:#d5def1 !important;
+      box-shadow:0 7px 22px rgba(0,0,0,.2);
+    }
+    [data-theme="dark"] .site-footer { background:#090e1b;border-top:1px solid #26314a; }
+    [data-theme="dark"] .footer-description,
+    [data-theme="dark"] .footer-links a,
+    [data-theme="dark"] .footer-bottom { color:#b8c4dc; }
+    [data-theme="dark"] .search-results,
+    [data-theme="dark"] .cookie-banner {
+      background:#151e32;color:#edf2ff;border-color:#35415e;
+    }
+    [data-theme="dark"] .search-result { color:#edf2ff; }
+    [data-theme="dark"] .search-result:hover,
+    [data-theme="dark"] .search-result:focus-visible { background:#24314d; }
+    [data-theme="dark"] .orbit-card {
+      box-shadow:0 0 18px color-mix(in srgb,var(--glow) 72%,transparent),0 12px 30px rgba(0,0,0,.4);
+    }
+    @media (prefers-color-scheme:dark) {
+      /* Do not force dark automatically: the saved/manual site theme remains authoritative. */
+    }
+
   </style>
 </head>
 <body>
