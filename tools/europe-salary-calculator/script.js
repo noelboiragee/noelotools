@@ -44,7 +44,7 @@ const LIMITS = {
   annualWorkExpenseAllowance: 1230
 };
 
-function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }\n\nfunction formatCurrency(value, currency = "EUR") {
+function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }\n\nfunction formatCurrency(value, currency = "EUR") {
   return new Intl.NumberFormat(currency === "EUR" ? "de-DE" : "en", {
     style: "currency",
     currency,
