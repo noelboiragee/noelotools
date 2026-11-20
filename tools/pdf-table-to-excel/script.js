@@ -7,7 +7,8 @@
   var MAX_FILE_BYTES = 30 * 1024 * 1024;
   var MAX_PAGES = 150;
   var PREVIEW_ROWS = 100;
-  var state = { table: null, baseName: 'pdf-table' };
+  var state = { table: null, pages: [], baseName: 'pdf-table' };
+  var debounceTimer = null;
   var $ = function (id) { return document.getElementById(id); };
   var el = {
     file: $('ptx-file'), drop: $('ptx-drop'), status: $('ptx-status'),
@@ -90,6 +91,29 @@
       return result;
     });
   }
+  function rebuildTable() {
+    if (!state.pages.length) return;
+    var rows = [], seenHeaders = new Set();
+    state.pages.forEach(function (items) {
+      var page = pageRows(items);
+      if (!page.length) return;
+      var headerKey = page[0].join(' | ');
+      if (el.repeated.checked && seenHeaders.has(headerKey)) page.shift();
+      if (el.repeated.checked && page.length) seenHeaders.add(page[0].join(' | '));
+      rows = rows.concat(page);
+    });
+    if (el.single.checked) rows = rows.filter(function (row) { return row.length > 1; });
+    if (!rows.length) {
+      state.table = null;
+      state.pages = [];
+      el.result.hidden = true;
+      setStatus('No table rows remain with the selected extraction settings.', true);
+      return;
+    }
+    state.table = normalizeTable(rows);
+    render();
+    setStatus('Extraction settings applied. Review the preview before exporting.');
+  }
   function render() {
     if (!state.table) return;
     var rows = state.table;
@@ -113,6 +137,7 @@
   }
   function resetAll() {
     state.table = null;
+    state.pages = [];
     state.baseName = 'pdf-table';
     el.file.value = '';
     el.options.hidden = true;
@@ -133,28 +158,25 @@
     }
     el.options.hidden = true;
     el.result.hidden = true;
+    state.table = null;
+    state.pages = [];
     setStatus('Reading PDF pages…');
     try {
       window.pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       var pdf = await window.pdfjsLib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
       if (pdf.numPages > MAX_PAGES) throw new Error('This tool supports PDFs with up to 150 pages.');
-      var rows = [];
+      var pageItems = [];
       for (var pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
         setStatus('Extracting page ' + pageNumber + ' of ' + pdf.numPages + '…');
         var page = await pdf.getPage(pageNumber);
         var content = await page.getTextContent();
-        var extracted = pageRows(content.items);
-        if (el.repeated.checked && extracted.length && rows.length) {
-          var header = extracted[0].join(' | ');
-          if (rows.some(function (row) { return row.join(' | ') === header; })) extracted.shift();
-        }
-        rows = rows.concat(extracted);
+        pageItems.push(content.items);
         page.cleanup();
       }
-      if (el.single.checked) rows = rows.filter(function (row) { return row.length > 1; });
-      if (!rows.length) throw new Error('No selectable table text was found in this PDF.');
-      state.table = normalizeTable(rows);
+      state.pages = pageItems;
+      rebuildTable();
+      if (!state.table) throw new Error('No selectable table text was found in this PDF.');
       state.baseName = file.name.replace(/\.pdf$/i, '').replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '') || 'pdf-table';
       el.options.hidden = false;
       render();
@@ -224,14 +246,11 @@
   });
   el.gap.addEventListener('input', function () {
     el.gapValue.textContent = Number(el.gap.value).toFixed(1);
-    if (state.table) setStatus('Column spacing changed. Re-upload the PDF to apply the new setting.');
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(rebuildTable, 150);
   });
-  el.repeated.addEventListener('change', function () {
-    if (state.table) setStatus('Header-removal setting changed. Re-upload the PDF to apply it.');
-  });
-  el.single.addEventListener('change', function () {
-    if (state.table) setStatus('Single-cell row setting changed. Re-upload the PDF to apply it.');
-  });
+  el.repeated.addEventListener('change', rebuildTable);
+  el.single.addEventListener('change', rebuildTable);
   el.xlsx.addEventListener('click', downloadXlsx);
   el.csv.addEventListener('click', downloadCsv);
   el.reset.addEventListener('click', resetAll);
