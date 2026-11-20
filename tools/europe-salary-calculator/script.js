@@ -126,6 +126,7 @@ function progressiveContribution(income, bands) {
 function calculateBrazil() {
   const gross = parseDecimal(grossInput.value);
   const valid = grossInput.value.trim() !== "" && Number.isFinite(gross) && gross >= 0 && gross <= 100000000;
+  errorMessage.textContent = "Enter a valid gross salary.";
   errorMessage.hidden = valid;
   if (!valid) { clearGermanyResults(); return; }
 
@@ -137,8 +138,9 @@ function calculateBrazil() {
     { limit: 8475.55, rate: 0.14 }
   ]);
 
-  const simplifiedDeduction = Math.min(607.20, Math.max(0, gross - inss) * 0.25);
-  const taxBase = Math.max(0, gross - inss - simplifiedDeduction);
+  const simplifiedDeduction = Math.min(607.20, gross * 0.25);
+  const taxDeduction = Math.max(inss, simplifiedDeduction);
+  const taxBase = Math.max(0, gross - taxDeduction);
   let irpf = 0;
   if (taxBase > 2428.80 && taxBase <= 2826.65) irpf = taxBase * 0.075 - 182.16;
   else if (taxBase <= 3751.05 && taxBase > 2826.65) irpf = taxBase * 0.15 - 394.16;
