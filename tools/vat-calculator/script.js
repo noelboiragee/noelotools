@@ -19,7 +19,7 @@ const currencyLocales = {
   BDT: "en-BD"
 };
 
-function formatMoney(value) {
+function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }\nfunction formatMoney(value) {
   const currency = currencyInput.value;
   try {
     return new Intl.NumberFormat(currencyLocales[currency] || "en", {
@@ -40,8 +40,8 @@ function updateAmountLabel() {
 function calculateVat() {
   updateAmountLabel();
 
-  const amount = Number(amountInput.value);
-  const rate = Number(rateInput.value);
+  const amount = parseDecimal(amountInput.value);
+  const rate = parseDecimal(rateInput.value);
   const valid = amountInput.value.trim() !== "" &&
     rateInput.value.trim() !== "" &&
     Number.isFinite(amount) &&
