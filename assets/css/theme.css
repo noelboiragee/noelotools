@@ -118,8 +118,16 @@ a {
 
 /* কিবোর্ড দিয়ে ব্যবহার করলে স্পষ্ট ফোকাস দেখানো */
 :focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* Clear keyboard focus for links, buttons and form controls. */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  box-shadow: none;
 }
 
 /* পুনর্ব্যবহারযোগ্য কার্ডের বেস স্টাইল */
