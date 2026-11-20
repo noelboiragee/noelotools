@@ -18,7 +18,8 @@ $("#calculate").addEventListener("click", () => {
   let d = today.getDate() - birth.getDate();
   if (d < 0) { m--; d += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); }
   if (m < 0) { y--; m += 12; }
-  // A 29 February birthday is observed on 1 March in non-leap years.\n  let next = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+  // A 29 February birthday is observed on 1 March in non-leap years.
+  let next = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
   if (next < today) next = new Date(today.getFullYear() + 1, birth.getMonth(), birth.getDate());
   const days = Math.round((Date.UTC(next.getFullYear(), next.getMonth(), next.getDate()) - Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
   const leapNote = birth.getMonth() === 1 && birth.getDate() === 29 ? " For 29 February births, the next birthday is treated as 1 March in non-leap years." : "";\n  show(`${y} years, ${m} months, ${d} days. ${days} days until the next birthday.${leapNote}`);
