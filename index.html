@@ -137,6 +137,7 @@
       border-radius: 0 !important;
       box-shadow: none !important;
       perspective: 1200px;
+      touch-action: pan-y;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -291,7 +292,7 @@
     }
     @media (max-width: 600px) {
       .orbit-section { height: 280px; min-height: 280px; }
-      .orbit-scene { height: 260px; perspective: 850px; }
+      .orbit-scene { height: 260px; perspective: 850px; touch-action: pan-y; }
       .orbit-card {
         width: 125px;
         height: 190px;
@@ -760,34 +761,41 @@
     </div>
   </section>
 
-  <!-- বাংলা: 3D Orbit Carousel-এর স্বয়ংক্রিয় ঘূর্ণন ও pointer drag নিয়ন্ত্রণ। -->
+  <!-- বাংলা: 3D Orbit Carousel-এর স্বয়ংক্রিয় ঘূর্ণন ও পুরো দৃশ্যজুড়ে pointer drag নিয়ন্ত্রণ। -->
   <script>
     (() => {
       const ring = document.getElementById("orbitRing");
       if (!ring) return;
+      const scene = ring.closest(".orbit-scene") || ring;
 
       let rotation = 0;
       let isDragging = false;
-      let lastX = 0;
+      let dragMoved = false;
       let startX = 0;
       let startY = 0;
+      let lastX = 0;
       let pointerId = null;
-      let dragMoved = false;
       let suppressClickUntil = 0;
       let animationFrame = 0;
       let animationRunning = false;
-      const dragThreshold = 8;
+      let lastFrameTime = 0;
+      const dragThreshold = 7;
 
-      function animate() {
-        if (!isDragging) rotation += 0.20;
+      function animate(timestamp) {
+        if (!isDragging) {
+          const elapsed = lastFrameTime ? Math.min(timestamp - lastFrameTime, 32) : 16.67;
+          rotation += elapsed * 0.012;
+        }
+        lastFrameTime = timestamp;
         ring.style.transform = `rotateY(${rotation}deg)`;
         if (animationRunning && !document.hidden) {
           animationFrame = requestAnimationFrame(animate);
         }
       }
 
-      ring.addEventListener("pointerdown", (event) => {
+      scene.addEventListener("pointerdown", (event) => {
         if (event.pointerType === "mouse" && event.button !== 0) return;
+        if (isDragging) return;
         isDragging = true;
         dragMoved = false;
         startX = lastX = event.clientX;
@@ -795,40 +803,47 @@
         pointerId = event.pointerId;
       });
 
-      ring.addEventListener("pointermove", (event) => {
-        if (!isDragging) return;
-        const deltaX = event.clientX - lastX;
-        if (Math.hypot(event.clientX - startX, event.clientY - startY) > dragThreshold && !dragMoved) {
+      scene.addEventListener("pointermove", (event) => {
+        if (!isDragging || event.pointerId !== pointerId) return;
+        const totalX = event.clientX - startX;
+        const totalY = event.clientY - startY;
+        if (!dragMoved && Math.hypot(totalX, totalY) > dragThreshold) {
+          // Vertical gestures remain page scrolling; only a clear horizontal drag rotates.
+          if (Math.abs(totalY) > Math.abs(totalX) * 1.1) return;
           dragMoved = true;
-          // Capture only after a real drag begins; ordinary clicks must reach card links.
-          if (pointerId !== null && ring.hasPointerCapture && !ring.hasPointerCapture(pointerId)) {
-            try { ring.setPointerCapture(pointerId); } catch (_) {}
+          if (scene.setPointerCapture && !scene.hasPointerCapture(event.pointerId)) {
+            try { scene.setPointerCapture(event.pointerId); } catch (_) {}
           }
         }
-        rotation += deltaX * 0.6;
+        if (!dragMoved) return;
+        rotation += (event.clientX - lastX) * 0.8;
         lastX = event.clientX;
+        event.preventDefault();
       });
 
       function stopDrag() {
         if (!isDragging) return;
         isDragging = false;
-        if (dragMoved) suppressClickUntil = performance.now() + 400;
+        if (dragMoved) suppressClickUntil = performance.now() + 450;
+        pointerId = null;
+        lastFrameTime = 0;
       }
 
-      ring.addEventListener("click", (event) => {
+      scene.addEventListener("click", (event) => {
         if (performance.now() > suppressClickUntil) return;
         event.preventDefault();
         event.stopPropagation();
         suppressClickUntil = 0;
       }, true);
 
-      ring.addEventListener("pointerup", stopDrag);
-      ring.addEventListener("pointercancel", stopDrag);
-      ring.addEventListener("lostpointercapture", stopDrag);
+      scene.addEventListener("pointerup", stopDrag);
+      scene.addEventListener("pointercancel", stopDrag);
+      scene.addEventListener("lostpointercapture", stopDrag);
 
       function startAnimation() {
         if (animationRunning || document.hidden) return;
         animationRunning = true;
+        lastFrameTime = 0;
         animationFrame = requestAnimationFrame(animate);
       }
 
