@@ -14,7 +14,7 @@ const churchTaxInput = document.querySelector("#church-tax");
 
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
-  FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€" },
+  FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
   NL: { name: "Netherlands", symbol: "€" }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
@@ -82,7 +82,8 @@ function updateCountry() {
   const isBrazil = countryInput.value === "BR";
   const isUK = countryInput.value === "GB";
   const isItaly = countryInput.value === "IT";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly;
+  const isSpain = countryInput.value === "ES";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -119,6 +120,15 @@ function updateCountry() {
     resultLabels[2].textContent = "INSS contribution";
     document.querySelector(".model-link").textContent = "The Brazil 2026 estimate is available. Germany, Italy and UK models are also available.";
     calculateBrazil();
+  } else if (isSpain) {
+    countryStatus.innerHTML = "<strong>Spain model available</strong><span>2026 AEAT payroll withholding estimate. Single employee, no children or dependants, standard indefinite contract, no other income.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deductions";
+    const labels = ["Social Security (employee)", "Income tax withholding (IRPF)", "Solidarity contribution", "—", "—"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 2; });
+    resultLabels[1].textContent = "Income tax withholding per month";
+    resultLabels[2].textContent = "Employee Social Security per month";
+    document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
+    calculateSpain();
   } else if (isItaly) {
     countryStatus.innerHTML = "<strong>Italy model available</strong><span>2026 estimate. Standard private-sector employee, one employment income, no dependants; regional and municipal surcharges excluded.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
@@ -149,6 +159,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "DE") calculateGermany();
   else if (countryInput.value === "GB") calculateUK();
   else if (countryInput.value === "IT") calculateItaly();
+  else if (countryInput.value === "ES") calculateSpain();
 }
 
 function progressiveContribution(income, bands) {
@@ -163,6 +174,56 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateSpain() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const contributionBase = Math.min(grossMonthly, 5101.20);
+  const ordinarySocial = contributionBase * (0.047 + 0.0155 + 0.001 + 0.0015);
+  const solidarity =
+    Math.max(0, Math.min(grossMonthly, 5611.32) - 5101.20) * 0.0019 +
+    Math.max(0, Math.min(grossMonthly, 7651.80) - 5611.32) * 0.0021 +
+    Math.max(0, grossMonthly - 7651.80) * 0.0024;
+  const monthlySocial = ordinarySocial + solidarity;
+  const annualSocial = monthlySocial * 12;
+
+  // AEAT 2026 withholding algorithm: work income net of deductible employee contributions.
+  const netWorkIncome = Math.max(0, annualGross - annualSocial);
+  let workIncomeReduction = 0;
+  if (netWorkIncome <= 14852) workIncomeReduction = 7302;
+  else if (netWorkIncome <= 17673.52) workIncomeReduction = 7302 - 1.75 * (netWorkIncome - 14852);
+  else if (netWorkIncome < 19747.50) workIncomeReduction = 2364.34 - 1.14 * (netWorkIncome - 17673.52);
+  workIncomeReduction = Math.max(0, workIncomeReduction);
+
+  const generalEmploymentExpense = Math.min(2000, netWorkIncome);
+  const withholdingBase = Math.max(0, netWorkIncome - generalEmploymentExpense - workIncomeReduction);
+  const withholdingScale = (income) => {
+    const x = Math.max(0, income);
+    return Math.min(x, 12450) * 0.19 +
+      Math.max(0, Math.min(x, 20200) - 12450) * 0.24 +
+      Math.max(0, Math.min(x, 35200) - 20200) * 0.30 +
+      Math.max(0, Math.min(x, 60000) - 35200) * 0.37 +
+      Math.max(0, Math.min(x, 300000) - 60000) * 0.45 +
+      Math.max(0, x - 300000) * 0.47;
+  };
+  const annualWithholding = Math.max(0, withholdingScale(withholdingBase) - withholdingScale(5550));
+  const monthlyTax = annualWithholding / 12;
+  const net = grossMonthly - monthlySocial - monthlyTax;
+
+  outputs.net.textContent = formatCurrency(net, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.social.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.pension.textContent = formatCurrency(contributionBase * 0.047, "EUR");
+  outputs.unemployment.textContent = formatCurrency(contributionBase * 0.0155, "EUR");
+  outputs.health.textContent = formatCurrency(contributionBase * 0.001, "EUR");
+  outputs.care.textContent = formatCurrency(contributionBase * 0.0015, "EUR");
+  outputs.church.textContent = formatCurrency(solidarity, "EUR");
 }
 
 function calculateItaly() {
