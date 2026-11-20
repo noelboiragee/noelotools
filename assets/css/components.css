@@ -703,3 +703,67 @@ html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
   color: #ffffff;
   background: var(--primary-dark);
 }
+
+
+/* Consistent, legible header icons across desktop and mobile pages. */
+.header-actions .theme-toggle {
+  display: inline-flex;
+  min-width: 42px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+}
+.theme-toggle-icon,
+.menu-toggle svg {
+  display: inline-grid;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  place-items: center;
+  line-height: 0;
+}
+.theme-toggle-icon svg,
+.menu-toggle svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+.menu-toggle {
+  display: none;
+  padding: 0;
+  line-height: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-toggle svg { pointer-events: none; }
+@media (max-width: 760px) {
+  .header-actions .theme-toggle {
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+  }
+  .theme-toggle [data-theme-label] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+@media (max-width: 360px) {
+  .header-actions { gap: 0.4rem; }
+  .menu-toggle, .header-actions .theme-toggle {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+}
