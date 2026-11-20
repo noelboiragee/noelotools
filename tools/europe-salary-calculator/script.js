@@ -16,7 +16,7 @@ const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
   NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
-  PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
+  PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
@@ -86,7 +86,8 @@ function updateCountry() {
   const isNetherlands = countryInput.value === "NL";
   const isBelgium = countryInput.value === "BE";
   const isIreland = countryInput.value === "IE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland;
+  const isPortugal = countryInput.value === "PT";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -132,6 +133,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isPortugal) {
+    countryStatus.innerHTML = "<strong>Portugal model available</strong><span>2026 estimate for a single mainland resident employee, no dependants, no additional personal expense credits.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Employee Social Security", "IRS income tax", "Employment-income specific deduction", "Additional solidarity tax", "Other personal tax credits"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "IRS income tax per month";
+    resultLabels[2].textContent = "Employee Social Security per month";
+    document.querySelector(".model-link").textContent = "Portugal uses a specific employment-income deduction equal to the higher of €4,587.09 or mandatory employee social contributions. This estimate excludes household expense credits and assumes 12 equal monthly salary payments; holiday and Christmas payments are not included.";
+    calculatePortugal();
   } else if (isIreland) {
     countryStatus.innerHTML = "<strong>Ireland model available</strong><span>2026 estimate for a single PAYE employee, standard-rate band €44,000, standard tax credits and Class A PRSI.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -193,6 +203,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "NL") calculateNetherlands();
   else if (countryInput.value === "BE") calculateBelgium();
   else if (countryInput.value === "IE") calculateIreland();
+  else if (countryInput.value === "PT") calculatePortugal();
 }
 
 function progressiveContribution(income, bands) {
@@ -207,6 +218,56 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculatePortugal() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const annualSocial = annualGross * 0.11;
+  const specificDeduction = Math.min(annualGross, Math.max(4587.09, annualSocial));
+  const taxableIncome = Math.max(0, annualGross - specificDeduction);
+
+  // Portugal 2026 IRS rates as amended by Decree-Law 212/2026, effective 5 November 2026.
+  const brackets = [
+    { limit: 8342, rate: 0.122 },
+    { limit: 12587, rate: 0.152 },
+    { limit: 17838, rate: 0.207 },
+    { limit: 23089, rate: 0.236 },
+    { limit: 29397, rate: 0.306 },
+    { limit: 43090, rate: 0.346 },
+    { limit: 46566, rate: 0.431 },
+    { limit: 86634, rate: 0.446 },
+    { limit: Infinity, rate: 0.48 }
+  ];
+  let previous = 0;
+  let annualIRS = 0;
+  for (const bracket of brackets) {
+    const slice = Math.max(0, Math.min(taxableIncome, bracket.limit) - previous);
+    annualIRS += slice * bracket.rate;
+    previous = bracket.limit;
+    if (taxableIncome <= bracket.limit) break;
+  }
+  const solidarityTax =
+    Math.max(0, Math.min(taxableIncome, 250000) - 80000) * 0.025 +
+    Math.max(0, taxableIncome - 250000) * 0.05;
+  annualIRS += solidarityTax;
+
+  const monthlySocial = annualSocial / 12;
+  const monthlyTax = annualIRS / 12;
+  const netMonthly = grossMonthly - monthlySocial - monthlyTax;
+  outputs.net.textContent = formatCurrency(netMonthly, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.social.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.pension.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.unemployment.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.health.textContent = formatCurrency(specificDeduction / 12, "EUR");
+  outputs.care.textContent = formatCurrency(solidarityTax / 12, "EUR");
+  outputs.church.textContent = "Excluded";
 }
 
 function calculateIreland() {
