@@ -277,3 +277,6 @@ p {
 .tool-page .tool-intro > .eyebrow {
   display: none !important;
 }
+
+/* Accessible error text with sufficient contrast in both themes. */
+.error, [role="alert"] { color: var(--error, #b42318) !important; }
