@@ -17,7 +17,7 @@ const countryInfo = {
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
   NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
   PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€", currency: "EUR", available: true }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
-  CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
+  CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
@@ -47,7 +47,8 @@ const LIMITS = {
 function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }
 
 function formatCurrency(value, currency = "EUR") {
-  return new Intl.NumberFormat(currency === "EUR" ? "de-DE" : "en", {
+  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : "en";
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
     minimumFractionDigits: 2,
@@ -88,7 +89,8 @@ function updateCountry() {
   const isIreland = countryInput.value === "IE";
   const isPortugal = countryInput.value === "PT";
   const isAustria = countryInput.value === "AT";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria;
+  const isNorway = countryInput.value === "NO";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -134,6 +136,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isNorway) {
+    countryStatus.innerHTML = "<strong>Norway model available</strong><span>2026 estimate for a single resident employee outside the northern Action Zone, no dependants.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Ordinary income tax", "Bracket tax", "National Insurance contribution", "Minimum standard deduction", "Personal allowance"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "National Insurance per month";
+    document.querySelector(".model-link").textContent = "Norway's 22% ordinary-income tax includes central, county and municipal tax. The northern Action Zone has a reduced rate and is excluded. The estimate uses standard employee deductions and no additional personal deductions.";
+    calculateNorway();
   } else if (isAustria) {
     countryStatus.innerHTML = "<strong>Austria model available</strong><span>2026 estimate for a standard employee outside Vienna, no children, no 13th/14th salary payments.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -215,6 +226,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "IE") calculateIreland();
   else if (countryInput.value === "PT") calculatePortugal();
   else if (countryInput.value === "AT") calculateAustria();
+  else if (countryInput.value === "NO") calculateNorway();
 }
 
 function progressiveContribution(income, bands) {
@@ -229,6 +241,43 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateNorway() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const minimumStandardDeduction = Math.min(annualGross * 0.46, 95700);
+  const personalAllowance = Math.min(annualGross, 114540);
+  const ordinaryTaxableIncome = Math.max(0, annualGross - minimumStandardDeduction - personalAllowance);
+  const ordinaryIncomeTax = ordinaryTaxableIncome * 0.22;
+
+  const bracketTax =
+    Math.max(0, Math.min(annualGross, 318300) - 226100) * 0.017 +
+    Math.max(0, Math.min(annualGross, 725050) - 318300) * 0.04 +
+    Math.max(0, Math.min(annualGross, 980100) - 725050) * 0.137 +
+    Math.max(0, Math.min(annualGross, 1467200) - 980100) * 0.168 +
+    Math.max(0, annualGross - 1467200) * 0.178;
+
+  // Employee national insurance: 7.6%, with the statutory lower-limit and 25% step-up cap.
+  const nationalInsurance = Math.min(annualGross * 0.076, Math.max(0, annualGross - 99650) * 0.25);
+  const annualTax = ordinaryIncomeTax + bracketTax;
+  const monthlyTax = annualTax / 12;
+  const monthlyNI = nationalInsurance / 12;
+  const netMonthly = grossMonthly - monthlyTax - monthlyNI;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "NOK");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "NOK");
+  outputs.social.textContent = formatCurrency(monthlyNI, "NOK");
+  outputs.pension.textContent = formatCurrency(ordinaryIncomeTax / 12, "NOK");
+  outputs.unemployment.textContent = formatCurrency(bracketTax / 12, "NOK");
+  outputs.health.textContent = formatCurrency(minimumStandardDeduction / 12, "NOK");
+  outputs.care.textContent = formatCurrency(personalAllowance / 12, "NOK");
+  outputs.church.textContent = "Excluded";
 }
 
 function calculateAustria() {
