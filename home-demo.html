@@ -757,7 +757,10 @@
         }
       }
 
-      scene.addEventListener("pointerdown", (event) => {
+      // Capture pointer events at the window level so dragging works when the
+      // initial press lands directly on a 3D card, its text, or an inner link.
+      window.addEventListener("pointerdown", (event) => {
+        if (!scene.contains(event.target)) return;
         if (event.pointerType === "mouse" && event.button !== 0) return;
         if (isDragging) return;
         isDragging = true;
@@ -765,14 +768,14 @@
         startX = lastX = event.clientX;
         startY = event.clientY;
         pointerId = event.pointerId;
-      });
+      }, true);
 
-      scene.addEventListener("pointermove", (event) => {
+      window.addEventListener("pointermove", (event) => {
         if (!isDragging || event.pointerId !== pointerId) return;
         const totalX = event.clientX - startX;
         const totalY = event.clientY - startY;
         if (!dragMoved && Math.hypot(totalX, totalY) > dragThreshold) {
-          // Vertical gestures remain page scrolling; only a clear horizontal drag rotates.
+          // Let vertical gestures scroll the page; horizontal gestures rotate the carousel.
           if (Math.abs(totalY) > Math.abs(totalX) * 1.1) return;
           dragMoved = true;
           if (scene.setPointerCapture && !scene.hasPointerCapture(event.pointerId)) {
@@ -782,26 +785,26 @@
         if (!dragMoved) return;
         rotation += (event.clientX - lastX) * 0.8;
         lastX = event.clientX;
-        event.preventDefault();
-      });
+        if (event.cancelable) event.preventDefault();
+      }, { capture: true, passive: false });
 
-      function stopDrag() {
-        if (!isDragging) return;
+      function stopDrag(event) {
+        if (!isDragging || (event && event.pointerId !== undefined && event.pointerId !== pointerId)) return;
         isDragging = false;
         if (dragMoved) suppressClickUntil = performance.now() + 450;
         pointerId = null;
         lastFrameTime = 0;
       }
 
-      scene.addEventListener("click", (event) => {
-        if (performance.now() > suppressClickUntil) return;
+      window.addEventListener("click", (event) => {
+        if (!scene.contains(event.target) || performance.now() > suppressClickUntil) return;
         event.preventDefault();
         event.stopPropagation();
         suppressClickUntil = 0;
       }, true);
 
-      scene.addEventListener("pointerup", stopDrag);
-      scene.addEventListener("pointercancel", stopDrag);
+      window.addEventListener("pointerup", stopDrag, true);
+      window.addEventListener("pointercancel", stopDrag, true);
       scene.addEventListener("lostpointercapture", stopDrag);
 
       function startAnimation() {
