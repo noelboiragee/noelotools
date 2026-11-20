@@ -15,7 +15,7 @@ const churchTaxInput = document.querySelector("#church-tax");
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
-  NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
+  NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€" },
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
@@ -84,7 +84,8 @@ function updateCountry() {
   const isItaly = countryInput.value === "IT";
   const isSpain = countryInput.value === "ES";
   const isNetherlands = countryInput.value === "NL";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands;
+  const isBelgium = countryInput.value === "BE";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -130,6 +131,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isBelgium) {
+    countryStatus.innerHTML = "<strong>Belgium model available</strong><span>2026 estimate for a single white-collar employee with no dependants; municipal tax and special social-security contribution excluded.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Employee social security (ONSS)", "Federal income tax after personal allowance", "Flat-rate professional expenses", "Personal tax allowance benefit", "Work bonus (if applicable)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Federal income tax per month";
+    resultLabels[2].textContent = "Employee social security per month";
+    document.querySelector(".model-link").textContent = "Belgium excludes municipal tax and the special social-security contribution because these depend on municipality and household circumstances. Holiday pay and year-end bonus are not included in the monthly salary input.";
+    calculateBelgium();
   } else if (isNetherlands) {
     countryStatus.innerHTML = "<strong>Netherlands model available</strong><span>2026 estimate for an employee below AOW age, one job, resident in the Netherlands, with general and labour tax credits applied.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly payroll tax and credit breakdown";
@@ -171,6 +181,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "IT") calculateItaly();
   else if (countryInput.value === "ES") calculateSpain();
   else if (countryInput.value === "NL") calculateNetherlands();
+  else if (countryInput.value === "BE") calculateBelgium();
 }
 
 function progressiveContribution(income, bands) {
@@ -185,6 +196,48 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateBelgium() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  // Standard white-collar employee social-security contribution; work-bonus reductions are applied where due.
+  const ordinaryMonthlyContribution = grossMonthly * 0.1307;
+  const partA = grossMonthly <= 2937.93 ? 127.54 : grossMonthly <= 3403.62
+    ? Math.max(0, 127.54 - 0.2739 * (grossMonthly - 2937.93)) : 0;
+  const partB = grossMonthly <= 2300.62 ? 171.99 : grossMonthly <= 2937.93
+    ? Math.max(0, 171.99 - 0.2699 * (grossMonthly - 2300.62)) : 0;
+  const workBonus = Math.min(ordinaryMonthlyContribution, partA + partB);
+  const monthlySocial = Math.max(0, ordinaryMonthlyContribution - workBonus);
+  const annualSocial = monthlySocial * 12;
+
+  // Flat-rate employee professional expenses: 30% of net professional income, capped at €6,070 for income year 2026.
+  const professionalExpenses = Math.min(6070, Math.max(0, annualGross - annualSocial) * 0.30);
+  const taxableIncome = Math.max(0, annualGross - annualSocial - professionalExpenses);
+  const federalTaxBeforeAllowance =
+    Math.min(taxableIncome, 16720) * 0.25 +
+    Math.max(0, Math.min(taxableIncome, 29510) - 16720) * 0.40 +
+    Math.max(0, Math.min(taxableIncome, 51070) - 29510) * 0.45 +
+    Math.max(0, taxableIncome - 51070) * 0.50;
+  // Basic personal tax allowance for income tax year 2026; tax benefit at the first-bracket rate.
+  const personalAllowanceBenefit = 11550 * 0.25;
+  const annualFederalTax = Math.max(0, federalTaxBeforeAllowance - personalAllowanceBenefit);
+  const monthlyTax = annualFederalTax / 12;
+  const netMonthly = grossMonthly - monthlySocial - monthlyTax;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.social.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.pension.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.unemployment.textContent = formatCurrency(professionalExpenses / 12, "EUR");
+  outputs.health.textContent = formatCurrency(personalAllowanceBenefit / 12, "EUR");
+  outputs.care.textContent = formatCurrency(workBonus, "EUR");
+  outputs.church.textContent = formatCurrency(0, "EUR");
 }
 
 function calculateNetherlands() {
