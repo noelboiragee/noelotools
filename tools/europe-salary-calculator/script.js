@@ -140,6 +140,24 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (countryInput.value === "JP") {
+    countryStatus.innerHTML = "<strong>Japan model available — Tokyo benchmark</strong><span>2026 resident employee estimate, under age 40, single, no dependants.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Employee pension insurance", "Health + child-support insurance", "Employment insurance", "Total employee social insurance", "Assumption: Tokyo, under age 40"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "National + local income tax per month";
+    resultLabels[2].textContent = "Employee social insurance per month";
+    document.querySelector(".model-link").textContent = "Japan 2026 estimate assumes Tokyo, under age 40, one employer and 12 equal salary payments. Uses the December 2026 revised employment-income deduction and basic deduction for the 2026 tax year. Social insurance is approximated from standard monthly pay rates and caps; bonuses, dependants, housing-loan credits and personal deductions are excluded.";
+    calculateJapan();
+  } else if (countryInput.value === "CN") {
+    countryStatus.innerHTML = "<strong>China model available — Shanghai benchmark</strong><span>2026/27 resident employee estimate using Shanghai social-insurance and housing-fund rates.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Employee pension insurance", "Employee unemployment insurance", "Employee medical insurance", "Housing provident fund", "Shanghai contribution-base assumption"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Individual income tax (IIT) per month";
+    resultLabels[2].textContent = "Employee social insurance + housing fund";
+    document.querySelector(".model-link").textContent = "China 2026/27 estimate uses Shanghai contribution-base limits and employee rates: pension 8%, medical 2% plus CNY 3, unemployment 0.5%, and housing fund 7%. It applies the annual CNY 60,000 basic deduction and national comprehensive-income tax scale. Special additional deductions, bonuses, and other cities' contribution rules are excluded.";
+    calculateChina();
   } else if (isArgentina) {
     countryStatus.innerHTML = "<strong>Argentina model available</strong><span>2026 annual Ganancias estimate for a resident single employee, no dependants; employee social-security cap uses November 2026 values.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -433,7 +451,7 @@ function calculateJapan() {
   for(const band of bands){if(taxableNational<=band.limit){nationalTax=band.base+Math.max(0,taxableNational-previous)*band.rate;break;}previous=band.limit;}
   nationalTax*=1.021; // 2.1% reconstruction special income tax
   const taxableLocal=Math.max(0,employmentIncome-annualSocial-430000);
-  const localTax=taxableLocal*0.10;
+  const localTax=taxableLocal*0.10+(annualGross>0?5000:0);
   const monthlyTax=(nationalTax+localTax)/12;
   const netMonthly=grossMonthly-monthlySocial-monthlyTax;
   outputs.net.textContent=formatCurrency(netMonthly,"JPY");
