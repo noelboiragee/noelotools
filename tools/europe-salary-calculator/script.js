@@ -19,7 +19,7 @@ const countryInfo = {
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£" },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
-  BR: { name: "Brazil", symbol: "R$" }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
+  BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
   MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
@@ -77,19 +77,90 @@ function clearGermanyResults() {
 function updateCountry() {
   const selected = countryInfo[countryInput.value];
   currencySymbol.textContent = selected.symbol;
-  const isGermany = selected.available === true;
+  const isGermany = countryInput.value === "DE";
+  const isBrazil = countryInput.value === "BR";
+  const isSupported = isGermany || isBrazil;
 
-  germanyOptions.hidden = !isGermany;
-  comingSoon.hidden = isGermany;
-  countryStatus.hidden = !isGermany;
+  germanyOptions.hidden = !isSupported;
+  document.querySelector("#germany-fields").hidden = !isGermany;
+  comingSoon.hidden = isSupported;
+  countryStatus.hidden = !isSupported;
 
   if (isGermany) {
-    countryStatus.innerHTML = "<strong>Germany model available</strong><span>2026 simplified estimate. Other 29 country models are being verified and are not enabled yet.</span>";
+    countryStatus.innerHTML = "<strong>Germany model available</strong><span>2026 simplified estimate. Single employee, no children, default region.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly contribution breakdown";
+    const labels = ["Pension insurance", "Unemployment insurance", "Health insurance", "Long-term care insurance", "Church tax"];
+    document.querySelectorAll(".breakdown > div span").forEach((el, i) => { el.textContent = labels[i]; el.parentElement.hidden = false; });
     calculateGermany();
+  } else if (isBrazil) {
+    countryStatus.innerHTML = "<strong>Brazil model available</strong><span>2026 estimate. Single employee, no dependants, simplified monthly deduction.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
+    const labels = ["INSS social security", "Income tax (IRPF)", "—", "—", "—"];
+    document.querySelectorAll(".breakdown > div span").forEach((el, i) => { el.textContent = labels[i]; el.parentElement.hidden = i > 1; });
+    calculateBrazil();
   } else {
     comingTitle.textContent = selected.name + " salary model is being prepared";
     clearGermanyResults();
   }
+}
+
+function calculateSelectedCountry() {
+  if (countryInput.value === "BR") calculateBrazil();
+  else if (countryInput.value === "DE") calculateGermany();
+}
+
+function progressiveContribution(income, bands) {
+  let remaining = Math.max(0, income);
+  let previous = 0;
+  let total = 0;
+  for (const band of bands) {
+    const taxable = Math.max(0, Math.min(remaining, band.limit - previous));
+    total += taxable * band.rate;
+    remaining -= taxable;
+    previous = band.limit;
+    if (remaining <= 0) break;
+  }
+  return total;
+}
+
+function calculateBrazil() {
+  const gross = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(gross) && gross >= 0 && gross <= 100000000;
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const inssBase = Math.min(gross, 8475.55);
+  const inss = progressiveContribution(inssBase, [
+    { limit: 1621.00, rate: 0.075 },
+    { limit: 2902.84, rate: 0.09 },
+    { limit: 4354.27, rate: 0.12 },
+    { limit: 8475.55, rate: 0.14 }
+  ]);
+
+  const simplifiedDeduction = Math.min(607.20, Math.max(0, gross - inss));
+  const taxBase = Math.max(0, gross - inss - simplifiedDeduction);
+  let irpf = 0;
+  if (taxBase > 2428.80 && taxBase <= 2826.65) irpf = taxBase * 0.075 - 182.16;
+  else if (taxBase <= 3751.05 && taxBase > 2826.65) irpf = taxBase * 0.15 - 394.16;
+  else if (taxBase <= 4664.68 && taxBase > 3751.05) irpf = taxBase * 0.225 - 675.49;
+  else if (taxBase > 4664.68) irpf = taxBase * 0.275 - 908.73;
+  irpf = Math.max(0, irpf);
+
+  let taxReduction = 0;
+  if (gross <= 5000) taxReduction = Math.min(irpf, 312.89);
+  else if (gross <= 7350) taxReduction = Math.min(irpf, Math.max(0, 978.62 - 0.133145 * gross));
+  irpf = Math.max(0, irpf - taxReduction);
+
+  outputs.net.textContent = formatCurrency(gross - inss - irpf, "BRL");
+  outputs.tax.textContent = formatCurrency(irpf, "BRL");
+  outputs.social.textContent = formatCurrency(inss, "BRL");
+  outputs.pension.textContent = formatCurrency(inss, "BRL");
+  outputs.unemployment.textContent = formatCurrency(0, "BRL");
+  outputs.health.textContent = formatCurrency(0, "BRL");
+  outputs.care.textContent = formatCurrency(0, "BRL");
+  outputs.church.textContent = formatCurrency(0, "BRL");
+  document.querySelector(".results .result-item:nth-child(2) span").textContent = "Monthly income tax (IRPF)";
+  document.querySelector(".results .result-item:nth-child(3) span").textContent = "INSS contribution";
 }
 
 function calculateGermany() {
@@ -148,8 +219,8 @@ function calculateGermany() {
 
 countryInput.addEventListener("change", updateCountry);
 [grossInput, healthExtraInput, childStatusInput, stateInput, churchTaxInput].forEach((input) => {
-  input.addEventListener("input", calculateGermany);
-  input.addEventListener("change", calculateGermany);
+  input.addEventListener("input", calculateSelectedCountry);
+  input.addEventListener("change", calculateSelectedCountry);
 });
 
 document.querySelector("#reset-button").addEventListener("click", () => {
