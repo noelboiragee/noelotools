@@ -16,7 +16,7 @@ const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
   NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
-  PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
+  PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€", currency: "EUR", available: true }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
@@ -87,7 +87,8 @@ function updateCountry() {
   const isBelgium = countryInput.value === "BE";
   const isIreland = countryInput.value === "IE";
   const isPortugal = countryInput.value === "PT";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal;
+  const isAustria = countryInput.value === "AT";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -133,6 +134,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isAustria) {
+    countryStatus.innerHTML = "<strong>Austria model available</strong><span>2026 estimate for a standard employee outside Vienna, no children, no 13th/14th salary payments.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Employee social insurance", "Income tax after employee credits", "Taxable income after deductions", "Standard employee tax credit", "Low-income tax-credit supplement"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "Employee social insurance per month";
+    document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
+    calculateAustria();
   } else if (isPortugal) {
     countryStatus.innerHTML = "<strong>Portugal model available</strong><span>2026 estimate for a single mainland resident employee, no dependants, no additional personal expense credits.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -204,6 +214,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "BE") calculateBelgium();
   else if (countryInput.value === "IE") calculateIreland();
   else if (countryInput.value === "PT") calculatePortugal();
+  else if (countryInput.value === "AT") calculateAustria();
 }
 
 function progressiveContribution(income, bands) {
@@ -218,6 +229,48 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateAustria() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const monthlyContributionBase = Math.min(grossMonthly, 6930);
+  const unemploymentRate = grossMonthly <= 2225 ? 0 : grossMonthly <= 2427 ? 0.01 : grossMonthly <= 2630 ? 0.02 : 0.0295;
+  const employeeSocialRate = 0.0387 + 0.1025 + 0.005 + 0.005 + unemploymentRate;
+  const monthlySocial = grossMonthly <= 551.10 ? 0 : monthlyContributionBase * employeeSocialRate;
+  const annualSocial = monthlySocial * 12;
+
+  // Standard annual employee expense allowance and taxable income.
+  const taxableIncome = Math.max(0, annualGross - annualSocial - 132);
+  const annualTaxBeforeCredits =
+    Math.min(taxableIncome, 13539) * 0 +
+    Math.max(0, Math.min(taxableIncome, 21992) - 13539) * 0.20 +
+    Math.max(0, Math.min(taxableIncome, 36458) - 21992) * 0.30 +
+    Math.max(0, Math.min(taxableIncome, 70365) - 36458) * 0.40 +
+    Math.max(0, Math.min(taxableIncome, 104859) - 70365) * 0.48 +
+    Math.max(0, Math.min(taxableIncome, 1000000) - 104859) * 0.50 +
+    Math.max(0, taxableIncome - 1000000) * 0.55;
+
+  const standardEmployeeCredit = 496;
+  const lowIncomeCredit = taxableIncome <= 19761 ? 804 : taxableIncome < 30259
+    ? 804 * (30259 - taxableIncome) / (30259 - 19761) : 0;
+  const annualTax = Math.max(0, annualTaxBeforeCredits - standardEmployeeCredit - lowIncomeCredit);
+  const monthlyTax = annualTax / 12;
+  const netMonthly = grossMonthly - monthlySocial - monthlyTax;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.social.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.pension.textContent = formatCurrency(monthlySocial, "EUR");
+  outputs.unemployment.textContent = formatCurrency(taxableIncome / 12, "EUR");
+  outputs.health.textContent = formatCurrency(standardEmployeeCredit / 12, "EUR");
+  outputs.care.textContent = formatCurrency(lowIncomeCredit / 12, "EUR");
+  outputs.church.textContent = "Excluded";
 }
 
 function calculatePortugal() {
