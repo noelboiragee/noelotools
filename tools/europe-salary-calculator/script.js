@@ -24,7 +24,7 @@ const countryInfo = {
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
   MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹" }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$" },
-  NZ: { name: "New Zealand", symbol: "NZ$" }
+  NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
 
 const outputs = {
@@ -92,7 +92,7 @@ function updateCountry() {
   const isNorway = countryInput.value === "NO";
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden;
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -174,6 +174,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social insurance per month";
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
+  } else if (countryInput.value === "NZ") {
+    countryStatus.innerHTML = "<strong>New Zealand model available</strong><span>2026/27 PAYE estimate for a resident employee with one main job, no student loan, KiwiSaver or personal tax credits.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["PAYE income tax", "ACC earners’ levy", "Annual income tax calculation", "ACC maximum liable earnings", "Student loan and KiwiSaver (excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "PAYE income tax per month";
+    resultLabels[2].textContent = "ACC levy per month";
+    document.querySelector(".model-link").textContent = "New Zealand tax year 1 April 2026 to 31 March 2027. PAYE income tax uses the current progressive individual rates; the ACC earners’ levy is 1.75% on liable earnings up to NZ$156,641. Independent Earner Tax Credit, student loan, KiwiSaver and other personal adjustments are excluded.";
+    calculateNewZealand();
   } else if (isPortugal) {
     countryStatus.innerHTML = "<strong>Portugal model available</strong><span>2026 estimate for a single mainland resident employee, no dependants, no additional personal expense credits.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -249,6 +258,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "NO") calculateNorway();
   else if (countryInput.value === "DK") calculateDenmark();
   else if (countryInput.value === "SE") calculateSweden();
+  else if (countryInput.value === "NZ") calculateNewZealand();
 }
 
 function progressiveContribution(income, bands) {
@@ -263,6 +273,29 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateNewZealand() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const annualGross = grossMonthly * 12;
+  const brackets = [{limit:15600,rate:0.105},{limit:53500,rate:0.175},{limit:78100,rate:0.30},{limit:180000,rate:0.33},{limit:Infinity,rate:0.39}];
+  let previous = 0, annualTax = 0;
+  for (const bracket of brackets) { annualTax += Math.max(0, Math.min(annualGross, bracket.limit) - previous) * bracket.rate; previous = bracket.limit; if (annualGross <= bracket.limit) break; }
+  const accLevy = Math.min(annualGross, 156641) * 0.0175;
+  const monthlyTax = annualTax / 12, monthlyACC = accLevy / 12;
+  const netMonthly = grossMonthly - monthlyTax - monthlyACC;
+  outputs.net.textContent = formatCurrency(netMonthly, "NZD");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "NZD");
+  outputs.social.textContent = formatCurrency(monthlyACC, "NZD");
+  outputs.pension.textContent = formatCurrency(monthlyTax, "NZD");
+  outputs.unemployment.textContent = formatCurrency(monthlyACC, "NZD");
+  outputs.health.textContent = formatCurrency(annualGross / 12, "NZD");
+  outputs.care.textContent = formatCurrency(156641 / 12, "NZD");
+  outputs.church.textContent = "Excluded";
 }
 
 function calculateSweden() {
