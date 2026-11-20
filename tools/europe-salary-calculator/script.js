@@ -362,7 +362,7 @@ function calculateChina() {
   errorMessage.hidden = valid;
   if (!valid) { clearGermanyResults(); return; }
   // Shanghai 2026/27 social-insurance base: CNY 7,546–37,731 (July 2026 to June 2027).
-  const contributionBase=Math.min(Math.max(grossMonthly,7546),37731);
+  const contributionBase=grossMonthly===0?0:Math.min(Math.max(grossMonthly,7546),37731);
   const pension=contributionBase*0.08;
   const medical=contributionBase*0.02+3;
   const unemployment=contributionBase*0.005;
