@@ -108,7 +108,7 @@ function updateCountry() {
     const labels = ["Pension insurance", "Unemployment insurance", "Health insurance", "Long-term care insurance", "Church tax"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
     resultLabels[1].textContent = "Income tax per month";
-    resultLabels[2].textContent = "Employee social contributions";
+    resultLabels[2].textContent = "Employee payroll contributions (excluded)";
     document.querySelector(".model-link").textContent = "The Germany 2026 estimate is available in this International Salary Calculator. Brazil and UK models are also available.";
     calculateGermany();
   } else if (isFrance) {
@@ -319,6 +319,9 @@ function calculateIndia() {
   } else if (taxableIncome > 10000000 && taxableIncome <= 20000000) {
     const cap = Math.max(0, slabsTax(10000000) * 1.10 + (taxableIncome - 10000000) - taxAfterRebate);
     surcharge = Math.min(surcharge, cap);
+  } else if (taxableIncome > 20000000 && taxableIncome <= 50000000) {
+    const cap = Math.max(0, slabsTax(20000000) * 1.15 + (taxableIncome - 20000000) - taxAfterRebate);
+    surcharge = Math.min(surcharge, cap);
   }
   const cess = (taxAfterRebate + surcharge) * 0.04;
   const annualTotalTax = taxAfterRebate + surcharge + cess;
@@ -328,7 +331,7 @@ function calculateIndia() {
   const netMonthly = grossMonthly - monthlyTax;
   outputs.net.textContent = formatCurrency(netMonthly, "INR");
   outputs.tax.textContent = formatCurrency(monthlyTax, "INR");
-  outputs.social.textContent = "Not modelled";
+  outputs.social.textContent = "Excluded";
   outputs.pension.textContent = formatCurrency(standardDeduction / 12, "INR");
   outputs.unemployment.textContent = formatCurrency(monthlyRebate, "INR");
   outputs.health.textContent = formatCurrency(cess / 12, "INR");
