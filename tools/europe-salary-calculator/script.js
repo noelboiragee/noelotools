@@ -137,7 +137,7 @@ function calculateBrazil() {
     { limit: 8475.55, rate: 0.14 }
   ]);
 
-  const simplifiedDeduction = Math.min(607.20, Math.max(0, gross - inss));
+  const simplifiedDeduction = Math.min(607.20, Math.max(0, gross - inss) * 0.25);
   const taxBase = Math.max(0, gross - inss - simplifiedDeduction);
   let irpf = 0;
   if (taxBase > 2428.80 && taxBase <= 2826.65) irpf = taxBase * 0.075 - 182.16;
