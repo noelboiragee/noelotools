@@ -23,7 +23,7 @@ const countryInfo = {
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
   MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
-  IN: { name: "India", symbol: "₹" }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$" },
+  IN: { name: "India", symbol: "₹" }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
 
@@ -92,7 +92,7 @@ function updateCountry() {
   const isNorway = countryInput.value === "NO";
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ" || countryInput.value === "AU";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -174,6 +174,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social insurance per month";
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
+  } else if (countryInput.value === "AU") {
+    countryStatus.innerHTML = "<strong>Australia model available</strong><span>2026/27 resident employee estimate, single taxpayer, full tax-free threshold, no Medicare levy surcharge.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Resident income tax", "Medicare levy", "Tax-free threshold", "Medicare levy low-income reduction", "Superannuation (employer-paid, excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "Medicare levy per month";
+    document.querySelector(".model-link").textContent = "Australia financial year 1 July 2026 to 30 June 2027. Assumes an Australian tax resident with the full $18,200 tax-free threshold. Includes the 2% Medicare levy with the single low-income phase-in. Medicare levy surcharge, deductions, offsets and employer superannuation are excluded.";
+    calculateAustralia();
   } else if (countryInput.value === "NZ") {
     countryStatus.innerHTML = "<strong>New Zealand model available</strong><span>2026/27 PAYE estimate for a resident employee with one main job, no student loan, KiwiSaver or personal tax credits.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -259,6 +268,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "DK") calculateDenmark();
   else if (countryInput.value === "SE") calculateSweden();
   else if (countryInput.value === "NZ") calculateNewZealand();
+  else if (countryInput.value === "AU") calculateAustralia();
 }
 
 function progressiveContribution(income, bands) {
@@ -273,6 +283,34 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateAustralia() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const annualGross = grossMonthly * 12;
+  const annualIncomeTax =
+    Math.max(0, Math.min(annualGross, 45000) - 18200) * 0.15 +
+    Math.max(0, Math.min(annualGross, 135000) - 45000) * 0.30 +
+    Math.max(0, Math.min(annualGross, 190000) - 135000) * 0.37 +
+    Math.max(0, annualGross - 190000) * 0.45;
+  let annualMedicare = 0;
+  if (annualGross >= 35013) annualMedicare = annualGross * 0.02;
+  else if (annualGross > 28011) annualMedicare = (annualGross - 28011) * 0.10;
+  const monthlyTax = annualIncomeTax / 12;
+  const monthlyMedicare = annualMedicare / 12;
+  const netMonthly = grossMonthly - monthlyTax - monthlyMedicare;
+  outputs.net.textContent = formatCurrency(netMonthly, "AUD");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "AUD");
+  outputs.social.textContent = formatCurrency(monthlyMedicare, "AUD");
+  outputs.pension.textContent = formatCurrency(annualIncomeTax / 12, "AUD");
+  outputs.unemployment.textContent = formatCurrency(monthlyMedicare, "AUD");
+  outputs.health.textContent = formatCurrency(18200 / 12, "AUD");
+  outputs.care.textContent = formatCurrency(28011 / 12, "AUD");
+  outputs.church.textContent = "Employer-paid";
 }
 
 function calculateNewZealand() {
