@@ -74,7 +74,7 @@ function calculateVat() {
     vat = gross - net;
   }
 
-  netOutput.textContent = formatMoney(net);
+  if (![net, vat, gross].every(Number.isFinite)) {\n    errorMessage.textContent = "The result is outside the supported numeric range.";\n    errorMessage.hidden = false;\n    netOutput.textContent = vatOutput.textContent = grossOutput.textContent = "—";\n    return;\n  }\n\n  netOutput.textContent = formatMoney(net);
   vatOutput.textContent = formatMoney(vat);
   grossOutput.textContent = formatMoney(gross);
 }
