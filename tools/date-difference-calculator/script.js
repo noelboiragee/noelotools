@@ -11,7 +11,7 @@ function show(message, kind = "success") { out.textContent = message; out.datase
 $("#calculate").addEventListener("click", () => {
   let a = localDate(start.value), b = localDate(end.value);
   if (!a || !b) return show("Choose both dates from the calendar.", "error");
-  if (a > b) [a, b] = [b, a];
+  if (b < a) return show("End date must be on or after the start date.", "error");
   const startUtc = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
   const endUtc = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
   const days = Math.round((endUtc - startUtc) / 86400000) + (include.checked ? 1 : 0);
