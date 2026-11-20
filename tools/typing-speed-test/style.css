@@ -4,3 +4,8 @@
 .passage .incorrect{font-weight:700;text-decoration:underline wavy #c62828;text-decoration-thickness:2px;text-underline-offset:3px}
 [data-theme="dark"] .passage .correct{color:#b8f2c9;background:#123d2a;text-decoration-color:#b8f2c9}
 [data-theme="dark"] .passage .incorrect{color:#ffd0d0;background:#542323;text-decoration-color:#ffd0d0}
+
+/* Accessible typing feedback: correctness is not communicated by colour alone. */
+.passage .correct{ text-decoration: underline; text-decoration-style: solid; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.passage .incorrect{ text-decoration: underline double; text-decoration-thickness: 2px; }
+.passage .current{ outline: 2px solid var(--primary); outline-offset: 2px; }
