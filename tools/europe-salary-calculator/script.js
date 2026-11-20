@@ -15,7 +15,7 @@ const churchTaxInput = document.querySelector("#church-tax");
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
-  NL: { name: "Netherlands", symbol: "€" }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
+  NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
@@ -83,7 +83,8 @@ function updateCountry() {
   const isUK = countryInput.value === "GB";
   const isItaly = countryInput.value === "IT";
   const isSpain = countryInput.value === "ES";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain;
+  const isNetherlands = countryInput.value === "NL";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -129,6 +130,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isNetherlands) {
+    countryStatus.innerHTML = "<strong>Netherlands model available</strong><span>2026 estimate for an employee below AOW age, one job, resident in the Netherlands, with general and labour tax credits applied.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly payroll tax and credit breakdown";
+    const labels = ["Payroll tax after credits", "General tax credit", "Labour tax credit", "Employer Zvw contribution (not deducted)", "Private health insurance (excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Payroll tax & national insurance per month";
+    resultLabels[2].textContent = "Separate employee social contributions";
+    document.querySelector(".model-link").textContent = "Dutch national insurance premiums are included in the first Box 1 tax bracket. The employer normally pays the income-related Zvw contribution; private basic health insurance is paid separately and is not deducted here.";
+    calculateNetherlands();
   } else if (isItaly) {
     countryStatus.innerHTML = "<strong>Italy model available</strong><span>2026 estimate. Standard private-sector employee, one employment income, no dependants; regional and municipal surcharges excluded.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
@@ -160,6 +170,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "GB") calculateUK();
   else if (countryInput.value === "IT") calculateItaly();
   else if (countryInput.value === "ES") calculateSpain();
+  else if (countryInput.value === "NL") calculateNetherlands();
 }
 
 function progressiveContribution(income, bands) {
@@ -174,6 +185,42 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateNetherlands() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualIncome = grossMonthly * 12;
+  // 2026 Box 1 rates for a person below AOW age: income tax plus national insurance.
+  const box1Tax =
+    Math.min(annualIncome, 38883) * 0.3575 +
+    Math.max(0, Math.min(annualIncome, 78426) - 38883) * 0.3756 +
+    Math.max(0, annualIncome - 78426) * 0.495;
+
+  const generalCredit = annualIncome <= 29736 ? 3115 : annualIncome < 78426
+    ? Math.max(0, 3115 - 0.06398 * (annualIncome - 29736)) : 0;
+
+  let labourCredit = 0;
+  if (annualIncome <= 11965) labourCredit = annualIncome * 0.08324;
+  else if (annualIncome <= 25845) labourCredit = 996 + (annualIncome - 11965) * 0.31009;
+  else if (annualIncome <= 45592) labourCredit = 5300 + (annualIncome - 25845) * 0.01950;
+  else if (annualIncome <= 132920) labourCredit = 5685 - (annualIncome - 45592) * 0.06510;
+  labourCredit = Math.max(0, labourCredit);
+
+  const annualPayrollTax = Math.max(0, box1Tax - generalCredit - labourCredit);
+  const monthlyPayrollTax = annualPayrollTax / 12;
+  outputs.net.textContent = formatCurrency(grossMonthly - monthlyPayrollTax, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyPayrollTax, "EUR");
+  outputs.social.textContent = "Included above";
+  outputs.pension.textContent = formatCurrency(monthlyPayrollTax, "EUR");
+  outputs.unemployment.textContent = formatCurrency(generalCredit / 12, "EUR");
+  outputs.health.textContent = formatCurrency(labourCredit / 12, "EUR");
+  outputs.care.textContent = "Not deducted";
+  outputs.church.textContent = "Excluded";
 }
 
 function calculateSpain() {
