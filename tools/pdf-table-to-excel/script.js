@@ -171,14 +171,14 @@
     return state.table.map(function (row) {
       return row.map(function (cell) {
         var value = String(cell);
-        if (/^[\s]*[=+\-@]/.test(value)) return safeCell(value);
-        if (el.numbers.value === 'text') return value;
-        var normalized = el.numbers.value === 'eu'
-          ? value.replace(/\./g, '').replace(',', '.')
-          : value.replace(/,/g, '');
-        if (/^[-+]?(?:\d+\.?\d*|\.\d+)$/.test(normalized) && normalized !== '' &&
-            !/^0\d+/.test(normalized)) return Number(normalized);
-        return value;
+        if (el.numbers.value !== 'text') {
+          var normalized = el.numbers.value === 'eu'
+            ? value.replace(/\./g, '').replace(',', '.')
+            : value.replace(/,/g, '');
+          if (/^[-+]?(?:\d+\.?\d*|\.\d+)$/.test(normalized) && normalized !== '' &&
+              !/^0\d+/.test(normalized)) return Number(normalized);
+        }
+        return safeCell(value);
       });
     });
   }
