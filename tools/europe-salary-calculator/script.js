@@ -21,7 +21,7 @@ const countryInfo = {
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
-  UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$" },
+  UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
   MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
@@ -93,7 +93,7 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -184,6 +184,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social insurance per month";
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
+  } else if (countryInput.value === "CA") {
+    countryStatus.innerHTML = "<strong>Canada model available</strong><span>2026 Ontario resident employee estimate; single filer, standard basic personal credits.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Federal + Ontario income tax", "Canada Pension Plan (CPP / CPP2)", "Employment Insurance (EI)", "Ontario Health Premium", "Other province tax rules (not applicable)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Federal + Ontario income tax per month";
+    resultLabels[2].textContent = "CPP + EI per month";
+    document.querySelector(".model-link").textContent = "Canada 2026 estimate assumes Ontario residence, single employee, basic personal credits and employment income only. CPP/CPP2 and EI are capped at their 2026 annual limits. Other provinces and Quebec have different tax and payroll rules.";
+    calculateCanada();
   } else if (countryInput.value === "US") {
     countryStatus.innerHTML = "<strong>United States model available</strong><span>2026 federal estimate for a single filer; state and local income taxes are not included.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -300,6 +309,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "AU") calculateAustralia();
   else if (countryInput.value === "IN") calculateIndia();
   else if (countryInput.value === "US") calculateUnitedStates();
+  else if (countryInput.value === "CA") calculateCanada();
 }
 
 function progressiveContribution(income, bands) {
@@ -314,6 +324,50 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateCanada() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const gross = grossMonthly * 12;
+  const cppBaseEarnings = Math.max(0, Math.min(gross, 74600) - 3500);
+  const cppBase = cppBaseEarnings * 0.0495;
+  const cppFirstAdditional = cppBaseEarnings * 0.01;
+  const cppSecondAdditional = Math.max(0, Math.min(gross, 85000) - 74600) * 0.04;
+  const cpp = cppBase + cppFirstAdditional + cppSecondAdditional;
+  const ei = Math.min(gross, 68900) * 0.0163;
+  const taxable = Math.max(0, gross - cppFirstAdditional - cppSecondAdditional);
+  const federalBands = [{limit:58523,rate:0.14},{limit:117045,rate:0.205},{limit:181440,rate:0.26},{limit:258482,rate:0.29},{limit:Infinity,rate:0.33}];
+  const ontarioBands = [{limit:53891,rate:0.0505},{limit:107785,rate:0.0915},{limit:150000,rate:0.1116},{limit:220000,rate:0.1216},{limit:Infinity,rate:0.1316}];
+  const progressive = (income,bands) => { let prev=0,total=0; for(const band of bands){total+=Math.max(0,Math.min(income,band.limit)-prev)*band.rate;prev=band.limit;if(income<=band.limit)break;} return total; };
+  const federalBPA = taxable <= 181440 ? 16452 : taxable >= 258482 ? 14829 : 16452 - (16452-14829)*(taxable-181440)/(258482-181440);
+  const federalTax = Math.max(0,progressive(taxable,federalBands)-federalBPA*0.14-Math.min(gross,1501)*0.14-cppBase*0.14-ei*0.14);
+  const ontarioBasicTax = progressive(taxable,ontarioBands);
+  let ontarioTax = Math.max(0,ontarioBasicTax-12989*0.0505);
+  const ontarioSurtax = Math.max(0,ontarioTax-5818)*0.20 + Math.max(0,ontarioTax-7446)*0.36;
+  ontarioTax += ontarioSurtax;
+  const reduction = ontarioTax < 600 ? Math.min(ontarioTax,Math.max(0,600-ontarioTax)) : 0;
+  ontarioTax = Math.max(0,ontarioTax-reduction);
+  let healthPremium = 0;
+  if(taxable>20000) healthPremium=Math.min(300,(taxable-20000)*0.06);
+  if(taxable>36000) healthPremium=Math.max(healthPremium,Math.min(450,300+(taxable-36000)*0.06));
+  if(taxable>48000) healthPremium=Math.max(healthPremium,Math.min(600,450+(taxable-48000)*0.25));
+  if(taxable>72000) healthPremium=Math.max(healthPremium,Math.min(750,600+(taxable-72000)*0.25));
+  if(taxable>200000) healthPremium=Math.max(healthPremium,Math.min(900,750+(taxable-200000)*0.25));
+  const annualTax = federalTax + ontarioTax + healthPremium;
+  const monthlyTax=annualTax/12, monthlyCPP=cpp/12, monthlyEI=ei/12;
+  const netMonthly=grossMonthly-monthlyTax-monthlyCPP-monthlyEI;
+  outputs.net.textContent=formatCurrency(netMonthly,"CAD");
+  outputs.tax.textContent=formatCurrency(monthlyTax,"CAD");
+  outputs.social.textContent=formatCurrency(monthlyCPP+monthlyEI,"CAD");
+  outputs.pension.textContent=formatCurrency(monthlyCPP,"CAD");
+  outputs.unemployment.textContent=formatCurrency(monthlyEI,"CAD");
+  outputs.health.textContent=formatCurrency(healthPremium/12,"CAD");
+  outputs.care.textContent=formatCurrency(ontarioSurtax/12,"CAD");
+  outputs.church.textContent="Ontario estimate";
 }
 
 function calculateUnitedStates() {
