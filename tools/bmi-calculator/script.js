@@ -8,7 +8,7 @@ const bmiValue = document.querySelector("#bmi-value");
 const bmiCategory = document.querySelector("#bmi-category");
 const resetButton = document.querySelector("#reset-button");
 
-function getAdultCategory(bmi) {
+function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }\n\nfunction getAdultCategory(bmi) {
   if (bmi < 18.5) return "Underweight range";
   if (bmi < 25) return "Healthy-weight range";
   if (bmi < 30) return "Overweight range";
@@ -20,8 +20,8 @@ form.addEventListener("submit", (event) => {
   errorOutput.textContent = "";
   resultPanel.hidden = true;
 
-  const heightCm = Number(heightInput.value);
-  const weightKg = Number(weightInput.value);
+  const heightCm = parseDecimal(heightInput.value);
+  const weightKg = parseDecimal(weightInput.value);
 
   if (!heightInput.value || !weightInput.value || !Number.isFinite(heightCm) || !Number.isFinite(weightKg)) {
     errorOutput.textContent = "Enter both height and weight to calculate BMI.";
