@@ -693,3 +693,13 @@
 .theme-toggle .theme-icon { display: none; }
 html[data-theme="light"] .theme-toggle .theme-icon-sun { display: block; }
 html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
+
+/* WCAG AA: white text remains high-contrast on primary buttons in both themes. */
+.button-primary {
+  color: #ffffff;
+  background: var(--primary-dark);
+}
+.button-primary:hover {
+  color: #ffffff;
+  background: var(--primary-dark);
+}
