@@ -7,7 +7,7 @@ const size = (n) => n < 1024 ? n + " B" : (n / 1024).toFixed(1) + " KB";
 function message(text, kind = "success") { result.textContent = text; result.dataset.kind = kind; result.hidden = false; }
 function clearUrl(url) { if (url) URL.revokeObjectURL(url); }
 function updateQuality() {
-  $("#qv").value = quality.value;
+  $("#qv").textContent = Math.round(Number(quality.value) * 100) + "%";
   quality.disabled = format.value === "image/png";
 }
 quality.addEventListener("input", updateQuality);
@@ -45,7 +45,7 @@ $("#calculate").addEventListener("click", () => {
       $("#after-size").textContent = "Output: " + size(blob.size);
       download.disabled = false;
       const change = ((1 - blob.size / file.size) * 100).toFixed(1);
-      message(`Processed in your browser. File size change: ${change}%.`);
+      message(`Processed in your browser. File size change: ${change}%. Metadata such as EXIF data is not preserved.`);
     }, format.value, Number(quality.value));
     clearUrl(image.src.startsWith("blob:") ? image.src : null);
   };
