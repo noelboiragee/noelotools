@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
   let sha: string | undefined;
   if (existing.ok) { const current = await existing.json(); sha = current.sha; }
   else if (existing.status !== 404) return json({ error: "Could not inspect target file", status: existing.status }, 502);
-  const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(content)));
+  const bytes = new TextEncoder().encode(content);\n  let binary = "";\n  const chunkSize = 0x8000;\n  for (let offset = 0; offset < bytes.length; offset += chunkSize) {\n    binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));\n  }\n  const encoded = btoa(binary);
   const response = await fetch(endpoint, { method: "PUT", headers: { ...ghHeaders, "Content-Type": "application/json" }, body: JSON.stringify({ message: input.message || `Admin publish: update ${path}`, content: encoded, branch, ...(sha ? { sha } : {}) }) });
   const result = await response.json();
   if (!response.ok) return json({ error: "GitHub rejected the publish request", details: result.message || response.status }, 502);
