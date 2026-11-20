@@ -14,7 +14,7 @@ const churchTaxInput = document.querySelector("#church-tax");
 
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
-  FR: { name: "France", symbol: "€" }, IT: { name: "Italy", symbol: "€" }, ES: { name: "Spain", symbol: "€" },
+  FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€" }, ES: { name: "Spain", symbol: "€" },
   NL: { name: "Netherlands", symbol: "€" }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
@@ -78,9 +78,10 @@ function updateCountry() {
   const selected = countryInfo[countryInput.value];
   currencySymbol.textContent = selected.symbol;
   const isGermany = countryInput.value === "DE";
+  const isFrance = countryInput.value === "FR";
   const isBrazil = countryInput.value === "BR";
   const isUK = countryInput.value === "GB";
-  const isSupported = isGermany || isBrazil || isUK;
+  const isSupported = isGermany || isFrance || isBrazil || isUK;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -99,6 +100,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social contributions";
     document.querySelector(".model-link").textContent = "The Germany 2026 estimate is available in this International Salary Calculator. Brazil and UK models are also available.";
     calculateGermany();
+  } else if (isFrance) {
+    countryStatus.innerHTML = "<strong>France model available</strong><span>Indicative 2026 estimate. Single employee, one tax share, standard private-sector non-managerial payroll.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deductions";
+    const labels = ["Basic pension", "Supplementary pension", "CSG", "CRDS", "Other deductions"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i === 4; });
+    resultLabels[1].textContent = "Estimated income tax per month";
+    resultLabels[2].textContent = "Employee social contributions";
+    document.querySelector(".model-link").textContent = "France is an indicative estimate using published employee contribution rates and the 2026 published tax scale. Actual payroll withholding may differ.";
+    calculateFrance();
   } else if (isBrazil) {
     countryStatus.innerHTML = "<strong>Brazil model available</strong><span>2026 estimate. Single employee, no dependants, simplified monthly deduction.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
@@ -125,6 +135,7 @@ function updateCountry() {
 
 function calculateSelectedCountry() {
   if (countryInput.value === "BR") calculateBrazil();
+  else if (countryInput.value === "FR") calculateFrance();
   else if (countryInput.value === "DE") calculateGermany();
   else if (countryInput.value === "GB") calculateUK();
 }
@@ -141,6 +152,53 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateFrance() {
+  const gross = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" &&
+    Number.isFinite(gross) && gross >= 0 && gross <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  // 2026 employee contribution rates from CLEISS; standard non-managerial assumption.
+  const cappedBase = Math.min(gross, 4005);
+  const supplementaryUpperBase = Math.max(0, Math.min(gross, 32040) - 4005);
+  const basicPension = cappedBase * 0.069 + gross * 0.004;
+  const supplementaryPension =
+    cappedBase * (0.0315 + 0.0086) +
+    supplementaryUpperBase * (0.0864 + 0.0108);
+
+  const csgBase = Math.min(gross, 4005 * 4) * 0.9825 + Math.max(0, gross - 4005 * 4);
+  const csg = csgBase * 0.092;
+  const crds = csgBase * 0.005;
+  const employeeSocial = basicPension + supplementaryPension + csg + crds;
+
+  // Deductible CSG is 6.8%; CRDS and the remaining CSG are not deductible.
+  const deductibleCsg = csgBase * 0.068;
+  const annualNetTaxableBeforeAllowance =
+    Math.max(0, (gross - basicPension - supplementaryPension - deductibleCsg) * 12);
+  const professionalAllowance = Math.min(14555, Math.max(509, annualNetTaxableBeforeAllowance * 0.10));
+  const taxableAnnual = Math.max(0, annualNetTaxableBeforeAllowance - professionalAllowance);
+
+  // Published 2026 progressive scale (one tax share).
+  const taxAnnual =
+    Math.max(0, Math.min(taxableAnnual, 29579) - 11600) * 0.11 +
+    Math.max(0, Math.min(taxableAnnual, 84577) - 29579) * 0.30 +
+    Math.max(0, Math.min(taxableAnnual, 181917) - 84577) * 0.41 +
+    Math.max(0, taxableAnnual - 181917) * 0.45;
+  const monthlyIncomeTax = taxAnnual / 12;
+  const net = gross - employeeSocial - monthlyIncomeTax;
+
+  outputs.net.textContent = formatCurrency(net, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyIncomeTax, "EUR");
+  outputs.social.textContent = formatCurrency(employeeSocial, "EUR");
+  outputs.pension.textContent = formatCurrency(basicPension, "EUR");
+  outputs.unemployment.textContent = formatCurrency(supplementaryPension, "EUR");
+  outputs.health.textContent = formatCurrency(csg, "EUR");
+  outputs.care.textContent = formatCurrency(crds, "EUR");
+  outputs.church.textContent = formatCurrency(0, "EUR");
 }
 
 function calculateBrazil() {
