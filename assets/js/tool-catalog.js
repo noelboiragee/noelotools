@@ -35,7 +35,8 @@ function createToolCard(tool, popular = false) {
   card.dataset.description = [tool.description, card.dataset.categoryLabel, ...(tool.keywords || [])].join(" ");
   if (!popular) card.dataset.toolCard = "";
 
-  // PDF cards use their catalogue emoji icons for reliable rendering across browsers.\n  const icon = ["merge-pdf", "compress-pdf"].includes(tool.id) ? null : createToolIconForId(tool.id, "tool-card-icon-svg");
+  // PDF cards use their catalogue emoji icons for reliable rendering across browsers.
+  const icon = ["merge-pdf", "compress-pdf"].includes(tool.id) ? null : createToolIconForId(tool.id, "tool-card-icon-svg");
   if (!icon) {
     const fallbackIcon = document.createElement("span");
     fallbackIcon.className = "tool-card-icon";
