@@ -25,6 +25,7 @@ function createThemeIcon(isDark) {
 }
 
 function ensureThemeIcon(toggle, isDark) {
+  toggle.querySelectorAll(".theme-icon").forEach((oldIcon) => oldIcon.remove());
   let icon = toggle.querySelector(".theme-toggle-icon");
   if (!icon) {
     icon = document.createElement("span");
@@ -33,14 +34,17 @@ function ensureThemeIcon(toggle, isDark) {
     toggle.prepend(icon);
   }
   icon.replaceChildren(createThemeIcon(isDark));
-  const label = isDark ? "Light mode" : "Dark mode";
-  let text = toggle.querySelector("[data-theme-label]");
-  if (!text) {
-    text = document.createElement("span");
-    text.setAttribute("data-theme-label", "");
-    toggle.append(text);
+
+  // Homepage keeps its compact icon-only control; tool pages retain a text label on desktop.
+  if (!toggle.classList.contains("icon-button")) {
+    let text = toggle.querySelector("[data-theme-label]");
+    if (!text) {
+      text = document.createElement("span");
+      text.setAttribute("data-theme-label", "");
+      toggle.append(text);
+    }
+    text.textContent = isDark ? "Light mode" : "Dark mode";
   }
-  text.textContent = label;
 }
 
 function applyTheme(theme) {
