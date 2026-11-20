@@ -19,7 +19,8 @@ const currencyLocales = {
   BDT: "en-BD"
 };
 
-function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }\nfunction formatMoney(value) {
+function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }
+function formatMoney(value) {
   const currency = currencyInput.value;
   try {
     return new Intl.NumberFormat(currencyLocales[currency] || "en", {
