@@ -17,7 +17,7 @@ const countryInfo = {
   FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€", currency: "EUR", available: true },
   NL: { name: "Netherlands", symbol: "€", currency: "EUR", available: true }, BE: { name: "Belgium", symbol: "€", currency: "EUR", available: true }, IE: { name: "Ireland", symbol: "€", currency: "EUR", available: true },
   PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€", currency: "EUR", available: true }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
-  CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
+  CH: { name: "Switzerland", symbol: "CHF", currency: "CHF", available: true }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
@@ -47,7 +47,7 @@ const LIMITS = {
 function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }
 
 function formatCurrency(value, currency = "EUR") {
-  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : currency === "SEK" ? "sv-SE" : "en";
+  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : currency === "SEK" ? "sv-SE" : currency === "CHF" ? "de-CH" : "en";
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -92,7 +92,8 @@ function updateCountry() {
   const isNorway = countryInput.value === "NO";
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US";
+  const isSwitzerland = countryInput.value === "CH";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -138,6 +139,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isSwitzerland) {
+    countryStatus.innerHTML = "<strong>Switzerland model available — Zurich benchmark</strong><span>2026 estimate for a single employee in Zurich city, no church tax, using standard payroll deductions.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["AHV/IV/EO + ALV + accident + pension", "Federal income tax", "Zurich cantonal and city tax", "Work-expense deductions", "Insurance-premium tax deductions"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Federal + Zurich income tax per month";
+    resultLabels[2].textContent = "Employee social contributions per month";
+    document.querySelector(".model-link").textContent = "Swiss tax varies substantially by canton and municipality. This model uses Zurich city (2026 cantonal multiplier 95%, municipal multiplier 119%) and is not a nationwide average. Occupational pension and accident premiums vary by employer and plan.";
+    calculateSwitzerland();
   } else if (isSweden) {
     countryStatus.innerHTML = "<strong>Sweden model available</strong><span>2026 estimate for a working-age resident employee using the national-average municipal tax rate.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee tax breakdown";
@@ -285,6 +295,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "NO") calculateNorway();
   else if (countryInput.value === "DK") calculateDenmark();
   else if (countryInput.value === "SE") calculateSweden();
+  else if (countryInput.value === "CH") calculateSwitzerland();
   else if (countryInput.value === "NZ") calculateNewZealand();
   else if (countryInput.value === "AU") calculateAustralia();
   else if (countryInput.value === "IN") calculateIndia();
@@ -435,6 +446,72 @@ function calculateNewZealand() {
   outputs.unemployment.textContent = formatCurrency(monthlyACC, "NZD");
   outputs.health.textContent = formatCurrency(annualGross / 12, "NZD");
   outputs.care.textContent = formatCurrency(156641 / 12, "NZD");
+  outputs.church.textContent = "Excluded";
+}
+
+function calculateSwitzerland() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const ahvIvEo = annualGross * 0.053;
+  const alv = Math.min(annualGross, 148200) * 0.011;
+  const accidentInsurance = Math.min(annualGross, 148200) * 0.01;
+  const coordinatedSalary = Math.min(Math.max(0, annualGross - 26460), 90720 - 26460);
+  const pensionFund = coordinatedSalary * 0.065;
+  const annualSocial = ahvIvEo + alv + accidentInsurance + pensionFund;
+
+  const federalWorkExpenses = Math.min(4000, Math.max(2000, Math.max(0, annualGross - ahvIvEo - alv - pensionFund) * 0.03));
+  const cantonalWorkExpenses = Math.min(12400, Math.max(6600, annualGross * 0.10));
+  const federalTaxableIncome = Math.max(0, annualGross - annualSocial - federalWorkExpenses - 1800);
+  const cantonalTaxableIncome = Math.max(0, annualGross - annualSocial - cantonalWorkExpenses - 2900);
+
+  const federalBrackets = [
+    { limit: 15200, rate: 0 }, { limit: 33200, rate: 0.0077 },
+    { limit: 43500, rate: 0.0088 }, { limit: 58000, rate: 0.0264 },
+    { limit: 76200, rate: 0.0297 }, { limit: 82100, rate: 0.0594 },
+    { limit: 108900, rate: 0.066 }, { limit: 141500, rate: 0.088 },
+    { limit: 185100, rate: 0.11 }, { limit: 793900, rate: 0.132 },
+    { limit: Infinity, rate: 0.115 }
+  ];
+  let federalTax = 0;
+  let previous = 0;
+  for (const bracket of federalBrackets) {
+    federalTax += Math.max(0, Math.min(federalTaxableIncome, bracket.limit) - previous) * bracket.rate;
+    previous = bracket.limit;
+    if (federalTaxableIncome <= bracket.limit) break;
+  }
+
+  // Zurich 2026 single-person tariff after the official 1.3% inflation adjustment.
+  const zurichBrackets = [
+    [6900, 0], [11800, 0.02], [16600, 0.03], [24500, 0.04],
+    [34100, 0.05], [45100, 0.06], [58000, 0.07], [75400, 0.08],
+    [109000, 0.09], [142200, 0.10], [194900, 0.11], [263300, 0.12],
+    [Infinity, 0.13]
+  ];
+  let zurichBasicTax = 0;
+  previous = 0;
+  for (const [limit, rate] of zurichBrackets) {
+    zurichBasicTax += Math.max(0, Math.min(cantonalTaxableIncome, limit) - previous) * rate;
+    previous = limit;
+    if (cantonalTaxableIncome <= limit) break;
+  }
+  const zurichCantonalAndMunicipalTax = zurichBasicTax * 2.14;
+  const annualTax = federalTax + zurichCantonalAndMunicipalTax;
+  const monthlySocial = annualSocial / 12;
+  const monthlyTax = annualTax / 12;
+  const netMonthly = grossMonthly - monthlySocial - monthlyTax;
+
+  outputs.net.textContent = formatCurrency(netMonthly, "CHF");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "CHF");
+  outputs.social.textContent = formatCurrency(monthlySocial, "CHF");
+  outputs.pension.textContent = formatCurrency(federalTax / 12, "CHF");
+  outputs.unemployment.textContent = formatCurrency(zurichCantonalAndMunicipalTax / 12, "CHF");
+  outputs.health.textContent = formatCurrency((federalWorkExpenses + cantonalWorkExpenses) / 12, "CHF");
+  outputs.care.textContent = formatCurrency((1800 + 2900) / 12, "CHF");
   outputs.church.textContent = "Excluded";
 }
 
