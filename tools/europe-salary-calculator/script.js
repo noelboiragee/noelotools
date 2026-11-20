@@ -134,7 +134,7 @@ function updateCountry() {
   } else if (isBelgium) {
     countryStatus.innerHTML = "<strong>Belgium model available</strong><span>2026 estimate for a single white-collar employee with no dependants; municipal tax and special social-security contribution excluded.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
-    const labels = ["Employee social security (ONSS)", "Federal income tax after personal allowance", "Flat-rate professional expenses", "Personal tax allowance benefit", "Work bonus (if applicable)"];
+    const labels = ["Employee social security (ONSS)", "Flat-rate professional expenses", "Personal tax allowance benefit", "Work bonus (if applicable)", "Municipal and special social charges (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
     resultLabels[1].textContent = "Federal income tax per month";
     resultLabels[2].textContent = "Employee social security per month";
@@ -225,7 +225,7 @@ function calculateBelgium() {
     Math.max(0, Math.min(taxableIncome, 51070) - 29510) * 0.45 +
     Math.max(0, taxableIncome - 51070) * 0.50;
   // Basic personal tax allowance for income tax year 2026; tax benefit at the first-bracket rate.
-  const personalAllowanceBenefit = 11550 * 0.25;
+  const personalAllowanceBenefit = Math.min(federalTaxBeforeAllowance, 11550 * 0.25);
   const annualFederalTax = Math.max(0, federalTaxBeforeAllowance - personalAllowanceBenefit);
   const monthlyTax = annualFederalTax / 12;
   const netMonthly = grossMonthly - monthlySocial - monthlyTax;
@@ -237,7 +237,7 @@ function calculateBelgium() {
   outputs.unemployment.textContent = formatCurrency(professionalExpenses / 12, "EUR");
   outputs.health.textContent = formatCurrency(personalAllowanceBenefit / 12, "EUR");
   outputs.care.textContent = formatCurrency(workBonus, "EUR");
-  outputs.church.textContent = formatCurrency(0, "EUR");
+  outputs.church.textContent = "Excluded";
 }
 
 function calculateNetherlands() {
