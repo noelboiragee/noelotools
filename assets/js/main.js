@@ -8,18 +8,10 @@ import { initToolTitleIcons } from "./tool-title-icons.js";
 
 function initCategoryTheme() {
   const categoryMap = {
-    "pdf": "pdf",
-    "money & tax": "money-tax",
-    "money tax": "money-tax",
-    "media": "media",
-    "developer": "developer",
-    "writing": "writing",
-    "writing tool": "writing",
-    "health": "health",
-    "health & wellness": "health",
-    "math": "math",
-    "everyday": "everyday",
-    "everyday tools": "everyday",
+    "pdf": "pdf", "money & tax": "money-tax", "money tax": "money-tax",
+    "media": "media", "developer": "developer", "writing": "writing",
+    "writing tool": "writing", "health": "health", "health & wellness": "health",
+    "math": "math", "everyday": "everyday", "everyday tools": "everyday",
     "security tools": "developer"
   };
   const categoryLink = document.querySelector('.breadcrumbs a[href*="#categories"]');
@@ -36,24 +28,52 @@ function initCategoryTheme() {
   }
 }
 
+function createMenuIcon(isOpen) {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "22");
+  svg.setAttribute("height", "22");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  const path = document.createElementNS(ns, "path");
+  path.setAttribute("d", isOpen ? "M6 6l12 12M18 6 6 18" : "M4 6h16M4 12h16M4 18h16");
+  svg.append(path);
+  return svg;
+}
+
+function setMenuState(button, navigation, isOpen) {
+  button.setAttribute("aria-expanded", String(isOpen));
+  button.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  button.title = isOpen ? "Close menu" : "Open menu";
+  button.replaceChildren(createMenuIcon(isOpen));
+  navigation.classList.toggle("is-open", isOpen);
+}
+
 function initMobileNavigation() {
   const menuButton = document.querySelector("[data-menu-toggle]");
   const navigation = document.querySelector("[data-primary-nav]");
   if (!menuButton || !navigation) return;
+  menuButton.classList.add("menu-toggle");
+  setMenuState(menuButton, navigation, false);
   menuButton.addEventListener("click", () => {
     const isOpen = menuButton.getAttribute("aria-expanded") === "true";
-    menuButton.setAttribute("aria-expanded", String(!isOpen));
-    navigation.classList.toggle("is-open", !isOpen);
+    setMenuState(menuButton, navigation, !isOpen);
   });
   navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
-    menuButton.setAttribute("aria-expanded", "false");
-    navigation.classList.remove("is-open");
+    setMenuState(menuButton, navigation, false);
   }));
   document.addEventListener("click", (event) => {
     if (!navigation.contains(event.target) && !menuButton.contains(event.target)) {
-      menuButton.setAttribute("aria-expanded", "false");
-      navigation.classList.remove("is-open");
+      setMenuState(menuButton, navigation, false);
     }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenuState(menuButton, navigation, false);
   });
 }
 
