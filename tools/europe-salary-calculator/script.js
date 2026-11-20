@@ -21,7 +21,7 @@ const countryInfo = {
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
-  UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$" }, CA: { name: "Canada", symbol: "C$" },
+  UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$" },
   MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
@@ -92,7 +92,7 @@ function updateCountry() {
   const isNorway = countryInput.value === "NO";
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -174,6 +174,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social insurance per month";
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
+  } else if (countryInput.value === "US") {
+    countryStatus.innerHTML = "<strong>United States model available</strong><span>2026 federal estimate for a single filer; state and local income taxes are not included.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Federal income tax", "Social Security tax", "Medicare tax (including Additional Medicare)", "Federal standard deduction", "State and local income taxes (excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Federal income tax per month";
+    resultLabels[2].textContent = "Employee FICA per month";
+    document.querySelector(".model-link").textContent = "US 2026 federal estimate assumes a single filer eligible for the $16,100 standard deduction. Includes Social Security at 6.2% up to $184,500, Medicare at 1.45%, and Additional Medicare at 0.9% above $200,000. State/local income tax, credits, health insurance and retirement plan deductions are excluded.";
+    calculateUnitedStates();
   } else if (countryInput.value === "IN") {
     countryStatus.innerHTML = "<strong>India model available</strong><span>Tax Year 2026–27, resident salaried individual, default new tax regime, ₹75,000 standard deduction.</span>";
     document.querySelector(".breakdown h3").textContent = "Annualised monthly deduction breakdown";
@@ -279,6 +288,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "NZ") calculateNewZealand();
   else if (countryInput.value === "AU") calculateAustralia();
   else if (countryInput.value === "IN") calculateIndia();
+  else if (countryInput.value === "US") calculateUnitedStates();
 }
 
 function progressiveContribution(income, bands) {
@@ -293,6 +303,38 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateUnitedStates() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const annualGross = grossMonthly * 12;
+  const standardDeduction = Math.min(annualGross, 16100);
+  const taxableIncome = Math.max(0, annualGross - standardDeduction);
+  const brackets = [
+    {limit:12400,rate:0.10},{limit:50400,rate:0.12},{limit:105700,rate:0.22},
+    {limit:201775,rate:0.24},{limit:256225,rate:0.32},{limit:640600,rate:0.35},{limit:Infinity,rate:0.37}
+  ];
+  let previous = 0, annualFederalTax = 0;
+  for (const bracket of brackets) { annualFederalTax += Math.max(0, Math.min(taxableIncome, bracket.limit) - previous) * bracket.rate; previous = bracket.limit; if (taxableIncome <= bracket.limit) break; }
+  const socialSecurity = Math.min(annualGross, 184500) * 0.062;
+  const medicare = annualGross * 0.0145;
+  const additionalMedicare = Math.max(0, annualGross - 200000) * 0.009;
+  const annualFICA = socialSecurity + medicare + additionalMedicare;
+  const monthlyTax = annualFederalTax / 12;
+  const monthlyFICA = annualFICA / 12;
+  const netMonthly = grossMonthly - monthlyTax - monthlyFICA;
+  outputs.net.textContent = formatCurrency(netMonthly, "USD");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "USD");
+  outputs.social.textContent = formatCurrency(monthlyFICA, "USD");
+  outputs.pension.textContent = formatCurrency(socialSecurity / 12, "USD");
+  outputs.unemployment.textContent = formatCurrency(medicare / 12, "USD");
+  outputs.health.textContent = formatCurrency(additionalMedicare / 12, "USD");
+  outputs.care.textContent = formatCurrency(standardDeduction / 12, "USD");
+  outputs.church.textContent = "State tax excluded";
 }
 
 function calculateIndia() {
