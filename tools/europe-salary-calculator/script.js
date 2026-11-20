@@ -20,7 +20,7 @@ const countryInfo = {
   CH: { name: "Switzerland", symbol: "CHF", currency: "CHF", available: true }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
-  CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
+  CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
   MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
@@ -93,7 +93,7 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -320,6 +320,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "US") calculateUnitedStates();
   else if (countryInput.value === "CA") calculateCanada();
   else if (countryInput.value === "MX") calculateMexico();
+  else if (countryInput.value === "CL") calculateChile();
 }
 
 function progressiveContribution(income, bands) {
@@ -334,6 +335,45 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateChile() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 1000000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  // November 2026: UF CLP 41,371.05; pension/health cap 90 UF; unemployment cap 135.2 UF.
+  const uf = 41371.05;
+  const pensionHealthCap = 90 * uf;
+  const unemploymentCap = 135.2 * uf;
+  const pensionBase = Math.min(grossMonthly, pensionHealthCap);
+  const unemploymentBase = Math.min(grossMonthly, unemploymentCap);
+  // AFP Uno lowest published employee commission: 0.46%, plus mandatory 10% pension contribution.
+  const pension = pensionBase * 0.1046;
+  const health = pensionBase * 0.07;
+  const unemployment = unemploymentBase * 0.006; // employee share for an indefinite-term contract
+  const taxableIncome = Math.max(0, grossMonthly - pension - health - unemployment);
+  const utm = 72440;
+  const bands = [
+    {limit:13.5,rate:0,rebate:0},{limit:30,rate:0.04,rebate:0.54},
+    {limit:50,rate:0.08,rebate:1.74},{limit:70,rate:0.135,rebate:4.49},
+    {limit:90,rate:0.23,rebate:11.14},{limit:120,rate:0.304,rebate:17.80},
+    {limit:310,rate:0.35,rebate:23.32},{limit:Infinity,rate:0.40,rebate:38.82}
+  ];
+  const utmIncome = taxableIncome / utm;
+  let incomeTax = 0;
+  for (const band of bands) { if (utmIncome <= band.limit) { incomeTax = Math.max(0, taxableIncome * band.rate - band.rebate * utm); break; } }
+  const social = pension + health + unemployment;
+  const netMonthly = grossMonthly - social - incomeTax;
+  outputs.net.textContent = formatCurrency(netMonthly, "CLP");
+  outputs.tax.textContent = formatCurrency(incomeTax, "CLP");
+  outputs.social.textContent = formatCurrency(social, "CLP");
+  outputs.pension.textContent = formatCurrency(pension, "CLP");
+  outputs.unemployment.textContent = formatCurrency(unemployment, "CLP");
+  outputs.health.textContent = formatCurrency(health, "CLP");
+  outputs.care.textContent = formatCurrency(taxableIncome, "CLP");
+  outputs.church.textContent = "AFP Uno assumption";
 }
 
 function calculateMexico() {
