@@ -266,7 +266,7 @@ function calculateDenmark() {
   const amBase = Math.max(0, annualGross - annualATP);
   const annualAM = amBase * 0.08;
   const personalIncomeAfterAM = Math.max(0, amBase - annualAM);
-  const employmentAllowance = Math.min(annualGross * 0.1275, 63471);
+  const employmentAllowance = Math.min(annualGross * 0.1275, 63300);
   const jobAllowance = Math.min(Math.max(0, annualGross - 235200) * 0.045, 3100);
   const personalAllowance = Math.min(personalIncomeAfterAM, 54100);
 
