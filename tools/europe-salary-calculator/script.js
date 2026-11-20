@@ -22,7 +22,7 @@ const countryInfo = {
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
   CL: { name: "Chile", symbol: "$" }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
-  MX: { name: "Mexico", symbol: "$" }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
+  MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
@@ -93,7 +93,7 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -184,6 +184,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee social insurance per month";
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
+  } else if (countryInput.value === "MX") {
+    countryStatus.innerHTML = "<strong>Mexico model available</strong><span>2026 monthly ISR withholding and estimated employee IMSS; standard integrated salary factor.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["ISR income tax after employment subsidy", "IMSS employee contributions", "Employment subsidy (if eligible)", "Integrated salary base for IMSS", "Employer-only contributions (excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "ISR income tax per month";
+    resultLabels[2].textContent = "Employee IMSS per month";
+    document.querySelector(".model-link").textContent = "Mexico 2026 estimate uses the monthly SAT ISR withholding tariff and the 2026 employment subsidy. IMSS assumes first-year integrated salary (15-day year-end bonus, 12 vacation days and 25% vacation premium), 2026 UMA and 25-UMA contribution cap. Employer-only IMSS and INFONAVIT contributions, state payroll tax, other benefits and personal circumstances are excluded.";
+    calculateMexico();
   } else if (countryInput.value === "CA") {
     countryStatus.innerHTML = "<strong>Canada model available</strong><span>2026 Ontario resident employee estimate; single filer, standard basic personal credits.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -310,6 +319,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "IN") calculateIndia();
   else if (countryInput.value === "US") calculateUnitedStates();
   else if (countryInput.value === "CA") calculateCanada();
+  else if (countryInput.value === "MX") calculateMexico();
 }
 
 function progressiveContribution(income, bands) {
@@ -324,6 +334,42 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateMexico() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const monthlyBands = [
+    {limit:844.59,fixed:0,rate:0.0192},{limit:7168.51,fixed:16.22,rate:0.0640},
+    {limit:12598.02,fixed:420.95,rate:0.1088},{limit:14644.64,fixed:1011.68,rate:0.16},
+    {limit:17533.64,fixed:1339.14,rate:0.1792},{limit:35362.83,fixed:1856.84,rate:0.2136},
+    {limit:55736.68,fixed:5665.16,rate:0.2352},{limit:106410.50,fixed:10457.09,rate:0.30},
+    {limit:141880.66,fixed:25659.23,rate:0.32},{limit:425641.99,fixed:37009.69,rate:0.34},
+    {limit:Infinity,fixed:133488.54,rate:0.35}
+  ];
+  const lower=[0.01,844.60,7168.52,12598.03,14644.65,17533.65,35362.84,55736.69,106410.51,141880.67,425642.00];
+  let isr=0;
+  for(let i=0;i<monthlyBands.length;i++){
+    if(grossMonthly<=monthlyBands[i].limit){isr=monthlyBands[i].fixed+Math.max(0,grossMonthly-lower[i])*monthlyBands[i].rate;break;}
+  }
+  const employmentSubsidy = grossMonthly <= 11492.66 ? 535.65 : 0;
+  isr=Math.max(0,isr-employmentSubsidy);
+  const integratedFactor=(365+15+12*0.25)/365;
+  const dailyIntegrated=Math.min((grossMonthly/30)*integratedFactor,117.31*25);
+  const excessDaily=Math.max(0,dailyIntegrated-3*117.31);
+  const imss=(dailyIntegrated*0.02375+excessDaily*0.004)*30.4;
+  const netMonthly=grossMonthly-isr-imss;
+  outputs.net.textContent=formatCurrency(netMonthly,"MXN");
+  outputs.tax.textContent=formatCurrency(isr,"MXN");
+  outputs.social.textContent=formatCurrency(imss,"MXN");
+  outputs.pension.textContent=formatCurrency(imss,"MXN");
+  outputs.unemployment.textContent=formatCurrency(employmentSubsidy,"MXN");
+  outputs.health.textContent=formatCurrency(dailyIntegrated*30.4,"MXN");
+  outputs.care.textContent=formatCurrency(117.31*25*30.4,"MXN");
+  outputs.church.textContent="Employer costs excluded";
 }
 
 function calculateCanada() {
