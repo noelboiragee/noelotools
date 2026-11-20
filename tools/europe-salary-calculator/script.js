@@ -256,10 +256,12 @@ function calculateAustria() {
     Math.max(0, Math.min(taxableIncome, 1000000) - 104859) * 0.50 +
     Math.max(0, taxableIncome - 1000000) * 0.55;
 
-  const standardEmployeeCredit = 496;
-  const lowIncomeCredit = taxableIncome <= 19761 ? 804 : taxableIncome < 30259
+  const standardEmployeeCredit = Math.min(annualTaxBeforeCredits, 496);
+  const taxAfterStandardCredit = Math.max(0, annualTaxBeforeCredits - standardEmployeeCredit);
+  const potentialLowIncomeCredit = taxableIncome <= 19761 ? 804 : taxableIncome < 30259
     ? 804 * (30259 - taxableIncome) / (30259 - 19761) : 0;
-  const annualTax = Math.max(0, annualTaxBeforeCredits - standardEmployeeCredit - lowIncomeCredit);
+  const lowIncomeCredit = Math.min(taxAfterStandardCredit, potentialLowIncomeCredit);
+  const annualTax = Math.max(0, taxAfterStandardCredit - lowIncomeCredit);
   const monthlyTax = annualTax / 12;
   const netMonthly = grossMonthly - monthlySocial - monthlyTax;
 
