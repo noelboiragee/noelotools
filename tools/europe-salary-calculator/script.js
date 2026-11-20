@@ -20,7 +20,7 @@ const countryInfo = {
   CH: { name: "Switzerland", symbol: "CHF", currency: "CHF", available: true }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
-  CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/" }, EC: { name: "Ecuador", symbol: "$" },
+  CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "$" },
   UY: { name: "Uruguay", symbol: "$" }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
   MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩" },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
@@ -93,7 +93,7 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -321,6 +321,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "CA") calculateCanada();
   else if (countryInput.value === "MX") calculateMexico();
   else if (countryInput.value === "CL") calculateChile();
+  else if (countryInput.value === "PE") calculatePeru();
 }
 
 function progressiveContribution(income, bands) {
@@ -335,6 +336,33 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculatePeru() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const uit = 5500;
+  // Standard private-sector employee: 12 salaries plus two statutory gratificaciones per year.
+  const annualGross = grossMonthly * 14;
+  const taxableIncome = Math.max(0, annualGross - 7 * uit);
+  const brackets = [{limit:5*uit,rate:0.08},{limit:20*uit,rate:0.14},{limit:35*uit,rate:0.17},{limit:45*uit,rate:0.20},{limit:Infinity,rate:0.30}];
+  let previous=0, annualTax=0;
+  for(const bracket of brackets){annualTax+=Math.max(0,Math.min(taxableIncome,bracket.limit)-previous)*bracket.rate;previous=bracket.limit;if(taxableIncome<=bracket.limit)break;}
+  const monthlyTax=annualTax/12;
+  // Default public pension system (ONP): 13% of the ordinary monthly remuneration.
+  const onp=grossMonthly*0.13;
+  const netMonthly=grossMonthly-monthlyTax-onp;
+  outputs.net.textContent=formatCurrency(netMonthly,"PEN");
+  outputs.tax.textContent=formatCurrency(monthlyTax,"PEN");
+  outputs.social.textContent=formatCurrency(onp,"PEN");
+  outputs.pension.textContent=formatCurrency(onp,"PEN");
+  outputs.unemployment.textContent=formatCurrency(annualTax/12,"PEN");
+  outputs.health.textContent=formatCurrency(7*uit/12,"PEN");
+  outputs.care.textContent="14 salaries annualised";
+  outputs.church.textContent="EsSalud employer-paid";
 }
 
 function calculateChile() {
