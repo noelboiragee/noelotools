@@ -16,7 +16,7 @@ const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
   FR: { name: "France", symbol: "€" }, IT: { name: "Italy", symbol: "€" }, ES: { name: "Spain", symbol: "€" },
   NL: { name: "Netherlands", symbol: "€" }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
-  PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£" },
+  PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
   DK: { name: "Denmark", symbol: "kr" },
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "$" },
@@ -79,25 +79,44 @@ function updateCountry() {
   currencySymbol.textContent = selected.symbol;
   const isGermany = countryInput.value === "DE";
   const isBrazil = countryInput.value === "BR";
-  const isSupported = isGermany || isBrazil;
+  const isUK = countryInput.value === "GB";
+  const isSupported = isGermany || isBrazil || isUK;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
   comingSoon.hidden = isSupported;
   countryStatus.hidden = !isSupported;
 
+  const breakdownRows = [...document.querySelectorAll(".breakdown > div")];
+  const resultLabels = document.querySelectorAll(".results .result-item span");
+
   if (isGermany) {
     countryStatus.innerHTML = "<strong>Germany model available</strong><span>2026 simplified estimate. Single employee, no children, default region.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly contribution breakdown";
     const labels = ["Pension insurance", "Unemployment insurance", "Health insurance", "Long-term care insurance", "Church tax"];
-    document.querySelectorAll(".breakdown > div span").forEach((el, i) => { el.textContent = labels[i]; el.parentElement.hidden = false; });
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax per month";
+    resultLabels[2].textContent = "Employee social contributions";
+    document.querySelector(".model-link").textContent = "The Germany 2026 estimate is available in this International Salary Calculator. Brazil and UK models are also available.";
     calculateGermany();
   } else if (isBrazil) {
     countryStatus.innerHTML = "<strong>Brazil model available</strong><span>2026 estimate. Single employee, no dependants, simplified monthly deduction.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
     const labels = ["INSS social security", "Income tax (IRPF)", "—", "—", "—"];
-    document.querySelectorAll(".breakdown > div span").forEach((el, i) => { el.textContent = labels[i]; el.parentElement.hidden = i > 1; });
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 1; });
+    resultLabels[1].textContent = "Monthly income tax (IRPF)";
+    resultLabels[2].textContent = "INSS contribution";
+    document.querySelector(".model-link").textContent = "The Brazil 2026 estimate is available. Germany and UK models are also available.";
     calculateBrazil();
+  } else if (isUK) {
+    countryStatus.innerHTML = "<strong>United Kingdom model available</strong><span>2026–27 annualised estimate for a standard employee in England, Wales or Northern Ireland. Scottish tax bands are excluded.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
+    const labels = ["Income tax (PAYE)", "National Insurance (employee)", "—", "—", "—"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 1; });
+    resultLabels[1].textContent = "Income tax (PAYE) per month";
+    resultLabels[2].textContent = "National Insurance per month";
+    document.querySelector(".model-link").textContent = "The UK 2026–27 estimate uses standard employee tax and National Insurance rates. Scotland has different income-tax bands and is not included.";
+    calculateUK();
   } else {
     comingTitle.textContent = selected.name + " salary model is being prepared";
     clearGermanyResults();
@@ -107,6 +126,7 @@ function updateCountry() {
 function calculateSelectedCountry() {
   if (countryInput.value === "BR") calculateBrazil();
   else if (countryInput.value === "DE") calculateGermany();
+  else if (countryInput.value === "GB") calculateUK();
 }
 
 function progressiveContribution(income, bands) {
@@ -163,6 +183,48 @@ function calculateBrazil() {
   outputs.church.textContent = formatCurrency(0, "BRL");
   document.querySelector(".results .result-item:nth-child(2) span").textContent = "Monthly income tax (IRPF)";
   document.querySelector(".results .result-item:nth-child(3) span").textContent = "INSS contribution";
+}
+
+function calculateUK() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" &&
+    Number.isFinite(grossMonthly) &&
+    grossMonthly >= 0 &&
+    grossMonthly <= 10000000;
+
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) {
+    clearGermanyResults();
+    return;
+  }
+
+  const grossAnnual = grossMonthly * 12;
+  const personalAllowance = Math.max(0, 12570 - Math.max(0, grossAnnual - 100000) / 2);
+  const taxableIncome = Math.max(0, grossAnnual - personalAllowance);
+  const basicBand = 37700;
+  const higherBand = Math.max(0, 125140 - personalAllowance - basicBand);
+
+  const basicTax = Math.min(taxableIncome, basicBand) * 0.20;
+  const higherTax = Math.min(Math.max(0, taxableIncome - basicBand), higherBand) * 0.40;
+  const additionalTax = Math.max(0, taxableIncome - basicBand - higherBand) * 0.45;
+  const annualIncomeTax = basicTax + higherTax + additionalTax;
+  const monthlyIncomeTax = annualIncomeTax / 12;
+
+  // Standard employee category A, monthly payroll thresholds for 2026–27.
+  const niMainBand = Math.max(0, Math.min(grossMonthly, 4189) - 1048);
+  const niUpperBand = Math.max(0, grossMonthly - 4189);
+  const nationalInsurance = niMainBand * 0.08 + niUpperBand * 0.02;
+  const net = grossMonthly - monthlyIncomeTax - nationalInsurance;
+
+  outputs.net.textContent = formatCurrency(net, "GBP");
+  outputs.tax.textContent = formatCurrency(monthlyIncomeTax, "GBP");
+  outputs.social.textContent = formatCurrency(nationalInsurance, "GBP");
+  outputs.pension.textContent = formatCurrency(monthlyIncomeTax, "GBP");
+  outputs.unemployment.textContent = formatCurrency(nationalInsurance, "GBP");
+  outputs.health.textContent = formatCurrency(0, "GBP");
+  outputs.care.textContent = formatCurrency(0, "GBP");
+  outputs.church.textContent = formatCurrency(0, "GBP");
 }
 
 function calculateGermany() {
