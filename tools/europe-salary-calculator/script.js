@@ -44,7 +44,7 @@ const LIMITS = {
   annualWorkExpenseAllowance: 1230
 };
 
-function formatCurrency(value, currency = "EUR") {
+function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[-+]?\\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }\n\nfunction formatCurrency(value, currency = "EUR") {
   return new Intl.NumberFormat(currency === "EUR" ? "de-DE" : "en", {
     style: "currency",
     currency,
@@ -93,8 +93,8 @@ function updateCountry() {
 function calculateGermany() {
   if (countryInput.value !== "DE") return;
 
-  const grossMonthly = Number(grossInput.value);
-  const healthExtra = Number(healthExtraInput.value);
+  const grossMonthly = parseDecimal(grossInput.value);
+  const healthExtra = parseDecimal(healthExtraInput.value);
   const valid = grossInput.value.trim() !== "" &&
     healthExtraInput.value.trim() !== "" &&
     Number.isFinite(grossMonthly) &&
