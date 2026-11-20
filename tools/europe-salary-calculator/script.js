@@ -133,10 +133,10 @@ function updateCountry() {
   } else if (isNetherlands) {
     countryStatus.innerHTML = "<strong>Netherlands model available</strong><span>2026 estimate for an employee below AOW age, one job, resident in the Netherlands, with general and labour tax credits applied.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly payroll tax and credit breakdown";
-    const labels = ["Payroll tax after credits", "General tax credit", "Labour tax credit", "Employer Zvw contribution (not deducted)", "Private health insurance (excluded)"];
+    const labels = ["Box 1 tax before credits", "General tax credit", "Labour tax credit", "Employer Zvw contribution (not deducted)", "Private health insurance (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
     resultLabels[1].textContent = "Payroll tax & national insurance per month";
-    resultLabels[2].textContent = "Separate employee social contributions";
+    resultLabels[2].textContent = "National insurance premiums";
     document.querySelector(".model-link").textContent = "Dutch national insurance premiums are included in the first Box 1 tax bracket. The employer normally pays the income-related Zvw contribution; private basic health insurance is paid separately and is not deducted here.";
     calculateNetherlands();
   } else if (isItaly) {
@@ -215,8 +215,8 @@ function calculateNetherlands() {
   const monthlyPayrollTax = annualPayrollTax / 12;
   outputs.net.textContent = formatCurrency(grossMonthly - monthlyPayrollTax, "EUR");
   outputs.tax.textContent = formatCurrency(monthlyPayrollTax, "EUR");
-  outputs.social.textContent = "Included above";
-  outputs.pension.textContent = formatCurrency(monthlyPayrollTax, "EUR");
+  outputs.social.textContent = "Included in payroll tax";
+  outputs.pension.textContent = formatCurrency(box1Tax / 12, "EUR");
   outputs.unemployment.textContent = formatCurrency(generalCredit / 12, "EUR");
   outputs.health.textContent = formatCurrency(labourCredit / 12, "EUR");
   outputs.care.textContent = "Not deducted";
