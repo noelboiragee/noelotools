@@ -14,7 +14,7 @@ const churchTaxInput = document.querySelector("#church-tax");
 
 const countryInfo = {
   DE: { name: "Germany", symbol: "€", available: true },
-  FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€" }, ES: { name: "Spain", symbol: "€" },
+  FR: { name: "France", symbol: "€", currency: "EUR", available: true }, IT: { name: "Italy", symbol: "€", currency: "EUR", available: true }, ES: { name: "Spain", symbol: "€" },
   NL: { name: "Netherlands", symbol: "€" }, BE: { name: "Belgium", symbol: "€" }, IE: { name: "Ireland", symbol: "€" },
   PT: { name: "Portugal", symbol: "€" }, AT: { name: "Austria", symbol: "€" }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF" }, NO: { name: "Norway", symbol: "kr" }, SE: { name: "Sweden", symbol: "kr" },
@@ -81,7 +81,8 @@ function updateCountry() {
   const isFrance = countryInput.value === "FR";
   const isBrazil = countryInput.value === "BR";
   const isUK = countryInput.value === "GB";
-  const isSupported = isGermany || isFrance || isBrazil || isUK;
+  const isItaly = countryInput.value === "IT";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly;
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -118,6 +119,15 @@ function updateCountry() {
     resultLabels[2].textContent = "INSS contribution";
     document.querySelector(".model-link").textContent = "The Brazil 2026 estimate is available. Germany and UK models are also available.";
     calculateBrazil();
+  } else if (isItaly) {
+    countryStatus.innerHTML = "<strong>Italy model available</strong><span>2026 estimate. Standard private-sector employee, one employment income, no dependants; regional and municipal surcharges excluded.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
+    const labels = ["INPS employee contribution", "Gross IRPEF", "Employee tax credit", "2026 tax-wedge relief", "Local tax surcharges (excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Income tax after credits per month";
+    resultLabels[2].textContent = "Employee INPS contribution";
+    document.querySelector(".model-link").textContent = "Italy uses a standard 9.19% employee INPS baseline. Actual contribution rates and take-home pay vary by sector, contract and local tax surcharges.";
+    calculateItaly();
   } else if (isUK) {
     countryStatus.innerHTML = "<strong>United Kingdom model available</strong><span>2026–27 annualised estimate for a standard employee in England, Wales or Northern Ireland. Scottish tax bands are excluded.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
@@ -138,6 +148,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "FR") calculateFrance();
   else if (countryInput.value === "DE") calculateGermany();
   else if (countryInput.value === "GB") calculateUK();
+  else if (countryInput.value === "IT") calculateItaly();
 }
 
 function progressiveContribution(income, bands) {
@@ -152,6 +163,59 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateItaly() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  // Standard baseline for an ordinary private-sector employee; contract-specific rates may differ.
+  const annualInps = annualGross * 0.0919;
+  const taxableAnnual = Math.max(0, annualGross - annualInps);
+
+  const grossIrpef =
+    Math.min(taxableAnnual, 28000) * 0.23 +
+    Math.max(0, Math.min(taxableAnnual, 50000) - 28000) * 0.33 +
+    Math.max(0, taxableAnnual - 50000) * 0.43;
+
+  let employmentCredit = 0;
+  if (taxableAnnual <= 15000) employmentCredit = Math.max(690, 1955);
+  else if (taxableAnnual <= 28000) employmentCredit = 1910 + 1190 * (28000 - taxableAnnual) / 13000;
+  else if (taxableAnnual <= 50000) employmentCredit = 1910 * (50000 - taxableAnnual) / 22000;
+  if (taxableAnnual >= 25000 && taxableAnnual <= 35000) employmentCredit += 65;
+
+  let taxWedgeRelief = 0;
+  let nonTaxableBonus = 0;
+  if (taxableAnnual <= 20000) {
+    const rate = taxableAnnual <= 8500 ? 0.071 : taxableAnnual <= 15000 ? 0.053 : 0.048;
+    nonTaxableBonus = annualGross * rate;
+  } else if (taxableAnnual <= 32000) {
+    taxWedgeRelief = 1000;
+  } else if (taxableAnnual <= 40000) {
+    taxWedgeRelief = 1000 * (40000 - taxableAnnual) / 8000;
+  }
+
+  const annualIncomeTax = Math.max(0, grossIrpef - employmentCredit - taxWedgeRelief);
+  const monthlyInps = annualInps / 12;
+  const monthlyGrossIrpef = grossIrpef / 12;
+  const monthlyCredit = employmentCredit / 12;
+  const monthlyRelief = taxWedgeRelief / 12;
+  const monthlyTax = annualIncomeTax / 12;
+  const monthlyBonus = nonTaxableBonus / 12;
+  const net = grossMonthly - monthlyInps - monthlyTax + monthlyBonus;
+
+  outputs.net.textContent = formatCurrency(net, "EUR");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "EUR");
+  outputs.social.textContent = formatCurrency(monthlyInps, "EUR");
+  outputs.pension.textContent = formatCurrency(monthlyInps, "EUR");
+  outputs.unemployment.textContent = formatCurrency(monthlyGrossIrpef, "EUR");
+  outputs.health.textContent = formatCurrency(monthlyCredit, "EUR");
+  outputs.care.textContent = formatCurrency(monthlyRelief + monthlyBonus, "EUR");
+  outputs.church.textContent = formatCurrency(0, "EUR");
 }
 
 function calculateFrance() {
