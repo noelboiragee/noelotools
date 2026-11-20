@@ -19,7 +19,7 @@ const countryInfo = {
   PT: { name: "Portugal", symbol: "€", currency: "EUR", available: true }, AT: { name: "Austria", symbol: "€", currency: "EUR", available: true }, GB: { name: "United Kingdom", symbol: "£", currency: "GBP", available: true },
   CH: { name: "Switzerland", symbol: "CHF", currency: "CHF", available: true }, NO: { name: "Norway", symbol: "kr", currency: "NOK", available: true }, SE: { name: "Sweden", symbol: "kr", currency: "SEK", available: true },
   DK: { name: "Denmark", symbol: "kr", currency: "DKK", available: true },
-  BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$" }, CO: { name: "Colombia", symbol: "COP$", currency: "COP", available: true },
+  BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$", currency: "ARS", available: true }, CO: { name: "Colombia", symbol: "COP$", currency: "COP", available: true },
   CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "US$", currency: "USD", available: true },
   UY: { name: "Uruguay", symbol: "UYU$", currency: "UYU", available: true }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
   MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩", currency: "KRW", available: true },
@@ -47,7 +47,7 @@ const LIMITS = {
 function parseDecimal(value) { const normalized = String(value).trim().replace(/,/g, "."); return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized) ? Number(normalized) : NaN; }
 
 function formatCurrency(value, currency = "EUR") {
-  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : currency === "SEK" ? "sv-SE" : currency === "CHF" ? "de-CH" : "en";
+  const locale = currency === "EUR" ? "de-DE" : currency === "NOK" ? "nb-NO" : currency === "DKK" ? "da-DK" : currency === "SEK" ? "sv-SE" : currency === "CHF" ? "de-CH" : currency === "ARS" ? "es-AR" : "en";
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -93,7 +93,8 @@ function updateCountry() {
   const isDenmark = countryInput.value === "DK";
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR" || countryInput.value === "UY";
+  const isArgentina = countryInput.value === "AR";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || isArgentina || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR" || countryInput.value === "UY";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -139,6 +140,15 @@ function updateCountry() {
     resultLabels[2].textContent = "Employee Social Security per month";
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
+  } else if (isArgentina) {
+    countryStatus.innerHTML = "<strong>Argentina model available</strong><span>2026 annual Ganancias estimate for a resident single employee, no dependants; employee social-security cap uses November 2026 values.</span>";
+    document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
+    const labels = ["Employee social-security contributions", "Basic personal allowance", "Special employee deduction", "Annual taxable income", "13th salary and other deductions (excluded)"];
+    breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
+    resultLabels[1].textContent = "Ganancias income tax per month";
+    resultLabels[2].textContent = "Employee social contributions per month";
+    document.querySelector(".model-link").textContent = "The estimate uses 12 equal monthly salary payments and excludes the 13th salary (SAC), dependants, personal expense deductions and employer contributions. The social-security cap is the November 2026 maximum and is held constant across the annual estimate.";
+    calculateArgentina();
   } else if (isSwitzerland) {
     countryStatus.innerHTML = "<strong>Switzerland model available — Zurich benchmark</strong><span>2026 estimate for a single employee in Zurich city, no church tax, using standard payroll deductions.</span>";
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
@@ -314,6 +324,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "DK") calculateDenmark();
   else if (countryInput.value === "SE") calculateSweden();
   else if (countryInput.value === "CH") calculateSwitzerland();
+  else if (countryInput.value === "AR") calculateArgentina();
   else if (countryInput.value === "NZ") calculateNewZealand();
   else if (countryInput.value === "AU") calculateAustralia();
   else if (countryInput.value === "IN") calculateIndia();
@@ -766,6 +777,46 @@ function calculateNewZealand() {
   outputs.health.textContent = formatCurrency(annualGross / 12, "NZD");
   outputs.care.textContent = formatCurrency(156641 / 12, "NZD");
   outputs.church.textContent = "Excluded";
+}
+
+function calculateArgentina() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 10000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+
+  const annualGross = grossMonthly * 12;
+  const monthlySocialBase = grossMonthly === 0 ? 0 : Math.min(Math.max(grossMonthly, 149592.45), 4861685.38);
+  const monthlySocial = monthlySocialBase * 0.17;
+  const annualSocial = monthlySocial * 12;
+  const basicDeduction = 5151802.50;
+  const employeeSpecialDeduction = 24728652.02;
+  const taxableIncome = Math.max(0, annualGross - annualSocial - basicDeduction - employeeSpecialDeduction);
+
+  const taxBrackets = [
+    { limit: 2336953.69, rate: 0.05 }, { limit: 4673907.36, rate: 0.09 },
+    { limit: 7010861.05, rate: 0.12 }, { limit: 10516291.59, rate: 0.15 },
+    { limit: 21032583.18, rate: 0.19 }, { limit: 31548874.77, rate: 0.23 },
+    { limit: 47323312.16, rate: 0.27 }, { limit: 70984968.25, rate: 0.31 },
+    { limit: Infinity, rate: 0.35 }
+  ];
+  let annualTax = 0, previous = 0;
+  for (const bracket of taxBrackets) {
+    annualTax += Math.max(0, Math.min(taxableIncome, bracket.limit) - previous) * bracket.rate;
+    previous = bracket.limit;
+    if (taxableIncome <= bracket.limit) break;
+  }
+  const monthlyTax = annualTax / 12;
+  const netMonthly = grossMonthly - monthlySocial - monthlyTax;
+  outputs.net.textContent = formatCurrency(netMonthly, "ARS");
+  outputs.tax.textContent = formatCurrency(monthlyTax, "ARS");
+  outputs.social.textContent = formatCurrency(monthlySocial, "ARS");
+  outputs.pension.textContent = formatCurrency(monthlySocial, "ARS");
+  outputs.unemployment.textContent = formatCurrency(basicDeduction / 12, "ARS");
+  outputs.health.textContent = formatCurrency(employeeSpecialDeduction / 12, "ARS");
+  outputs.care.textContent = formatCurrency(taxableIncome / 12, "ARS");
+  outputs.church.textContent = "SAC excluded";
 }
 
 function calculateSwitzerland() {
