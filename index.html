@@ -77,6 +77,26 @@
     .category-icon--health { background: linear-gradient(145deg, #e11d48, #fb7185); }
     .category-icon--math { background: linear-gradient(145deg, #6d28d9, #a78bfa); }
     .category-icon--everyday { background: linear-gradient(120deg, #00D4FF 0%, #00E676 52%, #FFEB3B 100%); color: #173D35; box-shadow: 0 9px 22px rgba(0, 190, 130, .24), inset 0 1px 0 rgb(255 255 255 / .5); }
+    /* Category icons: transparent icon area, category-colored artwork. */
+    .categories-section .category-card-icon {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: 0 !important;
+      color: var(--category-icon-color, var(--text)) !important;
+      transition: transform 180ms ease;
+    }
+    .categories-section .category-card:hover .category-card-icon {
+      box-shadow: none !important;
+      transform: translateY(-2px);
+    }
+    .categories-section .category-icon--pdf { --category-icon-color: #26966A; }
+    .categories-section .category-icon--money-tax { --category-icon-color: #D4A72C; }
+    .categories-section .category-icon--media { --category-icon-color: #2878D0; }
+    .categories-section .category-icon--developer { --category-icon-color: #8054C7; }
+    .categories-section .category-icon--writing { --category-icon-color: #986344; }
+    .categories-section .category-icon--health { --category-icon-color: #D34D91; }
+    .categories-section .category-icon--math { --category-icon-color: #D97726; }
+    .categories-section .category-icon--everyday { --category-icon-color: #168F91; }
     .category-card[aria-disabled="true"] { opacity: .58; cursor: not-allowed; }
     .trust-strip { padding: 1.15rem; border: 1px solid color-mix(in srgb, var(--border) 72%, #8b9bb8); border-radius: 22px; background: linear-gradient(135deg, color-mix(in srgb, var(--bg) 90%, #dceafe), color-mix(in srgb, var(--bg-alt) 88%, #e7f4ff)); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; box-shadow: 0 16px 38px rgb(25 48 82 / .09), inset 0 1px 0 rgb(255 255 255 / .75); }
     .trust-item { min-height: 66px; display: flex; align-items: center; gap: .7rem; padding: .85rem .9rem; border: 1px solid color-mix(in srgb, var(--border) 70%, #a8bdd8); border-radius: 15px; background: color-mix(in srgb, var(--bg) 88%, white); color: var(--text); font-size: .94rem; line-height: 1.35; font-weight: 750; letter-spacing: -.015em; box-shadow: 0 5px 14px rgb(25 48 82 / .055), inset 0 1px 0 rgb(255 255 255 / .8); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
