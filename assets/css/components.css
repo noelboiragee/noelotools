@@ -708,6 +708,7 @@ html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
 /* Consistent, legible header icons across desktop and mobile pages. */
 .header-actions .theme-toggle {
   display: inline-flex;
+  flex: 0 0 auto;
   min-width: 42px;
   min-height: 42px;
   align-items: center;
