@@ -493,6 +493,91 @@
       /* Do not force dark automatically: the saved/manual site theme remains authoritative. */
     }
 
+
+    /* Premium floating 3D tool constellation */
+    .hero-visual { perspective:1100px; transform-style:preserve-3d; }
+    .visual-window {
+      z-index:2;
+      width:min(82%,390px);
+      min-height:268px;
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.88);
+      background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(238,243,255,.78));
+      box-shadow:0 34px 70px rgba(47,67,132,.19),inset 0 1px 0 #fff;
+      backdrop-filter:blur(18px);
+      transform-style:preserve-3d;
+      animation:workspace-float 6s ease-in-out infinite;
+    }
+    .visual-window::before {
+      content:"";position:absolute;inset:10px;border:1px solid rgba(116,139,220,.12);
+      border-radius:22px;pointer-events:none;
+    }
+    .window-mark {
+      position:relative;
+      width:112px;height:112px;border-radius:31px;
+      background:linear-gradient(145deg,#8b5cf6 0%,#4f46e5 48%,#2563eb 100%);
+      box-shadow:0 18px 35px rgba(79,70,229,.34),inset 0 2px 2px rgba(255,255,255,.35);
+      transform:translateZ(24px);
+    }
+    .window-mark::after {
+      content:"";position:absolute;inset:-9px;border:1px solid rgba(105,120,255,.28);
+      border-radius:38px;animation:mark-ring 3s ease-out infinite;
+    }
+    @keyframes mark-ring { 0%{transform:scale(.88);opacity:.8} 100%{transform:scale(1.25);opacity:0} }
+    .float-tool {
+      z-index:4;
+      width:76px;height:76px;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:21px;
+      background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(230,237,255,.84));
+      color:#3346a5;
+      box-shadow:0 18px 35px rgba(43,62,122,.2),inset 0 1px 0 #fff;
+      backdrop-filter:blur(12px);
+      transform-style:preserve-3d;
+    }
+    .float-tool .float-symbol { font-size:23px;font-weight:900;line-height:1;letter-spacing:-.04em; }
+    .float-tool small { font-size:8px;font-weight:800;letter-spacing:.02em;color:#687694; }
+    .float-pdf { top:22%;left:-1%;color:#e43e62;animation:float-pdf-motion 6s ease-in-out infinite; }
+    .float-calc { right:-2%;top:39%;color:#079b78;animation:float-calc-motion 7s ease-in-out infinite; }
+    .float-code { bottom:6%;left:9%;color:#8054c7;animation:float-code-motion 6.5s ease-in-out infinite; }
+    .float-image { top:12%;right:10%;color:#0d91c8;animation:float-image-motion 7.5s ease-in-out infinite; }
+    .float-money { bottom:10%;right:12%;color:#d18a18;animation:float-money-motion 6.8s ease-in-out infinite; }
+    @keyframes float-pdf-motion { 0%,100%{transform:translate3d(0,0,35px) rotate(-9deg)} 50%{transform:translate3d(-7px,-17px,65px) rotate(-2deg)} }
+    @keyframes float-calc-motion { 0%,100%{transform:translate3d(0,0,45px) rotate(8deg)} 50%{transform:translate3d(9px,-14px,75px) rotate(1deg)} }
+    @keyframes float-code-motion { 0%,100%{transform:translate3d(0,0,28px) rotate(5deg)} 50%{transform:translate3d(-9px,12px,60px) rotate(-5deg)} }
+    @keyframes float-image-motion { 0%,100%{transform:translate3d(0,0,40px) rotate(8deg)} 50%{transform:translate3d(8px,-12px,72px) rotate(14deg)} }
+    @keyframes float-money-motion { 0%,100%{transform:translate3d(0,0,32px) rotate(-6deg)} 50%{transform:translate3d(10px,13px,62px) rotate(2deg)} }
+    .visual-particle { position:absolute;z-index:1;width:8px;height:8px;border-radius:50%;background:#8b7cff;box-shadow:0 0 18px 5px rgba(117,103,255,.28); }
+    .particle-one { top:18%;left:25%;animation:particle-drift 5s ease-in-out infinite; }
+    .particle-two { top:70%;right:18%;width:6px;height:6px;background:#36c9b0;animation:particle-drift 6s ease-in-out -2s infinite; }
+    .particle-three { top:35%;right:4%;width:5px;height:5px;background:#ff9b69;animation:particle-drift 4.5s ease-in-out -1s infinite; }
+    @keyframes particle-drift { 0%,100%{transform:translate3d(0,0,0);opacity:.4} 50%{transform:translate3d(12px,-22px,25px);opacity:1} }
+    [data-theme="dark"] .visual-window {
+      background:linear-gradient(145deg,rgba(31,43,72,.96),rgba(18,28,51,.9));
+      border-color:rgba(126,148,220,.38);
+      box-shadow:0 34px 75px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    [data-theme="dark"] .visual-window::before { border-color:rgba(151,169,255,.12); }
+    [data-theme="dark"] .float-tool {
+      background:linear-gradient(145deg,rgba(45,61,96,.96),rgba(24,36,64,.92));
+      border-color:rgba(157,177,255,.35);
+      box-shadow:0 18px 38px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    [data-theme="dark"] .float-tool small { color:#c1cce6; }
+    @media(max-width:680px) {
+      .hero-visual { min-height:270px; }
+      .visual-window { width:min(76%,330px);min-height:225px; }
+      .float-tool { width:60px;height:60px;border-radius:17px; }
+      .float-tool .float-symbol { font-size:19px; }
+      .float-tool small { font-size:7px; }
+      .float-pdf { left:1%;top:22%; }.float-calc{right:0;top:42%}
+      .float-code { left:7%;bottom:7%; }.float-image{right:8%;top:10%}.float-money{right:9%;bottom:9%}
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .float-tool,.visual-window,.visual-particle,.window-mark::after { animation:none !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -545,7 +630,12 @@
             <div class="window-top"><i></i><i></i><i></i><span>NoeloTools workspace</span></div>
             <div class="window-mark">N</div>
             <div class="window-lines"><b></b><b></b><b></b></div>
-            <div class="float-tool float-pdf">PDF</div><div class="float-tool float-calc">＋</div><div class="float-tool float-code">&lt;/&gt;</div>
+            <div class="float-tool float-pdf"><span class="float-symbol">PDF</span><small>Documents</small></div>
+            <div class="float-tool float-calc"><span class="float-symbol">＋</span><small>Calculator</small></div>
+            <div class="float-tool float-code"><span class="float-symbol">&lt;/&gt;</span><small>Developer</small></div>
+            <div class="float-tool float-image"><span class="float-symbol">▧</span><small>Media</small></div>
+            <div class="float-tool float-money"><span class="float-symbol">৳</span><small>Finance</small></div>
+            <span class="visual-particle particle-one"></span><span class="visual-particle particle-two"></span><span class="visual-particle particle-three"></span>
           </div>
           <span class="visual-caption">29+ helpful tools, one place</span>
         </div>
