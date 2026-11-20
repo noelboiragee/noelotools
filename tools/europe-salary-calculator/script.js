@@ -22,7 +22,7 @@ const countryInfo = {
   BR: { name: "Brazil", symbol: "R$", currency: "BRL", available: true }, AR: { name: "Argentina", symbol: "$", currency: "ARS", available: true }, CO: { name: "Colombia", symbol: "COP$", currency: "COP", available: true },
   CL: { name: "Chile", symbol: "CLP$", currency: "CLP", available: true }, PE: { name: "Peru", symbol: "S/", currency: "PEN", available: true }, EC: { name: "Ecuador", symbol: "US$", currency: "USD", available: true },
   UY: { name: "Uruguay", symbol: "UYU$", currency: "UYU", available: true }, US: { name: "United States", symbol: "$", currency: "USD", available: true }, CA: { name: "Canada", symbol: "C$", currency: "CAD", available: true },
-  MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥" }, KR: { name: "South Korea", symbol: "₩", currency: "KRW", available: true },
+  MX: { name: "Mexico", symbol: "MX$", currency: "MXN", available: true }, JP: { name: "Japan", symbol: "¥", currency: "JPY", available: true }, KR: { name: "South Korea", symbol: "₩", currency: "KRW", available: true },
   IN: { name: "India", symbol: "₹", currency: "INR", available: true }, CN: { name: "China", symbol: "¥" }, AU: { name: "Australia", symbol: "A$", currency: "AUD", available: true },
   NZ: { name: "New Zealand", symbol: "NZ$", currency: "NZD", available: true }
 };
@@ -94,7 +94,7 @@ function updateCountry() {
   const isSweden = countryInput.value === "SE";
   const isSwitzerland = countryInput.value === "CH";
   const isArgentina = countryInput.value === "AR";
-  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || isArgentina || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR" || countryInput.value === "UY";
+  const isSupported = isGermany || isFrance || isBrazil || isUK || isItaly || isSpain || isNetherlands || isBelgium || isIreland || isPortugal || isAustria || isNorway || isDenmark || isSweden || isSwitzerland || isArgentina || countryInput.value === "NZ" || countryInput.value === "AU" || countryInput.value === "IN" || countryInput.value === "US" || countryInput.value === "CA" || countryInput.value === "MX" || countryInput.value === "CL" || countryInput.value === "PE" || countryInput.value === "EC" || countryInput.value === "CO" || countryInput.value === "KR" || countryInput.value === "UY" || countryInput.value === "JP";
 
   germanyOptions.hidden = !isSupported;
   document.querySelector("#germany-fields").hidden = !isGermany;
@@ -337,6 +337,7 @@ function calculateSelectedCountry() {
   else if (countryInput.value === "CO") calculateColombia();
   else if (countryInput.value === "KR") calculateSouthKorea();
   else if (countryInput.value === "UY") calculateUruguay();
+  else if (countryInput.value === "JP") calculateJapan();
 }
 
 function progressiveContribution(income, bands) {
@@ -351,6 +352,61 @@ function progressiveContribution(income, bands) {
     if (remaining <= 0) break;
   }
   return total;
+}
+
+function calculateJapan() {
+  const grossMonthly = parseDecimal(grossInput.value);
+  const valid = grossInput.value.trim() !== "" && Number.isFinite(grossMonthly) && grossMonthly >= 0 && grossMonthly <= 1000000000;
+  errorMessage.textContent = "Enter a valid gross monthly salary.";
+  errorMessage.hidden = valid;
+  if (!valid) { clearGermanyResults(); return; }
+  const annualGross=grossMonthly*12;
+  let employmentIncome;
+  if(annualGross<=740999) employmentIncome=0;
+  else if(annualGross<=2190999) employmentIncome=annualGross-740000;
+  else if(annualGross<=2192999) employmentIncome=1451000;
+  else if(annualGross<=2195999) employmentIncome=1453000;
+  else if(annualGross<=2199999) employmentIncome=1456000;
+  else if(annualGross<=3599999){const b=Math.floor(annualGross/4/1000)*1000;employmentIncome=b*2.8-80000;}
+  else if(annualGross<=6599999){const b=Math.floor(annualGross/4/1000)*1000;employmentIncome=b*3.2-440000;}
+  else if(annualGross<=8499999) employmentIncome=annualGross*0.9-1100000;
+  else employmentIncome=annualGross-1950000;
+  const pension=Math.min(grossMonthly,650000)*0.0915;
+  const health=Math.min(grossMonthly,1390000)*0.04925;
+  const childSupport=Math.min(grossMonthly,1390000)*0.00115;
+  const employmentInsurance=grossMonthly*0.005;
+  const monthlySocial=pension+health+childSupport+employmentInsurance;
+  const annualSocial=monthlySocial*12;
+  let basicDeduction=620000;
+  if(employmentIncome<=4890000)basicDeduction=1040000;
+  else if(employmentIncome<=6550000)basicDeduction=670000;
+  else if(employmentIncome<=23500000)basicDeduction=620000;
+  else if(employmentIncome<=24000000)basicDeduction=480000;
+  else if(employmentIncome<=24500000)basicDeduction=320000;
+  else if(employmentIncome<=25000000)basicDeduction=160000;
+  else basicDeduction=0;
+  const taxableNational=Math.max(0,employmentIncome-annualSocial-basicDeduction);
+  const bands=[
+    {limit:1950000,base:0,rate:0.05},{limit:3300000,base:97500,rate:0.10},
+    {limit:6950000,base:427500,rate:0.20},{limit:9000000,base:636000,rate:0.23},
+    {limit:18000000,base:1536000,rate:0.33},{limit:40000000,base:2796000,rate:0.40},
+    {limit:Infinity,base:4796000,rate:0.45}
+  ];
+  let nationalTax=0,previous=0;
+  for(const band of bands){if(taxableNational<=band.limit){nationalTax=band.base+Math.max(0,taxableNational-previous)*band.rate;break;}previous=band.limit;}
+  nationalTax*=1.021; // 2.1% reconstruction special income tax
+  const taxableLocal=Math.max(0,employmentIncome-annualSocial-430000);
+  const localTax=taxableLocal*0.10;
+  const monthlyTax=(nationalTax+localTax)/12;
+  const netMonthly=grossMonthly-monthlySocial-monthlyTax;
+  outputs.net.textContent=formatCurrency(netMonthly,"JPY");
+  outputs.tax.textContent=formatCurrency(monthlyTax,"JPY");
+  outputs.social.textContent=formatCurrency(monthlySocial,"JPY");
+  outputs.pension.textContent=formatCurrency(pension,"JPY");
+  outputs.unemployment.textContent=formatCurrency(employmentInsurance,"JPY");
+  outputs.health.textContent=formatCurrency(health+childSupport,"JPY");
+  outputs.care.textContent=formatCurrency(annualSocial/12,"JPY");
+  outputs.church.textContent="Tokyo, under age 40";
 }
 
 function calculateUruguay() {
