@@ -1,5 +1,7 @@
 const $=s=>document.querySelector(s);
-let rows=0;
+let rows=0,euRateVersion=null;
+const MAX_EU_RATE_AGE_DAYS=180;
+function validIsoDate(value){if(typeof value!=="string"||!/^\\d{4}-\\d{2}-\\d{2}$/.test(value))return false;const date=new Date(value+"T00:00:00Z");if(!Number.isFinite(date.getTime())||date.toISOString().slice(0,10)!==value)return false;const age=(Date.now()-date.getTime())/86400000;return age>=0&&age<=MAX_EU_RATE_AGE_DAYS;}
 const currency=()=>$("#currency").value;
 const parseDecimal=v=>{const n=String(v).trim().replace(/,/g,".");return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(n)?Number(n):NaN;};
 const countries={
@@ -41,7 +43,7 @@ function updateCountry(){
  const c=countries[$("#country").value]; if(!c)return;
  $("#currency").value=c.currency;
  $("#country-tax-info").replaceChildren();
- const note=c.note||("Standard "+c.tax+" reference rate: "+c.rate+"%. Reduced rates or exemptions may apply.");
+ const note=c.note||(c.rate===null?"Enter the applicable local tax rate.":(["DE","FR","IT","ES","NL","BE","IE","PT","AT"].includes($("#country").value)&&euRateVersion?"Standard "+c.tax+" rate verified against dataset dated "+euRateVersion+": "+c.rate+"%. Reduced rates or exemptions may apply.":"Built-in "+c.tax+" reference rate (not live-verified): "+c.rate+"%. Confirm the current rate with the official tax authority.");
  $("#country-tax-info").append(document.createTextNode(note+" "));
  const a=document.createElement("a");a.href=c.source;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Official tax authority / rate information";$("#country-tax-info").append(a);
  document.querySelectorAll(".rate-input").forEach(i=>{i.value=c.rate===null?"":String(c.rate);i.placeholder=c.rate===null?"Enter applicable local rate":"";});
@@ -49,7 +51,23 @@ function updateCountry(){
  updateCurrencyLabels();
 }
 const EU_VAT_DATA_URL="https://cdn.jsdelivr.net/gh/vatnode/eu-vat-rates-data@main/data/eu-vat-rates-data.json";
-async function refreshEuRates(){const status=$("#rate-status");try{const response=await fetch(EU_VAT_DATA_URL,{cache:"no-store"});if(!response.ok)throw new Error("Rate source unavailable");const payload=await response.json();if(!payload||payload.source!=="European Commission TEDB"||!/^\d{4}-\d{2}-\d{2}$/.test(payload.version)||!payload.rates)throw new Error("Unexpected rate data");let updated=0;["DE","FR","IT","ES","NL","BE","IE","PT","AT"].forEach(code=>{const entry=payload.rates[code];if(!entry||entry.eu_member!==true||entry.currency!=="EUR"||!Number.isFinite(entry.standard)||entry.standard<=0||entry.standard>100)return;countries[code].rate=entry.standard;updated++;});if(!updated)throw new Error("No matching EU rates");if(countries[$("#country").value]&&countries[$("#country").value].currency==="EUR")document.querySelectorAll(".rate-input").forEach(i=>i.value=String(countries[$("#country").value].rate));status.textContent="EU VAT rates checked: "+payload.version+" · Source: European Commission TEDB (via VATNode).";}catch(e){status.textContent="Live EU rate update unavailable. Saved reference rates remain in use; verify with the official tax authority.";}}
+async function refreshEuRates(){
+ const status=$("#rate-status"),codes=["DE","FR","IT","ES","NL","BE","IE","PT","AT"];
+ try{
+  const response=await fetch(EU_VAT_DATA_URL,{cache:"no-store",headers:{Accept:"application/json"}});
+  if(!response.ok)throw new Error("Rate source unavailable");
+  const payload=await response.json();
+  if(!payload||payload.source!=="European Commission TEDB"||!validIsoDate(payload.version)||!payload.rates||typeof payload.rates!=="object"||Array.isArray(payload.rates))throw new Error("The source date is invalid, missing, or outdated.");
+  const verified={};
+  for(const code of codes){const entry=payload.rates[code];if(!entry||entry.eu_member!==true||entry.currency!=="EUR"||typeof entry.standard!=="number"||!Number.isFinite(entry.standard)||entry.standard<=0||entry.standard>100)throw new Error("The source returned incomplete or invalid EU VAT rates.");verified[code]=entry.standard;}
+  codes.forEach(code=>{countries[code].rate=verified[code];});
+  euRateVersion=payload.version;updateCountry();
+  status.textContent="EU VAT rates verified from the European Commission TEDB dataset dated "+euRateVersion+".";
+ }catch(error){
+  euRateVersion=null;updateCountry();
+  status.textContent="Live EU VAT data is unavailable, invalid, or older than "+MAX_EU_RATE_AGE_DAYS+" days. Built-in rates are shown as unverified reference values; confirm with the official tax authority.";
+ }
+}
 function addLine(){if(rows>=30)return;rows++;const c=countries[$("#country").value];const rate=c?.rate;const el=document.createElement("div");el.className="tax-line";el.dataset.line="";el.innerHTML='<div class="field line-name"><label>Description</label><input class="desc" maxlength="80" placeholder="Item '+rows+'"></div><div class="field"><label data-amount-label>Amount ('+currency()+')</label><input class="amount" type="text" inputmode="decimal" placeholder="100.00"></div><div class="field"><label data-tax-label>'+(c?.tax||"Tax")+' rate (%)</label><input class="rate-input" type="text" inputmode="decimal" placeholder="'+(rate===null||rate===undefined?"Enter applicable local rate":"")+'" value="'+(rate??"")+'"></div><div class="field"><label>Amount type</label><select class="basis"><option value="net">Net</option><option value="gross">Gross</option></select></div><button type="button" class="button button-ghost remove">Remove</button>';el.querySelector(".remove").addEventListener("click",()=>{el.remove();rows--;});$("#items").append(el);updateCurrencyLabels();}
 function calc(){const data=[];for(const [i,r] of [...document.querySelectorAll("[data-line]")].entries()){const amount=parseDecimal(r.querySelector(".amount").value),rate=parseDecimal(r.querySelector(".rate-input").value),basis=r.querySelector(".basis").value;if(!Number.isFinite(amount)||amount<0||!Number.isFinite(rate)||rate<0||rate>100){show("Check each amount (zero or more) and tax rate (0–100%).");return;}const net=basis==="net"?amount:amount/(1+rate/100),gross=basis==="gross"?amount:amount*(1+rate/100),tax=gross-net;if(![net,tax,gross].every(Number.isFinite)){show("The calculation is outside the supported numeric range.");return;}data.push({name:r.querySelector(".desc").value.trim()||"Line "+(i+1),rate,net,tax,gross});}if(!data.length){show("Add at least one line item.");return;}const sum=k=>data.reduce((a,b)=>a+b[k],0);if(["net","tax","gross"].some(k=>!Number.isFinite(sum(k)))){show("The total is outside the supported numeric range.");return;}$("#result").innerHTML="<div class='tax-summary'><div><span>Net total</span><strong>"+money(sum("net"))+"</strong></div><div><span>Tax total</span><strong>"+money(sum("tax"))+"</strong></div><div><span>Gross total</span><strong>"+money(sum("gross"))+"</strong></div></div><h3>Line item breakdown</h3><ul>"+data.map(d=>"<li>"+esc(d.name)+" · "+d.rate+"%: net "+money(d.net)+", tax "+money(d.tax)+", gross "+money(d.gross)+"</li>").join("")+"</ul>";$("#result").hidden=false;}
 function show(s){$("#result").textContent=s;$("#result").hidden=false;}
