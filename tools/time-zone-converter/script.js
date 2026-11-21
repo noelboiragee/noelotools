@@ -1,14 +1,15 @@
 const zones=[["Europe/London","London"],["Europe/Dublin","Dublin"],["Europe/Paris","Paris"],["Europe/Berlin","Berlin"],["Europe/Madrid","Madrid"],["Europe/Rome","Rome"],["Europe/Amsterdam","Amsterdam"],["Europe/Warsaw","Warsaw"],["Europe/Athens","Athens"],["Europe/Helsinki","Helsinki"],["UTC","UTC"],["America/New_York","New York"],["Asia/Dubai","Dubai"],["Asia/Tokyo","Tokyo"],["Australia/Sydney","Sydney"]];
 const $=s=>document.querySelector(s);const source=$("#source-zone"),targets=$("#targets");
 function populateZones(select){select.replaceChildren();zones.forEach(([zone,name])=>{const option=document.createElement("option");option.value=zone;option.textContent=name+" ("+zone+")";select.append(option);});}
-populateZones(source);source.value="Europe/Paris";let targetCount=0;
+populateZones(source);source.value="Europe/Paris";let targetCount=0,targetRowId=0;
 function addTarget(value="Europe/London"){
  if(targetCount>=4)return;
  targetCount++;
+ const rowId=++targetRowId;
  const row=document.createElement("div");row.className="zone-row";row.dataset.target="";
  const field=document.createElement("div");field.className="field";
  const label=document.createElement("label"),select=document.createElement("select");
- label.textContent="Target zone "+targetCount;select.className="target-zone";select.id="target-zone-"+targetCount;label.htmlFor=select.id;
+ label.textContent="Target zone "+targetCount;select.className="target-zone";select.id="target-zone-"+rowId;label.htmlFor=select.id;
  populateZones(select);select.value=value;field.append(label,select);
  const remove=document.createElement("button");remove.type="button";remove.className="button button-ghost remove";remove.textContent="Remove";
  remove.addEventListener("click",()=>{row.remove();targetCount--;renumber();});
