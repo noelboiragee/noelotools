@@ -838,6 +838,10 @@ html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
 }
 .site-brand-name span:first-child { color: #f7f1e6; }
 .site-brand-name span:last-child { color: #d9bd80; }
+.primary-nav {
+  background: #07172b !important;
+  border-color: rgba(217,189,128,.24) !important;
+}
 .primary-nav a { color: #c8cfda !important; }
 .primary-nav a:hover,
 .primary-nav a[aria-current="page"] { color: #d9bd80 !important; }
