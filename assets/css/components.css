@@ -894,3 +894,25 @@ html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
   .site-brand-emblem { width: 34px; height: 34px; flex-basis: 34px; }
   .header-actions { gap: .3rem; }
 }
+
+/* Keep the same header identity legible when dark theme is selected. */
+[data-theme="dark"] .site-header,
+html[data-theme="dark"] .site-header {
+  background: rgba(11,16,32,.94) !important;
+  border-bottom-color: #27324b !important;
+}
+[data-theme="dark"] .site-brand,
+html[data-theme="dark"] .site-brand { color: #f3f6ff !important; }
+[data-theme="dark"] .site-brand-name span:first-child,
+html[data-theme="dark"] .site-brand-name span:first-child { color: #f3f6ff; }
+[data-theme="dark"] .site-brand-name span:last-child,
+html[data-theme="dark"] .site-brand-name span:last-child { color: #d9bd80; }
+[data-theme="dark"] .primary-nav a,
+html[data-theme="dark"] .primary-nav a { color: #c4cce0 !important; }
+[data-theme="dark"] .header-actions [data-theme-toggle],
+html[data-theme="dark"] .header-actions [data-theme-toggle] {
+  background: transparent !important;
+  border-color: rgba(217,189,128,.38) !important;
+  color: #d9bd80 !important;
+}
+
