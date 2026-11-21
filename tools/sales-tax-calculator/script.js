@@ -1,5 +1,5 @@
 const $=s=>document.querySelector(s);
-let rows=0,euRateVersion=null;
+let rows=0,rowId=0,euRateVersion=null;
 const MAX_EU_RATE_AGE_DAYS=180;
 function validIsoDate(value){if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(value+"T00:00:00Z");if(!Number.isFinite(date.getTime())||date.toISOString().slice(0,10)!==value)return false;const age=(Date.now()-date.getTime())/86400000;return age>=0&&age<=MAX_EU_RATE_AGE_DAYS;}
 const currency=()=>$("#currency").value;
@@ -71,12 +71,13 @@ async function refreshEuRates(){
 function addLine(){
  if(rows>=30)return;
  rows++;
+ const currentRowId=++rowId;
  const c=countries[$("#country").value],rate=c?.rate,el=document.createElement("div");
  el.className="tax-line";el.dataset.line="";
  const makeField=(className,labelText,inputClass,attrs={})=>{
   const field=document.createElement("div"),label=document.createElement("label"),input=document.createElement("input");
   field.className=className;input.className=inputClass;
-  const id="tax-"+inputClass+"-"+rows;label.htmlFor=id;label.textContent=labelText;input.id=id;
+  const id="tax-"+inputClass+"-"+currentRowId;label.htmlFor=id;label.textContent=labelText;input.id=id;
   Object.entries(attrs).forEach(([key,value])=>{if(key==="textContent")return;input.setAttribute(key,String(value));});
   field.append(label,input);return {field,input,label};
  };
@@ -86,7 +87,7 @@ function addLine(){
  const tax=makeField("field",(c?.tax||"Tax")+" rate (%)","rate-input",{type:"text",inputmode:"decimal",placeholder:rate===null||rate===undefined?"Enter applicable local rate":""});
  tax.label.dataset.taxLabel="";if(rate!==null&&rate!==undefined)tax.input.value=String(rate);
  const basisField=document.createElement("div"),basisLabel=document.createElement("label"),basis=document.createElement("select");
- basisField.className="field";basisLabel.textContent="Amount type";basis.id="tax-basis-"+rows;basisLabel.htmlFor=basis.id;basis.className="basis";
+ basisField.className="field";basisLabel.textContent="Amount type";basis.id="tax-basis-"+currentRowId;basisLabel.htmlFor=basis.id;basis.className="basis";
  [["net","Net"],["gross","Gross"]].forEach(([value,text])=>{const option=document.createElement("option");option.value=value;option.textContent=text;basis.append(option);});
  basisField.append(basisLabel,basis);
  const remove=document.createElement("button");remove.type="button";remove.className="button button-ghost remove";remove.textContent="Remove";
