@@ -202,11 +202,11 @@ body[data-category="math"] {
 }
 body[data-category="everyday"] {
   --primary-foreground: #12352C;
-  --primary: #00BFCB;
-  --primary-dark: #009A8C;
-  --primary-soft: #E8FFF5;
-  --category-gradient: linear-gradient(120deg, #00D4FF 0%, #00E676 52%, #FFEB3B 100%);
-  --shadow-glow: 0 0 30px rgba(0, 210, 160, .16);
+  --primary: #168F91;
+  --primary-dark: #117476;
+  --primary-soft: #E8F5F4;
+  --category-gradient: linear-gradient(120deg, #168F91 0%, #168F91 100%);
+  --shadow-glow: 0 0 30px rgba(22, 143, 145, .16);
 }
 html[data-theme="dark"] body[data-category="money-tax"] {
   --primary: #E5BD59;
@@ -239,10 +239,10 @@ html[data-theme="dark"] body[data-category="math"] {
   --primary-soft: #3B2A20;
 }
 html[data-theme="dark"] body[data-category="everyday"] {
-  --primary: #55E8C0;
-  --primary-dark: #8CF3D5;
-  --primary-soft: #173A32;
-  --category-gradient: linear-gradient(120deg, #00BDEB 0%, #00C96B 52%, #D9C92F 100%);
+  --primary: #55BFC0;
+  --primary-dark: #79D2D2;
+  --primary-soft: #173A3A;
+  --category-gradient: linear-gradient(120deg, #55BFC0 0%, #55BFC0 100%);
 }
 body[data-category="everyday"] .tool-intro .eyebrow,
 body[data-category="everyday"] .tool-workspace .button-primary,
