@@ -118,7 +118,11 @@ async function mergePdfs() {
 
   mergeButton.disabled = true;
   clearButton.disabled = true;
-  mergeButton.innerHTML = "<span aria-hidden=\"true\">…</span> Merging PDFs";
+  mergeButton.replaceChildren();
+  const busyIcon = document.createElement("span");
+  busyIcon.setAttribute("aria-hidden", "true");
+  busyIcon.textContent = "…";
+  mergeButton.append(busyIcon, document.createTextNode(" Merging PDFs"));
   setStatus("Combining PDF files. Please keep this page open.");
   try {
     const mergedPdf = await window.PDFLib.PDFDocument.create();
@@ -177,6 +181,10 @@ mergeButton.addEventListener("click", mergePdfs);
   });
 });
 dropZone.addEventListener("drop", (event) => addFiles(event.dataTransfer.files));
+
+window.addEventListener("load", () => {
+  if (!window.PDFLib?.PDFDocument) setStatus("The required PDF library could not load. Check your internet connection and reload this page.", "error");
+});
 
 const yearElement = document.querySelector("[data-current-year]");
 if (yearElement) yearElement.textContent = new Date().getFullYear().toString();
