@@ -99,7 +99,11 @@ function safelyInit(name, initializer) {
 document.addEventListener("DOMContentLoaded", () => {
   safelyInit("category theme", initCategoryTheme);
   safelyInit("theme toggle", initThemeToggle);
-  initToolCatalog().finally(() => safelyInit("tool search", initToolSearch));
+  initToolCatalog().finally(() => {
+    if (document.querySelector("[data-tool-card]")) {
+      safelyInit("tool search", initToolSearch);
+    }
+  });
   safelyInit("tool page search", () => { void initToolPageSearch(); });
   safelyInit("tool title icons", () => { void initToolTitleIcons(); });
   safelyInit("cookie consent", initCookieConsent);
