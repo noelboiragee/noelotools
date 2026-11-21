@@ -44,6 +44,15 @@ function clearResult() {
   downloadLink.removeAttribute("href");
 }
 
+function reportLibraryStatus() {
+  const missing = [];
+  if (!window.PDFLib?.PDFDocument) missing.push("text-preserving optimisation");
+  if (!window.pdfjsLib || !window.jspdf?.jsPDF) missing.push("maximum compression");
+  if (missing.length) setStatus("Required library unavailable for " + missing.join(" and ") + ". Check your connection and reload the page.");
+}
+
+window.addEventListener("load", reportLibraryStatus);
+
 function acceptFile(file) {
   if (!file) return;
   if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
