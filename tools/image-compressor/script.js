@@ -70,7 +70,14 @@ updateQuality();
 const lightbox = document.createElement("dialog");
 lightbox.className = "image-lightbox";
 lightbox.setAttribute("aria-label", "Image preview");
-lightbox.innerHTML = '<button type="button" class="image-lightbox-close" aria-label="Close image preview">×</button><img alt="Enlarged image preview">';
+const closeButton = document.createElement("button");
+closeButton.type = "button";
+closeButton.className = "image-lightbox-close";
+closeButton.setAttribute("aria-label", "Close image preview");
+closeButton.textContent = "×";
+const lightboxImageElement = document.createElement("img");
+lightboxImageElement.alt = "Enlarged image preview";
+lightbox.append(closeButton, lightboxImageElement);
 document.body.append(lightbox);
 const lightboxImage = lightbox.querySelector("img");
 function openImagePreview(preview) {
