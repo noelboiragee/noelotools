@@ -916,3 +916,43 @@ html[data-theme="dark"] .header-actions [data-theme-toggle] {
   color: #d9bd80 !important;
 }
 
+
+
+/* Footer brand: match the header's emblem + wordmark identity. */
+.footer-brand .site-brand {
+  gap: 11px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.footer-brand .site-brand-mark {
+  display: block;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent url("/noelotools/assets/img/noelotools-emblem.svg") center / contain no-repeat;
+  box-shadow: none;
+  color: transparent;
+  font-size: 0;
+}
+.footer-brand .site-brand > span:last-child {
+  background: linear-gradient(90deg, #ffffff 0 49%, #d9bd80 51% 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font: 600 1em/1 Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+@media (max-width: 760px) {
+  .footer-brand .site-brand { gap: 9px; }
+  .footer-brand .site-brand-mark { width: 39px; height: 39px; flex-basis: 39px; }
+}
+@media (max-width: 360px) {
+  .footer-brand .site-brand { gap: 7px; font-size: 1.2rem; }
+  .footer-brand .site-brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
+}
