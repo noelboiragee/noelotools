@@ -1,6 +1,6 @@
 const $=s=>document.querySelector(s);
 let rows=0,rowId=0,euRateVersion=null;
-const MAX_EU_RATE_AGE_DAYS=180;
+const MAX_EU_RATE_AGE_DAYS=90;
 function validIsoDate(value){if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(value+"T00:00:00Z");if(!Number.isFinite(date.getTime())||date.toISOString().slice(0,10)!==value)return false;const age=(Date.now()-date.getTime())/86400000;return age>=0&&age<=MAX_EU_RATE_AGE_DAYS;}
 const currency=()=>$("#currency").value;
 const parseDecimal=v=>{const n=String(v).trim().replace(/,/g,".");return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(n)?Number(n):NaN;};
