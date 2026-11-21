@@ -15,7 +15,7 @@ const categoryMeta = {
   "writing": { title: "Writing", icon: "✍️", glow: "#fb7185", description: "Text and writing helpers" },
   "health": { title: "Health", icon: "♡", glow: "#34d399", description: "Everyday health tools" },
   "math": { title: "Math", icon: "∑", glow: "#f97316", description: "Calculators and converters" },
-  "everyday": { title: "Everyday", icon: "✦", glow: "#2dd4bf", description: "Small tools for daily life" }
+  "everyday": { title: "Everyday", icon: "✦", glow: "#168F91", description: "Small tools for daily life" }
 };
 
 function categorySlug(value) {
