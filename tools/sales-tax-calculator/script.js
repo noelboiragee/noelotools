@@ -68,7 +68,31 @@ async function refreshEuRates(){
   status.textContent="Live EU VAT data is unavailable, invalid, or older than "+MAX_EU_RATE_AGE_DAYS+" days. Built-in rates are shown as unverified reference values; confirm with the official tax authority.";
  }
 }
-function addLine(){if(rows>=30)return;rows++;const c=countries[$("#country").value];const rate=c?.rate;const el=document.createElement("div");el.className="tax-line";el.dataset.line="";el.innerHTML='<div class="field line-name"><label>Description</label><input class="desc" maxlength="80" placeholder="Item '+rows+'"></div><div class="field"><label data-amount-label>Amount ('+currency()+')</label><input class="amount" type="text" inputmode="decimal" placeholder="100.00"></div><div class="field"><label data-tax-label>'+(c?.tax||"Tax")+' rate (%)</label><input class="rate-input" type="text" inputmode="decimal" placeholder="'+(rate===null||rate===undefined?"Enter applicable local rate":"")+'" value="'+(rate??"")+'"></div><div class="field"><label>Amount type</label><select class="basis"><option value="net">Net</option><option value="gross">Gross</option></select></div><button type="button" class="button button-ghost remove">Remove</button>';el.querySelector(".remove").addEventListener("click",()=>{el.remove();rows--;});$("#items").append(el);updateCurrencyLabels();}
+function addLine(){
+ if(rows>=30)return;
+ rows++;
+ const c=countries[$("#country").value],rate=c?.rate,el=document.createElement("div");
+ el.className="tax-line";el.dataset.line="";
+ const makeField=(className,labelText,inputClass,attrs={})=>{
+  const field=document.createElement("div"),label=document.createElement("label"),input=document.createElement("input");
+  field.className=className;input.className=inputClass;
+  const id="tax-"+inputClass+"-"+rows;label.htmlFor=id;label.textContent=labelText;input.id=id;
+  Object.entries(attrs).forEach(([key,value])=>{if(key==="textContent")return;input.setAttribute(key,String(value));});
+  field.append(label,input);return {field,input,label};
+ };
+ const description=makeField("field line-name","Description","desc",{maxlength:80,placeholder:"Item "+rows});
+ const amount=makeField("field","Amount ("+currency()+")","amount",{type:"text",inputmode:"decimal",placeholder:"100.00"});
+ amount.label.dataset.amountLabel="";
+ const tax=makeField("field",(c?.tax||"Tax")+" rate (%)","rate-input",{type:"text",inputmode:"decimal",placeholder:rate===null||rate===undefined?"Enter applicable local rate":""});
+ tax.label.dataset.taxLabel="";if(rate!==null&&rate!==undefined)tax.input.value=String(rate);
+ const basisField=document.createElement("div"),basisLabel=document.createElement("label"),basis=document.createElement("select");
+ basisField.className="field";basisLabel.textContent="Amount type";basis.id="tax-basis-"+rows;basisLabel.htmlFor=basis.id;basis.className="basis";
+ [["net","Net"],["gross","Gross"]].forEach(([value,text])=>{const option=document.createElement("option");option.value=value;option.textContent=text;basis.append(option);});
+ basisField.append(basisLabel,basis);
+ const remove=document.createElement("button");remove.type="button";remove.className="button button-ghost remove";remove.textContent="Remove";
+ remove.addEventListener("click",()=>{el.remove();rows--;});
+ el.append(description.field,amount.field,tax.field,basisField,remove);$("#items").append(el);updateCurrencyLabels();
+}
 function calc(){const data=[];for(const [i,r] of [...document.querySelectorAll("[data-line]")].entries()){const amount=parseDecimal(r.querySelector(".amount").value),rate=parseDecimal(r.querySelector(".rate-input").value),basis=r.querySelector(".basis").value;if(!Number.isFinite(amount)||amount<0||!Number.isFinite(rate)||rate<0||rate>100){show("Check each amount (zero or more) and tax rate (0–100%).");return;}const net=basis==="net"?amount:amount/(1+rate/100),gross=basis==="gross"?amount:amount*(1+rate/100),tax=gross-net;if(![net,tax,gross].every(Number.isFinite)){show("The calculation is outside the supported numeric range.");return;}data.push({name:r.querySelector(".desc").value.trim()||"Line "+(i+1),rate,net,tax,gross});}if(!data.length){show("Add at least one line item.");return;}const sum=k=>data.reduce((a,b)=>a+b[k],0);if(["net","tax","gross"].some(k=>!Number.isFinite(sum(k)))){show("The total is outside the supported numeric range.");return;}const result=$("#result");result.replaceChildren();const summary=document.createElement("div");summary.className="tax-summary";[["Net total","net"],["Tax total","tax"],["Gross total","gross"]].forEach(([title,key])=>{const item=document.createElement("div"),name=document.createElement("span"),value=document.createElement("strong");name.textContent=title;value.textContent=money(sum(key));item.append(name,value);summary.append(item);});const heading=document.createElement("h3");heading.textContent="Line item breakdown";const list=document.createElement("ul");data.forEach(d=>{const item=document.createElement("li");item.textContent=d.name+" · "+d.rate+"%: net "+money(d.net)+", tax "+money(d.tax)+", gross "+money(d.gross);list.append(item);});result.append(summary,heading,list);result.hidden=false;}
 function show(s){$("#result").textContent=s;$("#result").hidden=false;}
 $("#add-line").addEventListener("click",addLine);$("#calculate").addEventListener("click",calc);
