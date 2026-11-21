@@ -1,14 +1,15 @@
-const $=s=>document.querySelector(s);let count=0;const fmt=n=>new Intl.NumberFormat("en-IE",{style:"currency",currency:"EUR",maximumFractionDigits:4}).format(n);
+const $=s=>document.querySelector(s);let count=0,nextRowId=0;const fmt=n=>new Intl.NumberFormat("en-IE",{style:"currency",currency:"EUR",maximumFractionDigits:4}).format(n);
 function parseDecimal(value){const normalized=String(value).trim().replace(/,/g,".");return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized)?Number(normalized):NaN;}
 function add(){
  if(count>=5)return;
  count++;
+ const rowId=++nextRowId;
  const row=document.createElement("div");row.className="product-row";row.dataset.row="";
- const makeField=(labelText,className,attrs={})=>{const field=document.createElement("div"),label=document.createElement("label"),input=document.createElement("input");field.className="field";input.className=className;const id=className+"-"+count;label.htmlFor=id;label.textContent=labelText;input.id=id;Object.entries(attrs).forEach(([key,value])=>input.setAttribute(key,String(value)));field.append(label,input);return {field,input};};
+ const makeField=(labelText,className,attrs={})=>{const field=document.createElement("div"),label=document.createElement("label"),input=document.createElement("input");field.className="field";input.className=className;const id=className+"-"+rowId;label.htmlFor=id;label.textContent=labelText;input.id=id;Object.entries(attrs).forEach(([key,value])=>input.setAttribute(key,String(value)));field.append(label,input);return {field,input};};
  const name=makeField("Product name","p-name",{maxlength:50,placeholder:"Product "+count});
  const price=makeField("Price (€)","p-price",{type:"text",inputmode:"decimal",min:"0.0001",step:"0.01",placeholder:"2.99"});
  const quantity=makeField("Quantity","p-qty",{type:"text",inputmode:"decimal",min:"0.0001",step:"any",placeholder:"500"});
- const unitField=document.createElement("div"),unitLabel=document.createElement("label"),unit=document.createElement("select");unitField.className="field";unit.className="p-unit";unit.id="p-unit-"+count;unitLabel.htmlFor=unit.id;unitLabel.textContent="Unit";
+ const unitField=document.createElement("div"),unitLabel=document.createElement("label"),unit=document.createElement("select");unitField.className="field";unit.className="p-unit";unit.id="p-unit-"+rowId;unitLabel.htmlFor=unit.id;unitLabel.textContent="Unit";
  [["g","g"],["kg","kg"],["ml","ml"],["l","l"],["piece","piece"]].forEach(([value,text])=>{const option=document.createElement("option");option.value=value;option.textContent=text;unit.append(option);});unitField.append(unitLabel,unit);
  const remove=document.createElement("button");remove.className="button button-ghost remove";remove.type="button";remove.setAttribute("aria-label","Remove product");remove.textContent="Remove";remove.addEventListener("click",()=>{row.remove();count--;$("#add-product").disabled=count===5;});
  row.append(name.field,price.field,quantity.field,unitField,remove);$("#products").append(row);$("#add-product").disabled=count===5;
