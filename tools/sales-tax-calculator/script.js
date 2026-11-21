@@ -43,7 +43,7 @@ function updateCountry(){
  const c=countries[$("#country").value]; if(!c)return;
  $("#currency").value=c.currency;
  $("#country-tax-info").replaceChildren();
- const note=c.note||(c.rate===null?"Enter the applicable local tax rate.":(["DE","FR","IT","ES","NL","BE","IE","PT","AT"].includes($("#country").value)&&euRateVersion?"Standard "+c.tax+" rate verified against dataset dated "+euRateVersion+": "+c.rate+"%. Reduced rates or exemptions may apply.":"Built-in "+c.tax+" reference rate (not live-verified): "+c.rate+"%. Confirm the current rate with the official tax authority.");
+ const note=c.note||(c.rate===null?"Enter the applicable local tax rate.":(["DE","FR","IT","ES","NL","BE","IE","PT","AT"].includes($("#country").value)&&euRateVersion?"Standard "+c.tax+" rate verified against dataset dated "+euRateVersion+": "+c.rate+"%. Reduced rates or exemptions may apply.":"Built-in "+c.tax+" reference rate (not live-verified): "+c.rate+"%. Confirm the current rate with the official tax authority."));
  $("#country-tax-info").append(document.createTextNode(note+" "));
  const a=document.createElement("a");a.href=c.source;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Official tax authority / rate information";$("#country-tax-info").append(a);
  document.querySelectorAll(".rate-input").forEach(i=>{i.value=c.rate===null?"":String(c.rate);i.placeholder=c.rate===null?"Enter applicable local rate":"";});
