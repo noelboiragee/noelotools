@@ -5,6 +5,13 @@ const currencySymbol = document.querySelector("#currency-symbol");
 const germanyOptions = document.querySelector("#germany-options");
 const comingSoon = document.querySelector("#coming-soon");
 const countryStatus = document.querySelector("#country-status");
+function setCountryStatus(title, note) {
+  const heading = document.createElement("strong");
+  const detail = document.createElement("span");
+  heading.textContent = title;
+  detail.textContent = note;
+  countryStatus.replaceChildren(heading, detail);
+}
 const comingTitle = document.querySelector("#coming-title");
 const errorMessage = document.querySelector("#error-message");
 const healthExtraInput = document.querySelector("#health-extra");
@@ -105,7 +112,7 @@ function updateCountry() {
   const resultLabels = document.querySelectorAll(".results .result-item span");
 
   if (isGermany) {
-    countryStatus.innerHTML = "<strong>Germany model available</strong><span>2026 simplified estimate. Single employee, no children, default region.</span>";
+    setCountryStatus("Germany model available", "2026 simplified estimate. Single employee, no children, default region.");
     document.querySelector(".breakdown h3").textContent = "Monthly contribution breakdown";
     const labels = ["Pension insurance", "Unemployment insurance", "Health insurance", "Long-term care insurance", "Church tax"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -114,7 +121,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "The Germany 2026 estimate is available in this International Salary Calculator. Brazil and UK models are also available.";
     calculateGermany();
   } else if (isFrance) {
-    countryStatus.innerHTML = "<strong>France model available</strong><span>Indicative 2026 estimate. Single employee, one tax share, standard private-sector non-managerial payroll.</span>";
+    setCountryStatus("France model available", "Indicative 2026 estimate. Single employee, one tax share, standard private-sector non-managerial payroll.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deductions";
     const labels = ["Basic pension", "Supplementary pension", "CSG", "CRDS", "Other deductions"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i === 4; });
@@ -123,7 +130,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "France is an indicative estimate using published employee contribution rates and the 2026 published tax scale. Actual payroll withholding may differ.";
     calculateFrance();
   } else if (isBrazil) {
-    countryStatus.innerHTML = "<strong>Brazil model available</strong><span>2026 estimate. Single employee, no dependants, simplified monthly deduction.</span>";
+    setCountryStatus("Brazil model available", "2026 estimate. Single employee, no dependants, simplified monthly deduction.");
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
     const labels = ["INSS social security", "Income tax (IRPF)", "—", "—", "—"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 1; });
@@ -132,7 +139,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "The Brazil 2026 estimate is available. Germany, Italy and UK models are also available.";
     calculateBrazil();
   } else if (isSpain) {
-    countryStatus.innerHTML = "<strong>Spain model available</strong><span>2026 AEAT payroll withholding estimate. Single employee, no children or dependants, standard indefinite contract, no other income.</span>";
+    setCountryStatus("Spain model available", "2026 AEAT payroll withholding estimate. Single employee, no children or dependants, standard indefinite contract, no other income.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deductions";
     const labels = ["Social Security (employee)", "Income tax withholding (IRPF)", "Solidarity contribution", "—", "—"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 2; });
@@ -141,7 +148,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Spain uses the AEAT 2026 withholding method and 2026 General Regime employee contribution rates. Regional differences and personal circumstances can change the final tax return.";
     calculateSpain();
   } else if (countryInput.value === "JP") {
-    countryStatus.innerHTML = "<strong>Japan model available — Tokyo benchmark</strong><span>2026 resident employee estimate, under age 40, single, no dependants.</span>";
+    setCountryStatus("Japan model available — Tokyo benchmark", "2026 resident employee estimate, under age 40, single, no dependants.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Employee pension insurance", "Health + child-support insurance", "Employment insurance", "Total employee social insurance", "Assumption: Tokyo, under age 40"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -150,7 +157,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Japan 2026 estimate assumes Tokyo, under age 40, one employer and 12 equal salary payments. Uses the December 2026 revised employment-income deduction and basic deduction for the 2026 tax year. Social insurance is approximated from standard monthly pay rates and caps; bonuses, dependants, housing-loan credits and personal deductions are excluded.";
     calculateJapan();
   } else if (countryInput.value === "CN") {
-    countryStatus.innerHTML = "<strong>China model available — Shanghai benchmark</strong><span>2026/27 resident employee estimate using Shanghai social-insurance and housing-fund rates.</span>";
+    setCountryStatus("China model available — Shanghai benchmark", "2026/27 resident employee estimate using Shanghai social-insurance and housing-fund rates.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Employee pension insurance", "Employee unemployment insurance", "Employee medical insurance", "Housing provident fund", "Shanghai contribution-base assumption"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -159,7 +166,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "China 2026/27 estimate uses Shanghai contribution-base limits and employee rates: pension 8%, medical 2% plus CNY 3, unemployment 0.5%, and housing fund 7%. It applies the annual CNY 60,000 basic deduction and national comprehensive-income tax scale. Special additional deductions, bonuses, and other cities' contribution rules are excluded.";
     calculateChina();
   } else if (isArgentina) {
-    countryStatus.innerHTML = "<strong>Argentina model available</strong><span>2026 annual Ganancias estimate for a resident single employee, no dependants; employee social-security cap uses November 2026 values.</span>";
+    setCountryStatus("Argentina model available", "2026 annual Ganancias estimate for a resident single employee, no dependants; employee social-security cap uses November 2026 values.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Employee social-security contributions", "Basic personal allowance", "Special employee deduction", "Annual taxable income", "13th salary and other deductions (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -168,7 +175,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "The estimate uses 12 equal monthly salary payments and excludes the 13th salary (SAC), dependants, personal expense deductions and employer contributions. The social-security cap is the November 2026 maximum and is held constant across the annual estimate.";
     calculateArgentina();
   } else if (isSwitzerland) {
-    countryStatus.innerHTML = "<strong>Switzerland model available — Zurich benchmark</strong><span>2026 estimate for a single employee in Zurich city, no church tax, using standard payroll deductions.</span>";
+    setCountryStatus("Switzerland model available — Zurich benchmark", "2026 estimate for a single employee in Zurich city, no church tax, using standard payroll deductions.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["AHV/IV/EO + ALV + accident + pension", "Federal income tax", "Zurich cantonal and city tax", "Work-expense deductions", "Insurance-premium tax deductions"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -177,7 +184,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Swiss tax varies substantially by canton and municipality. This model uses Zurich city (2026 cantonal multiplier 95%, municipal multiplier 119%) and is not a nationwide average. Occupational pension and accident premiums vary by employer and plan.";
     calculateSwitzerland();
   } else if (isSweden) {
-    countryStatus.innerHTML = "<strong>Sweden model available</strong><span>2026 estimate for a working-age resident employee using the national-average municipal tax rate.</span>";
+    setCountryStatus("Sweden model available", "2026 estimate for a working-age resident employee using the national-average municipal tax rate.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee tax breakdown";
     const labels = ["Municipal income tax after credits", "National income tax", "Funeral fee", "Basic allowance", "Earned-income tax credit"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -186,7 +193,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Sweden has no separate employee payroll social contribution in this estimate: the 7% public pension fee is fully offset by an equal tax reduction in ordinary cases. The 32.38% municipal tax is the national average; your municipality and church membership can change the final result.";
     calculateSweden();
   } else if (isDenmark) {
-    countryStatus.innerHTML = "<strong>Denmark model available</strong><span>2026 estimate for a full-time employee, single, no church tax or personal pension deduction.</span>";
+    setCountryStatus("Denmark model available", "2026 estimate for a full-time employee, single, no church tax or personal pension deduction.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Labour market contribution (AM)", "State income taxes", "Average municipal tax", "Employment and job allowances", "ATP employee contribution"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -195,7 +202,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "The estimate uses the 2026 national tax reform and average municipal tax of 25.049%. Municipality, church membership, pension contributions and individual deductions can change the result.";
     calculateDenmark();
   } else if (isNorway) {
-    countryStatus.innerHTML = "<strong>Norway model available</strong><span>2026 estimate for a single resident employee outside the northern Action Zone, no dependants.</span>";
+    setCountryStatus("Norway model available", "2026 estimate for a single resident employee outside the northern Action Zone, no dependants.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Ordinary income tax", "Bracket tax", "National Insurance contribution", "Minimum standard deduction", "Personal allowance"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -204,7 +211,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Norway's 22% ordinary-income tax includes central, county and municipal tax. The northern Action Zone has a reduced rate and is excluded. The estimate uses standard employee deductions and no additional personal deductions.";
     calculateNorway();
   } else if (isAustria) {
-    countryStatus.innerHTML = "<strong>Austria model available</strong><span>2026 estimate for a standard employee outside Vienna, no children, no 13th/14th salary payments.</span>";
+    setCountryStatus("Austria model available", "2026 estimate for a standard employee outside Vienna, no children, no 13th/14th salary payments.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Employee social insurance", "Income tax after employee credits", "Taxable income after deductions", "Standard employee tax credit", "Low-income tax-credit supplement"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -213,7 +220,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Austria has special tax treatment for 13th and 14th salary payments. They are excluded here; the estimate uses 12 equal salary payments and the standard non-Vienna housing-promotion contribution.";
     calculateAustria();
   } else if (countryInput.value === "MX") {
-    countryStatus.innerHTML = "<strong>Mexico model available</strong><span>2026 monthly ISR withholding and estimated employee IMSS; standard integrated salary factor.</span>";
+    setCountryStatus("Mexico model available", "2026 monthly ISR withholding and estimated employee IMSS; standard integrated salary factor.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["ISR income tax after employment subsidy", "IMSS employee contributions", "Employment subsidy (if eligible)", "Integrated salary base for IMSS", "Employer-only contributions (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -222,7 +229,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Mexico 2026 estimate uses the monthly SAT ISR withholding tariff and the 2026 employment subsidy. IMSS assumes first-year integrated salary (15-day year-end bonus, 12 vacation days and 25% vacation premium), 2026 UMA and 25-UMA contribution cap. Employer-only IMSS and INFONAVIT contributions, state payroll tax, other benefits and personal circumstances are excluded.";
     calculateMexico();
   } else if (countryInput.value === "CA") {
-    countryStatus.innerHTML = "<strong>Canada model available</strong><span>2026 Ontario resident employee estimate; single filer, standard basic personal credits.</span>";
+    setCountryStatus("Canada model available", "2026 Ontario resident employee estimate; single filer, standard basic personal credits.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Federal + Ontario income tax", "Canada Pension Plan (CPP / CPP2)", "Employment Insurance (EI)", "Ontario Health Premium", "Other province tax rules (not applicable)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -231,7 +238,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Canada 2026 estimate assumes Ontario residence, single employee, basic personal credits and employment income only. CPP/CPP2 and EI are capped at their 2026 annual limits. Other provinces and Quebec have different tax and payroll rules.";
     calculateCanada();
   } else if (countryInput.value === "US") {
-    countryStatus.innerHTML = "<strong>United States model available</strong><span>2026 federal estimate for a single filer; state and local income taxes are not included.</span>";
+    setCountryStatus("United States model available", "2026 federal estimate for a single filer; state and local income taxes are not included.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Federal income tax", "Social Security tax", "Medicare tax (including Additional Medicare)", "Federal standard deduction", "State and local income taxes (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -240,7 +247,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "US 2026 federal estimate assumes a single filer eligible for the $16,100 standard deduction. Includes Social Security at 6.2% up to $184,500, Medicare at 1.45%, and Additional Medicare at 0.9% above $200,000. State/local income tax, credits, health insurance and retirement plan deductions are excluded.";
     calculateUnitedStates();
   } else if (countryInput.value === "IN") {
-    countryStatus.innerHTML = "<strong>India model available</strong><span>Tax Year 2026–27, resident salaried individual, default new tax regime, ₹75,000 standard deduction.</span>";
+    setCountryStatus("India model available", "Tax Year 2026–27, resident salaried individual, default new tax regime, ₹75,000 standard deduction.");
     document.querySelector(".breakdown h3").textContent = "Annualised monthly deduction breakdown";
     const labels = ["Income tax after Section 87A rebate", "Health and Education Cess", "Standard deduction", "Section 87A rebate / marginal relief", "Surcharge (where applicable)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -249,7 +256,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "India Tax Year 2026–27. Uses the default new tax regime, ₹75,000 salary standard deduction, Section 87A rebate and marginal relief, surcharge where applicable and 4% Health and Education Cess. Employee provident fund, state professional tax, allowances, deductions and other income are excluded.";
     calculateIndia();
   } else if (countryInput.value === "AU") {
-    countryStatus.innerHTML = "<strong>Australia model available</strong><span>2026/27 resident employee estimate, single taxpayer, full tax-free threshold, no Medicare levy surcharge.</span>";
+    setCountryStatus("Australia model available", "2026/27 resident employee estimate, single taxpayer, full tax-free threshold, no Medicare levy surcharge.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Resident income tax", "Medicare levy", "Tax-free threshold", "Medicare levy low-income reduction", "Superannuation (employer-paid, excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -258,7 +265,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Australia financial year 1 July 2026 to 30 June 2027. Assumes an Australian tax resident with the full $18,200 tax-free threshold. Includes the 2% Medicare levy with the single low-income phase-in. Medicare levy surcharge, deductions, offsets and employer superannuation are excluded.";
     calculateAustralia();
   } else if (countryInput.value === "NZ") {
-    countryStatus.innerHTML = "<strong>New Zealand model available</strong><span>2026/27 PAYE estimate for a resident employee with one main job, no student loan, KiwiSaver or personal tax credits.</span>";
+    setCountryStatus("New Zealand model available", "2026/27 PAYE estimate for a resident employee with one main job, no student loan, KiwiSaver or personal tax credits.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["PAYE income tax", "ACC earners’ levy", "Annual income tax calculation", "ACC maximum liable earnings", "Student loan and KiwiSaver (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -267,7 +274,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "New Zealand tax year 1 April 2026 to 31 March 2027. PAYE income tax uses the current progressive individual rates; the ACC earners’ levy is 1.75% on liable earnings up to NZ$156,641. Independent Earner Tax Credit, student loan, KiwiSaver and other personal adjustments are excluded.";
     calculateNewZealand();
   } else if (isPortugal) {
-    countryStatus.innerHTML = "<strong>Portugal model available</strong><span>2026 estimate for a single mainland resident employee, no dependants, no additional personal expense credits.</span>";
+    setCountryStatus("Portugal model available", "2026 estimate for a single mainland resident employee, no dependants, no additional personal expense credits.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Employee Social Security", "IRS income tax", "Employment-income specific deduction", "Additional solidarity tax", "Other personal tax credits"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -276,7 +283,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Portugal uses a specific employment-income deduction equal to the higher of €4,587.09 or mandatory employee social contributions. This estimate excludes household expense credits and assumes 12 equal monthly salary payments; holiday and Christmas payments are not included.";
     calculatePortugal();
   } else if (isIreland) {
-    countryStatus.innerHTML = "<strong>Ireland model available</strong><span>2026 estimate for a single PAYE employee, standard-rate band €44,000, standard tax credits and Class A PRSI.</span>";
+    setCountryStatus("Ireland model available", "2026 estimate for a single PAYE employee, standard-rate band €44,000, standard tax credits and Class A PRSI.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Income tax after PAYE credits", "Universal Social Charge (USC)", "Employee PRSI", "Single Person Tax Credit", "PAYE Employee Tax Credit"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -285,7 +292,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Ireland combines income tax, USC and employee PRSI. This estimate assumes one PAYE job, single tax status, no pension deduction and no additional credits or reliefs.";
     calculateIreland();
   } else if (isBelgium) {
-    countryStatus.innerHTML = "<strong>Belgium model available</strong><span>2026 estimate for a single white-collar employee with no dependants; municipal tax and special social-security contribution excluded.</span>";
+    setCountryStatus("Belgium model available", "2026 estimate for a single white-collar employee with no dependants; municipal tax and special social-security contribution excluded.");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     const labels = ["Employee social security (ONSS)", "Flat-rate professional expenses", "Personal tax allowance benefit", "Work bonus (if applicable)", "Municipal and special social charges (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -294,7 +301,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Belgium excludes municipal tax and the special social-security contribution because these depend on municipality and household circumstances. Holiday pay and year-end bonus are not included in the monthly salary input.";
     calculateBelgium();
   } else if (isNetherlands) {
-    countryStatus.innerHTML = "<strong>Netherlands model available</strong><span>2026 estimate for an employee below AOW age, one job, resident in the Netherlands, with general and labour tax credits applied.</span>";
+    setCountryStatus("Netherlands model available", "2026 estimate for an employee below AOW age, one job, resident in the Netherlands, with general and labour tax credits applied.");
     document.querySelector(".breakdown h3").textContent = "Monthly payroll tax and credit breakdown";
     const labels = ["Box 1 tax before credits", "General tax credit", "Labour tax credit", "Employer Zvw contribution (not deducted)", "Private health insurance (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -303,7 +310,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Dutch national insurance premiums are included in the first Box 1 tax bracket. The employer normally pays the income-related Zvw contribution; private basic health insurance is paid separately and is not deducted here.";
     calculateNetherlands();
   } else if (isItaly) {
-    countryStatus.innerHTML = "<strong>Italy model available</strong><span>2026 estimate. Standard private-sector employee, one employment income, no dependants; regional and municipal surcharges excluded.</span>";
+    setCountryStatus("Italy model available", "2026 estimate. Standard private-sector employee, one employment income, no dependants; regional and municipal surcharges excluded.");
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
     const labels = ["INPS employee contribution", "Gross IRPEF", "Employee tax credit", "2026 tax-wedge relief", "Local tax surcharges (excluded)"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = false; });
@@ -312,7 +319,7 @@ function updateCountry() {
     document.querySelector(".model-link").textContent = "Italy uses a standard 9.19% employee INPS baseline. Actual contribution rates and take-home pay vary by sector, contract and local tax surcharges.";
     calculateItaly();
   } else if (isUK) {
-    countryStatus.innerHTML = "<strong>United Kingdom model available</strong><span>2026–27 annualised estimate for a standard employee in England, Wales or Northern Ireland. Scottish tax bands are excluded.</span>";
+    setCountryStatus("United Kingdom model available", "2026–27 annualised estimate for a standard employee in England, Wales or Northern Ireland. Scottish tax bands are excluded.");
     document.querySelector(".breakdown h3").textContent = "Monthly deduction breakdown";
     const labels = ["Income tax (PAYE)", "National Insurance (employee)", "—", "—", "—"];
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = labels[i]; row.hidden = i > 1; });
@@ -332,7 +339,7 @@ function updateCountry() {
       CN: { note: "2026/27 Shanghai resident employee estimate with 7% employee housing fund.", labels: ["Employee social insurance", "Housing fund (7%)", "Individual income tax", "Annual basic deduction", "Shanghai contribution base"], tax: "Individual income tax per month", social: "Employee social + housing fund per month", explanation: "China assumes Shanghai 2026/27 contribution bases, 8% pension, 2% medical, 0.5% unemployment and 7% employee housing fund. Annual IIT uses the CNY 60,000 standard deduction and progressive comprehensive-income rates. Other cities differ." }
     };
     const model = modelDetails[countryInput.value];
-    countryStatus.innerHTML = "<strong>" + selected.name + " model available</strong><span>" + model.note + "</span>";
+    setCountryStatus("\" + selected.name + \" model available", "\" + model.note + \"");
     document.querySelector(".breakdown h3").textContent = "Monthly employee deduction breakdown";
     breakdownRows.forEach((row, i) => { row.querySelector("span").textContent = model.labels[i]; row.hidden = false; });
     resultLabels[1].textContent = model.tax;
