@@ -6,7 +6,7 @@ const supportedCurrencies=new Set([...fromEl.options].map(option=>option.value))
 let rates=null,base=null,rateDate="",cached=false,requestId=0,loadingRates=false;
 const format=(n,c)=>new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:4}).format(n);
 function showError(message){error.textContent=message;output.textContent="—";rateLine.textContent="";}
-function parseDecimal(value){const normalized=String(value).trim().replace(/,/g,".");return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized)?Number(normalized):NaN;}
+function parseDecimal(value){const normalized=String(value).trim();return /^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(normalized)?Number(normalized):NaN;}
 function validCurrency(code){return typeof code==="string"&&/^[A-Z]{3}$/.test(code)&&supportedCurrencies.has(code);}
 function validRateDate(value){if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(value+"T00:00:00Z");if(!Number.isFinite(date.getTime())||date.toISOString().slice(0,10)!==value)return false;const age=(Date.now()-date.getTime())/86400000;return age>=0&&age<=MAX_RATE_AGE_DAYS;}
 function validateRates(raw,currency){if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("The rate service returned invalid rate data.");const entries=Object.entries(raw);if(!entries.length)throw new Error("The rate service returned no exchange rates.");const clean={};for(const [code,value] of entries){if(!/^[A-Z]{3}$/.test(code)||typeof value!=="number"||!Number.isFinite(value)||value<=0||value>1000000)throw new Error("The rate service returned an invalid exchange rate.");clean[code]=value;}clean[currency]=1;return clean;}
