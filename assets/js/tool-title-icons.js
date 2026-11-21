@@ -111,17 +111,22 @@ function createToolIconForId(toolId, className = "tool-title-icon") {
 }
 
 async function initToolTitleIcons() {
+  const heading = document.querySelector(".tool-intro h1, .page-heading h1");
+  const path = window.location.pathname.replace(/\/$/, "");
+  const toolId = path.split("/").pop();
+  const icon = heading ? createToolIconForId(toolId) : null;
+  const hasToolCards = Boolean(document.querySelector("[data-all-tools], [data-popular-tools]"));
+
+  // Load the icon stylesheet only where tool icons are actually rendered.
+  if (!hasToolCards && !icon) return;
+
   if (!document.querySelector('link[href*="tool-title-icons.css"]')) {
     const stylesheet = document.createElement("link");
     stylesheet.rel = "stylesheet";
     stylesheet.href = "/noelotools/assets/css/tool-title-icons.css";
     document.head.appendChild(stylesheet);
   }
-  const heading = document.querySelector(".tool-intro h1, .page-heading h1");
-  if (!heading) return;
-  const path = window.location.pathname.replace(/\/$/, "");
-  const toolId = path.split("/").pop();
-  const icon = createToolIconForId(toolId);
+
   if (!icon || heading.querySelector(".tool-title-icon")) return;
   heading.classList.add("tool-title-with-icon");
   heading.prepend(icon);
