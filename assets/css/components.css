@@ -798,43 +798,132 @@ html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
 .categories-section .category-icon--everyday { --category-icon-color: #168F91; }
 
 
-/* Compact NoeloTools brand: emblem + wordmark */
+
+/* NoeloTools compact emblem + wordmark — shared across every page */
+.site-header {
+  background: #07172b !important;
+  border-bottom: 1px solid rgba(217,189,128,.22) !important;
+  color: #f7f1e6;
+}
+.header-inner { min-height: 72px; gap: 1rem; }
 .site-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
+  flex: 0 0 auto;
+  color: #f7f1e6 !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0;
   line-height: 1;
   text-decoration: none;
+  white-space: nowrap;
 }
 .site-brand-emblem {
   display: block;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
-  object-fit: contain;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  color: #d9bd80;
+}
+.site-brand-mark {
+  position: relative;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  place-items: center;
+  border: 1.6px solid #d9bd80;
+  border-radius: 50%;
+  outline: 1px dotted #d9bd80;
+  outline-offset: 3px;
+  background: transparent !important;
+  color: #d9bd80 !important;
+  font: 700 1.65rem/1 Georgia, "Times New Roman", serif;
+  box-shadow: none !important;
+}
+.site-brand-mark::before,
+.site-brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1px dashed rgba(217,189,128,.65);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.site-brand > span:not(.site-brand-mark) {
+  color: #f7f1e6;
+  font: 600 1em/1 Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+  background: linear-gradient(90deg,#f7f1e6 0 48%,#d9bd80 52% 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .site-brand-name {
-  color: var(--text, #172033);
-  font-size: 1.22rem;
-  font-weight: 800;
-  letter-spacing: -.045em;
+  display: inline-flex;
+  gap: 0;
+  color: #f7f1e6;
+  font: 600 1em/1 Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+.site-brand-name span:last-child { color: #d9bd80; }
+.primary-nav a,
+.header-actions a { color: #c8cfda !important; }
+.primary-nav a:hover,
+.primary-nav a[aria-current="page"],
+.header-actions a:hover { color: #d9bd80 !important; }
+.header-actions { gap: .8rem; }
+.header-actions [data-theme-toggle] {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid rgba(217,189,128,.38) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #d9bd80 !important;
+}
+.header-actions [data-theme-label] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
   white-space: nowrap;
+  border: 0;
 }
-@media (max-width: 600px) {
-  .site-brand { gap: 8px; }
-  .site-brand-emblem { width: 32px; height: 32px; flex-basis: 32px; }
-  .site-brand-name { font-size: 1.08rem; }
+.header-actions [data-theme-toggle]:not(:has(svg))::after {
+  content: "☾";
+  font-size: 1.45rem;
+  line-height: 1;
 }
-
-
-/* Compact gold emblem + serif wordmark identity */
-.site-brand { display:inline-flex; align-items:center; gap:.65rem; white-space:nowrap; }
-.site-brand-emblem { display:block; flex:0 0 38px; width:38px; height:38px; color:#d9bd80; }
-.site-brand-name { display:inline-flex; gap:0; font-family:Georgia,'Times New Roman',serif; font-size:1.65rem; font-weight:600; letter-spacing:0; line-height:1; }
-.site-brand-name span:last-child { color:#d9bd80; }
-@media(max-width:480px) {
-  .site-brand { gap:.5rem; }
-  .site-brand-emblem { flex-basis:34px; width:34px; height:34px; }
-  .site-brand-name { font-size:1.4rem; }
+.menu-toggle {
+  color: #f7f1e6 !important;
+  border: 0 !important;
+  background: transparent !important;
+  font-size: 1.55rem;
+}
+@media (max-width: 760px) {
+  .header-inner { min-height: 68px; gap: .6rem; }
+  .site-brand { gap: 9px; font-size: 1.55rem; }
+  .site-brand-emblem,.site-brand-mark {
+    width: 38px; height: 38px; flex-basis: 38px;
+  }
+  .site-brand-mark { font-size: 1.45rem; }
+  .header-actions { gap: .5rem; }
+  .header-actions [data-theme-toggle] {
+    width: 40px; min-width: 40px; height: 40px; min-height: 40px;
+  }
+}
+@media (max-width: 360px) {
+  .site-brand { gap: 7px; font-size: 1.35rem; }
+  .site-brand-emblem,.site-brand-mark {
+    width: 34px; height: 34px; flex-basis: 34px;
+  }
+  .header-actions { gap: .3rem; }
 }
