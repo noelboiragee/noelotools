@@ -256,5 +256,6 @@
   el.xlsx.addEventListener('click', downloadXlsx);
   el.csv.addEventListener('click', downloadCsv);
   el.reset.addEventListener('click', resetAll);
-  setStatus('Choose a text-based PDF to get started.');
+  if (!window.pdfjsLib || !window.XLSX) setStatus('A required PDF or Excel library could not load. Check your internet connection and reload this page.', true);
+  else setStatus('Choose a text-based PDF to get started.');
 })();
